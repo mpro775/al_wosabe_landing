@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #ff8a00;
+  --color-primary-dark: #e87500;
+  --color-primary-light: #ffc247;
+  --color-dark: #1b1b1d;
+  --color-dark-soft: #252529;
+  --color-graphite: #343438;
+  --color-light: #f7f7f4;
+  --color-muted: #a7a7a7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-light);
+  color: var(--color-dark);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(255, 138, 0, 0.28);
+}
+
+.industrial-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.route-lines {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255, 138, 0, 0.18), transparent 25%),
+    linear-gradient(120deg, transparent 0 18%, rgba(255, 138, 0, 0.22) 18% 19%, transparent 19% 100%),
+    linear-gradient(150deg, transparent 0 38%, rgba(255, 194, 71, 0.14) 38% 39%, transparent 39% 100%);
+}
+
+.tire-track {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0 9px,
+    transparent 9px 18px
+  );
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
