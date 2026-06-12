@@ -1,12 +1,59 @@
 import type { Metadata } from "next";
-import { Cairo, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import "@/app/globals.css";
 import { isLocale, localeDirection, locales, type Locale } from "@/lib/locales";
 import { siteMeta } from "@/data/site";
 
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
+const alexandria = localFont({
+  src: [
+    {
+      path: "../../../public/fonts/Alexandria-Thin.ttf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-ExtraLight.ttf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../../../public/fonts/Alexandria-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
   variable: "--font-arabic",
   display: "swap",
 });
@@ -70,7 +117,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={localeDirection(locale)}>
       <body
-        className={`${cairo.variable} ${inter.variable} ${
+        className={`${alexandria.variable} ${inter.variable} ${
           locale === "ar" ? "font-[var(--font-arabic)]" : "font-[var(--font-english)]"
         } antialiased`}
       >
