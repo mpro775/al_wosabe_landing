@@ -11,11 +11,11 @@ type ButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 export function Button({ href, variant = "primary", children, className, ...props }: ButtonProps) {
   const internal = href.startsWith("/") || href.startsWith("#");
   const classes = cn(
-    "focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold transition duration-300",
+    "focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold transition-all duration-300",
     variant === "primary" &&
-      "bg-[#FF8A00] text-[#1B1B1D] shadow-[0_16px_40px_rgba(255,138,0,0.28)] hover:bg-[#FFC247]",
+      "bg-gradient-to-r from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-[0_16px_40px_rgba(255,138,0,0.28)] hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_20px_50px_rgba(255,138,0,0.38)] hover:scale-[1.03] active:scale-[0.98]",
     variant === "secondary" &&
-      "border border-white/20 bg-white/10 text-white backdrop-blur hover:border-[#FF8A00]/70 hover:bg-[#FF8A00]/15",
+      "border border-white/20 bg-white/8 text-white backdrop-blur hover:border-[#FF8A00]/60 hover:bg-[#FF8A00]/12 hover:text-[#FFC247] hover:shadow-[0_0_20px_rgba(255,138,0,0.1)]",
     variant === "ghost" && "text-[#1B1B1D] hover:bg-black/5",
     className,
   );
