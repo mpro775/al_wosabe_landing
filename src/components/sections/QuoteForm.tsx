@@ -1,6 +1,6 @@
 "use client";
 
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 import { useState } from "react";
 import { company } from "@/data/site";
 import type { Locale } from "@/lib/locales";
@@ -27,8 +27,28 @@ const initialState = {
   message: "",
 };
 
+const productsList = [
+  { value: "Tires", label: { ar: "الإطارات", en: "Tires" } },
+  { value: "Batteries", label: { ar: "البطاريات", en: "Batteries" } },
+  { value: "Lubricants", label: { ar: "الزيوت ومواد التشحيم", en: "Lubricants" } },
+  { value: "Motorcycle Spare Parts", label: { ar: "قطع غيار الدراجات النارية", en: "Motorcycle Spare Parts" } },
+  { value: "Accessories", label: { ar: "الإكسسوارات", en: "Accessories" } },
+  { value: "Tools", label: { ar: "الأدوات والعدد", en: "Tools" } }
+];
+
+const citiesList = [
+  { value: "Sana'a", label: { ar: "صنعاء", en: "Sana'a" } },
+  { value: "Hodeidah", label: { ar: "الحديدة", en: "Hodeidah" } },
+  { value: "Mukalla", label: { ar: "المكلا", en: "Mukalla" } },
+  { value: "Bajel", label: { ar: "باجل", en: "Bajel" } },
+  { value: "Zabid", label: { ar: "زبيد", en: "Zabid" } },
+  { value: "Aden", label: { ar: "عدن", en: "Aden" } },
+  { value: "Taiz", label: { ar: "تعز", en: "Taiz" } }
+];
+
 export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }) {
   const [form, setForm] = useState(initialState);
+  const isAr = locale === "ar";
 
   const update = (field: keyof typeof initialState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -36,8 +56,15 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    // Simple validation check
+    if (!form.name.trim() || !form.phone.trim() || !form.city || !form.product) {
+      alert(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
+      return;
+    }
+
     const message =
-      locale === "ar"
+      isAr
         ? `طلب عرض سعر من موقع الوصابي للتجارة%0Aالاسم: ${form.name}%0Aالشركة/المحل: ${form.business}%0Aالهاتف: ${form.phone}%0Aالمدينة: ${form.city}%0Aالمنتج: ${form.product}%0Aالكمية: ${form.quantity}%0Aالتفاصيل: ${form.message}`
         : `Quote request from Al-Wosabe website%0AName: ${form.name}%0ABusiness: ${form.business}%0APhone: ${form.phone}%0ACity: ${form.city}%0AProduct: ${form.product}%0AQuantity: ${form.quantity}%0ADetails: ${form.message}`;
 
@@ -65,8 +92,51 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         <input className={inputClass} required value={form.name} onChange={(e) => update("name", e.target.value)} placeholder={labels.name} aria-label={labels.name} />
         <input className={inputClass} value={form.business} onChange={(e) => update("business", e.target.value)} placeholder={labels.business} aria-label={labels.business} />
         <input className={inputClass} required value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder={labels.phone} aria-label={labels.phone} />
-        <input className={inputClass} required value={form.city} onChange={(e) => update("city", e.target.value)} placeholder={labels.city} aria-label={labels.city} />
-        <input className={inputClass} required value={form.product} onChange={(e) => update("product", e.target.value)} placeholder={labels.product} aria-label={labels.product} />
+        
+        {/* City Dropdown */}
+        <select 
+          className={`${inputClass} text-white/90 bg-[#1B1B1D]`}
+          required 
+          value={form.city} 
+          onChange={(e) => update("city", e.target.value)} 
+          aria-label={labels.city}
+        >
+          <option value="" disabled className="text-white/40 bg-[#1B1B1D]">
+            {labels.city}
+          </option>
+          {citiesList.map((item) => (
+            <option 
+              key={item.value} 
+              value={item.value} 
+              className="text-white bg-[#1B1B1D]"
+            >
+              {item.label[locale]}
+            </option>
+          ))}
+        </select>
+
+        {/* Product Category Dropdown */}
+        <select 
+          className={`${inputClass} text-white/90 bg-[#1B1B1D]`}
+          required 
+          value={form.product} 
+          onChange={(e) => update("product", e.target.value)} 
+          aria-label={labels.product}
+        >
+          <option value="" disabled className="text-white/40 bg-[#1B1B1D]">
+            {labels.product}
+          </option>
+          {productsList.map((item) => (
+            <option 
+              key={item.value} 
+              value={item.value} 
+              className="text-white bg-[#1B1B1D]"
+            >
+              {item.label[locale]}
+            </option>
+          ))}
+        </select>
+
         <input className={inputClass} value={form.quantity} onChange={(e) => update("quantity", e.target.value)} placeholder={labels.quantity} aria-label={labels.quantity} />
         <textarea
           className={`${inputClass} min-h-28 resize-y md:col-span-2`}

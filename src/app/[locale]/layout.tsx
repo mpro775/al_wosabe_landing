@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import "@/app/globals.css";
@@ -54,13 +53,7 @@ const alexandria = localFont({
       style: "normal",
     },
   ],
-  variable: "--font-arabic",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-english",
+  variable: "--font-alexandria",
   display: "swap",
 });
 
@@ -78,7 +71,7 @@ export async function generateMetadata({
   const meta = siteMeta[locale];
 
   return {
-    metadataBase: new URL("https://al-wosabe.example"),
+    metadataBase: new URL("https://www.alwosabe.com"),
     title: meta.title,
     description: meta.description,
     keywords: meta.keywords,
@@ -87,6 +80,7 @@ export async function generateMetadata({
       languages: {
         ar: "/ar",
         en: "/en",
+        "x-default": "/",
       },
     },
     openGraph: {
@@ -94,7 +88,20 @@ export async function generateMetadata({
       description: meta.description,
       locale: locale === "ar" ? "ar_YE" : "en_US",
       type: "website",
-      images: [{ url: "/logo.png", width: 2048, height: 531, alt: meta.logoAlt }],
+      images: [
+        {
+          url: "/images/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: meta.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.description,
+      images: ["/images/og-image.png"],
     },
   };
 }
@@ -117,9 +124,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={localeDirection(locale)}>
       <body
-        className={`${alexandria.variable} ${inter.variable} ${
-          locale === "ar" ? "font-[var(--font-arabic)]" : "font-[var(--font-english)]"
-        } antialiased`}
+        className={`${alexandria.variable} font-[var(--font-alexandria)] antialiased`}
       >
         {children}
       </body>

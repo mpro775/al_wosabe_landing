@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Building2, CheckCircle2, MapPin, Truck } from "lucide-react";
 import { Header } from "@/components/layout/Header";
@@ -13,7 +16,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { QuoteForm } from "@/components/sections/QuoteForm";
 import {
   branches,
-  brandPlaceholders,
+  brands,
   company,
   content,
   products,
@@ -34,6 +37,7 @@ export function LandingPage({ locale }: { locale: Locale }) {
         <Hero locale={locale} years={years} />
         <Stats locale={locale} years={years} />
         <About locale={locale} />
+        <Operations locale={locale} />
         <Products locale={locale} />
         <Brands locale={locale} />
         <Distribution locale={locale} />
@@ -58,90 +62,152 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#1B1B1D] pt-28 text-white">
-      {/* Background layers */}
-      <div className="industrial-grid absolute inset-0 opacity-60" />
-      <div className="route-lines absolute inset-0 opacity-80" />
-      <div className="hero-gradient-overlay absolute inset-0" />
-      <div className="tire-track absolute -end-20 top-16 h-[520px] w-40 rotate-12 opacity-30" />
+      {/* Ambient warehouse background image */}
+      <div className="absolute inset-0 z-0 opacity-[0.06] filter grayscale pointer-events-none">
+        <Image
+          src="/images/hero/hero-warehouse.webp"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+      </div>
 
-      {/* Floating shapes */}
-      <div className="floating-shape floating-shape-1" />
-      <div className="floating-shape floating-shape-2" />
-      <div className="floating-shape floating-shape-3" />
+      {/* SVG Background Layers */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-1">
+        {/* Tire track svg layer */}
+        <div 
+          className="absolute -end-10 top-0 h-full w-[350px] opacity-[0.03] mix-blend-overlay rotate-6 pointer-events-none bg-repeat-y"
+          style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: 'contain' }}
+        />
+        {/* Route lines svg layer */}
+        <div 
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+      </div>
 
-      <Container className="relative grid min-h-[calc(100vh-7rem)] items-center gap-12 py-14 lg:grid-cols-[1.05fr_0.95fr]">
+      {/* Grid Pattern and Overlay */}
+      <div className="industrial-grid absolute inset-0 opacity-40 z-1 pointer-events-none" />
+      <div className="hero-gradient-overlay absolute inset-0 z-1 pointer-events-none" />
+
+      <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-12 py-14 lg:grid-cols-[1.15fr_0.85fr]">
         <Reveal>
-          <div>
-            {/* Eyebrow badge with shimmer */}
-            <div className="relative mb-5 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#FF8A00]/30 bg-[#FF8A00]/8 px-4 py-2 text-sm font-extrabold text-[#FFC247]">
-              <div className="shimmer pointer-events-none absolute inset-0" />
-              <CheckCircle2 size={16} aria-hidden="true" className="relative" />
+          <div className="flex flex-col items-start">
+            {/* Small floating logo badge instead of massive hero card */}
+            <div className="relative mb-6 flex items-center gap-3 rounded-xl border border-white/10 bg-black/45 p-2 pe-3.5 backdrop-blur-md">
+              <div className="relative flex h-9 w-14 items-center justify-center overflow-hidden rounded bg-white p-1">
+                <Image
+                  src={company.logo}
+                  alt=""
+                  width={100}
+                  height={28}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div className="flex flex-col text-start">
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF8A00]">
+                  {locale === "ar" ? "الوصابي للتجارة" : "Al-Wosabe Trading"}
+                </span>
+                <span className="text-[9px] font-bold text-white/50">
+                  {locale === "ar" ? "تأسست عام 1986" : "Since 1986"}
+                </span>
+              </div>
+            </div>
+
+            {/* Hero Eyebrow */}
+            <div className="relative mb-5 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#FF8A00]/30 bg-[#FF8A00]/8 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-[#FFC247]">
               <span className="relative">{hero.eyebrow}</span>
             </div>
 
-            {/* Title with gradient text */}
-            <h1 className="text-gradient max-w-4xl text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">
+            {/* Main Title */}
+            <h1 className="text-gradient text-4xl font-black leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-start">
               {hero.title}
             </h1>
 
-            {/* Glowing separator */}
+            {/* Separator */}
             <div
               className="my-5 h-1 w-20 rounded-full"
               style={{
-                background: "linear-gradient(90deg, #ff8a00, #ffc247)",
+                background: "gradient-to-r from-[#ff8a00] to-[#ffc247]",
+                backgroundImage: "linear-gradient(90deg, #ff8a00, #ffc247)",
                 boxShadow: "0 0 15px rgba(255, 138, 0, 0.4)",
               }}
             />
 
-            <p className="max-w-2xl text-2xl font-extrabold leading-tight text-[#FFC247]">{hero.subtitle}</p>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-white/65 sm:text-lg">{hero.description}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="#quote">
+            <p className="text-xl font-extrabold leading-tight text-[#FFC247] text-start">{hero.subtitle}</p>
+            <p className="mt-4 max-w-xl text-base leading-8 text-white/65 text-start">{hero.description}</p>
+            
+            {/* CTAs */}
+            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row w-full sm:w-auto">
+              <Button href="#quote" className="w-full sm:w-auto">
                 {hero.primary}
                 <ArrowUpRight aria-hidden="true" size={18} />
               </Button>
-              <Button href="#products" variant="secondary">
+              <Button href="#products" variant="secondary" className="w-full sm:w-auto">
                 {hero.secondary}
               </Button>
             </div>
+
+            {/* Quick stats horizontal list */}
+            <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-4 border-t border-white/8 pt-8 w-full sm:grid-cols-4">
+              <QuickStatItem value="Since 1986" label={locale === "ar" ? "عراقة وتأسيس" : "Established"} />
+              <QuickStatItem value="20+ Trucks" label={locale === "ar" ? "شاحنة توزيع" : "Active Fleet"} />
+              <QuickStatItem value="7+ Branches" label={locale === "ar" ? "فروع رئيسية" : "Branch Cities"} />
+              <QuickStatItem value="Nationwide" label={locale === "ar" ? "توزيع الجمهورية" : "Distribution"} />
+            </div>
           </div>
         </Reveal>
+
         <Reveal delay={0.12} direction="left">
-          <div className="relative">
-            {/* Enhanced glow behind card */}
+          <div className="relative w-full">
+            {/* Glowing backdrop elements */}
             <div
-              className="absolute -inset-6 skew-x-[-8deg] rounded-2xl opacity-60 blur-3xl"
-              style={{ background: "radial-gradient(ellipse, rgba(255, 138, 0, 0.2), transparent)" }}
+              className="absolute -inset-10 skew-x-[-6deg] rounded-3xl opacity-40 blur-3xl pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.25) 0%, transparent 70%)" }}
             />
-            <div className="relative overflow-hidden rounded-xl border border-white/12 bg-white/6 p-5 shadow-2xl backdrop-blur-xl">
-              {/* Gradient top accent */}
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-                style={{ background: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
-              />
 
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <span className="rounded-full bg-gradient-to-r from-[#FF8A00] to-[#E87500] px-4 py-2 text-sm font-black text-[#1B1B1D] shadow-[0_4px_15px_rgba(255,138,0,0.3)]">
-                  {hero.badge}
-                </span>
-                <span className="text-sm font-bold text-white/40">+{years}</span>
-              </div>
-
-              <div className="flex aspect-[1.16] items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-[#111113] to-[#0a0a0c] p-8">
+            {/* Main Image Container (Trucks) */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/12 bg-white/5 p-2 shadow-2xl backdrop-blur-sm">
+              <div className="relative h-full w-full overflow-hidden rounded-xl bg-neutral-900">
                 <Image
-                  src={company.logo}
-                  alt={locale === "ar" ? "شعار الوصابي للتجارة" : "Al-Wosabe for Trading logo"}
-                  width={700}
-                  height={182}
+                  src="/images/hero/hero-trucks.webp"
+                  alt={locale === "ar" ? "شاحنات توزيع الوصابي للتجارة" : "Al-Wosabe for Trading distribution fleet"}
+                  fill
                   priority
-                  className="w-full object-contain drop-shadow-[0_0_30px_rgba(255,138,0,0.15)]"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
                 />
+                {/* Subtle gradient overlay to tie image to dark background */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1B1B1D]/90 via-transparent to-black/30" />
               </div>
+            </div>
 
-              <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-                <MiniStat value="7+" label={locale === "ar" ? "مدن" : "Cities"} />
-                <MiniStat value="20+" label={locale === "ar" ? "شاحنة" : "Trucks"} />
-                <MiniStat value="1986" label={locale === "ar" ? "تأسيس" : "Founded"} />
+            {/* Secondary Image Card (Warehouse) - Overlapping */}
+            <div className="absolute -bottom-10 -start-6 w-[55%] aspect-[4/3] rounded-xl border border-white/15 bg-[#1B1B1D]/90 p-1.5 shadow-2xl transition-transform duration-500 hover:scale-105 md:-start-10">
+              <div className="relative h-full w-full overflow-hidden rounded-lg bg-neutral-950">
+                <Image
+                  src="/images/hero/hero-warehouse.webp"
+                  alt={locale === "ar" ? "مستودعات الوصابي للتجارة" : "Al-Wosabe for Trading warehouse"}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 20vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <span className="absolute bottom-2.5 start-3 text-[10px] font-black tracking-wider text-[#FFC247] uppercase bg-black/60 px-2 py-0.5 rounded">
+                  {locale === "ar" ? "المستودعات والمخازن" : "Logistics & Storage"}
+                </span>
+              </div>
+            </div>
+
+            {/* Floating interactive badge */}
+            <div className="absolute -top-6 -end-4 flex items-center gap-3 rounded-xl border border-white/10 bg-[#141416]/90 p-3 shadow-xl backdrop-blur-md">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FFC247]">
+                <Truck size={20} />
+              </div>
+              <div className="text-start">
+                <span className="block text-xs font-black text-white">{locale === "ar" ? "أسطول نشط" : "Active Fleet"}</span>
+                <span className="block text-[10px] font-bold text-white/50">{locale === "ar" ? "توصيل لكافة المحافظات" : "Nationwide Delivery"}</span>
               </div>
             </div>
           </div>
@@ -149,16 +215,16 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
       </Container>
 
       {/* Bottom fade */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F7F4] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F7F4] to-transparent z-2" />
     </section>
   );
 }
 
-function MiniStat({ value, label }: { value: string; label: string }) {
+function QuickStatItem({ value, label }: { value: string; label: string }) {
   return (
-    <div className="rounded-lg border border-white/8 bg-white/5 p-3 transition-all duration-300 hover:border-[#FF8A00]/30 hover:bg-white/8">
-      <strong className="text-gradient block text-xl font-black">{value}</strong>
-      <span className="text-xs font-bold text-white/45">{label}</span>
+    <div className="flex flex-col text-start">
+      <strong className="text-xl font-black text-[#FF8A00] sm:text-2xl">{value}</strong>
+      <span className="mt-1 text-[10px] font-black uppercase tracking-wider text-white/40">{label}</span>
     </div>
   );
 }
@@ -167,8 +233,13 @@ function Stats({ locale, years }: { locale: Locale; years: number }) {
   const stats = content[locale].stats;
 
   return (
-    <section className="bg-[#F7F7F4] py-18">
-      <Container>
+    <section className="relative overflow-hidden bg-[#F7F7F4] py-18">
+      {/* Route lines background graphic */}
+      <div 
+        className="absolute inset-0 opacity-[0.02] pointer-events-none select-none"
+        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      />
+      <Container className="relative z-10">
         <SectionHeading eyebrow={stats.eyebrow} title={stats.title} align="center" />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {stats.items.map(([value, label], index) => {
@@ -243,6 +314,127 @@ function About({ locale }: { locale: Locale }) {
   );
 }
 
+function Operations({ locale }: { locale: Locale }) {
+  const isAr = locale === "ar";
+  
+  return (
+    <section className="relative overflow-hidden bg-[#F7F7F4] py-22">
+      {/* Background graphic track */}
+      <div 
+        className="absolute inset-y-0 start-0 w-1/3 opacity-[0.02] pointer-events-none select-none"
+        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      />
+
+      <Container className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        {/* Image / Stats Column */}
+        <Reveal direction="right">
+          <div className="relative">
+            {/* Glow effect behind image */}
+            <div 
+              className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(255, 194, 71, 0.12) 0%, transparent 70%)" }}
+            />
+
+            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-neutral-950">
+                <Image
+                  src="/images/operations/warehouse.webp"
+                  alt={isAr ? "مستودعات الوصابي للتجارة" : "Al-Wosabe for Trading Warehouse"}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 pointer-events-none" />
+
+                {/* Overlapping Route Lines for theme coherence */}
+                <div 
+                  className="absolute inset-0 z-1 opacity-15 pointer-events-none mix-blend-screen"
+                  style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+                />
+
+                {/* Floating labels over image */}
+                {/* 1. Since 1986 */}
+                <div className="absolute top-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md">
+                  <span className="h-2 w-2 rounded-full bg-[#FF8A00]" />
+                  <span className="text-[10px] font-black text-white uppercase tracking-wider">
+                    {isAr ? "تخزين آمن منذ 1986" : "Secure Storage Since 1986"}
+                  </span>
+                </div>
+
+                {/* 2. Organized Storage */}
+                <div className="absolute top-1/2 -translate-y-1/2 end-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md">
+                  <span className="h-2 w-2 rounded-full bg-[#FFC247]" />
+                  <span className="text-[10px] font-black text-[#FFC247] uppercase tracking-wider">
+                    {isAr ? "مخزون منظم وضخم" : "Organized Inventory"}
+                  </span>
+                </div>
+
+                {/* 3. Supply & Distribution */}
+                <div className="absolute bottom-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md">
+                  <span className="h-2 w-2 rounded-full bg-green-400" />
+                  <span className="text-[10px] font-black text-white uppercase tracking-wider">
+                    {isAr ? "سلاسل إمداد وتوزيع مستمر" : "Continuous Supply Chains"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Text / Info Column */}
+        <Reveal>
+          <div className="text-start">
+            <SectionHeading 
+              eyebrow={isAr ? "الجاهزية التشغيلية" : "Operational Strength"} 
+              title={isAr ? "جاهزية تشغيلية ومستودعات منظمة" : "Organized Storage & Distribution Readiness"} 
+              description={
+                isAr 
+                  ? "نعتمد في الوصابي للتجارة على بنية تحتية قوية لإدارة المخزون والتوريد، تضمن تلبية احتياجات التجار والعملاء في كافة الأوقات وبجاهزية كاملة."
+                  : "At Al-Wosabe for Trading, we rely on a robust supply and inventory management infrastructure to serve our business partners efficiently and meet demand at all times."
+              }
+            />
+
+            <div className="mt-8 space-y-4">
+              <div className="flex gap-4">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-black">
+                  1
+                </span>
+                <div>
+                  <h4 className="text-base font-black text-[#1B1B1D]">
+                    {isAr ? "مستودعات بمواصفات عالية" : "High-Capacity Warehouses"}
+                  </h4>
+                  <p className="mt-1 text-sm leading-6 text-[#343438]/70">
+                    {isAr
+                      ? "مستودعاتنا مجهزة لتخزين الإطارات والبطاريات والزيوت بطرق منظمة تحافظ على سلامة وجودة المنتجات وتسهل عمليات الشحن السريع."
+                      : "Our storage spaces are tailored to house tires, batteries, and lubricants systematically, preserving product quality and facilitating rapid dispatch."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-black">
+                  2
+                </span>
+                <div>
+                  <h4 className="text-base font-black text-[#1B1B1D]">
+                    {isAr ? "إدارة ذكية للمخزون" : "Smart Inventory Management"}
+                  </h4>
+                  <p className="mt-1 text-sm leading-6 text-[#343438]/70">
+                    {isAr
+                      ? "نطبق أنظمة دقيقة لمراقبة المخزون تضمن توفر الفئات المطلوبة بشكل دائم وسد النقص الفوري في نقاط التوزيع المختلفة."
+                      : "We employ precise inventory tracking systems to maintain stock levels, avoiding supply bottlenecks and ensuring continuous availability."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </Container>
+    </section>
+  );
+}
+
 function Products({ locale }: { locale: Locale }) {
   const copy = content[locale].products;
 
@@ -251,9 +443,14 @@ function Products({ locale }: { locale: Locale }) {
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {products[locale].map(([title, description, Icon], index) => (
+          {products[locale].map(({ title, description, image, icon }, index) => (
             <Reveal key={title} delay={index * 0.05}>
-              <ProductCategoryCard title={title} description={description} Icon={Icon} />
+              <ProductCategoryCard
+                title={title}
+                description={description}
+                image={image}
+                icon={icon}
+              />
             </Reveal>
           ))}
         </div>
@@ -275,9 +472,9 @@ function Brands({ locale }: { locale: Locale }) {
           </p>
         </div>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {brandPlaceholders.map((brand, index) => (
-            <Reveal key={brand} delay={index * 0.04}>
-              <BrandLogoCard label={brand} />
+          {brands.map((brand, index) => (
+            <Reveal key={brand.name} delay={index * 0.04}>
+              <BrandLogoCard name={brand.name} logo={brand.logo} />
             </Reveal>
           ))}
         </div>
@@ -287,6 +484,7 @@ function Brands({ locale }: { locale: Locale }) {
 }
 
 function Distribution({ locale }: { locale: Locale }) {
+  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const copy = content[locale].distribution;
 
   return (
@@ -299,53 +497,153 @@ function Distribution({ locale }: { locale: Locale }) {
         <Reveal>
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} dark />
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {branches.map((branch, index) => (
+            {branches.map((branch) => (
               <div
                 key={branch.city.en}
-                className="group rounded-lg border border-white/8 bg-white/5 px-4 py-3.5 text-sm font-bold text-white/65 backdrop-blur transition-all duration-300 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
+                onMouseEnter={() => setHoveredCity(branch.city.en)}
+                onMouseLeave={() => setHoveredCity(null)}
+                className={`group rounded-lg border px-4 py-3.5 text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer ${
+                  hoveredCity === branch.city.en
+                    ? "border-[#FF8A00]/50 bg-[#FF8A00]/12 text-white"
+                    : "border-white/8 bg-white/5 text-white/65 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
+                }`}
               >
-                <MapPin className="me-2 inline text-[#FF8A00] transition-transform duration-300 group-hover:scale-110" size={16} aria-hidden="true" />
+                <MapPin 
+                  className={`me-2 inline transition-all duration-300 ${
+                    hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
+                  }`} 
+                  size={16} 
+                  aria-hidden="true" 
+                />
                 {branch.city[locale]}
               </div>
             ))}
           </div>
         </Reveal>
         <Reveal direction="left">
-          <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
+          <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#141416]/90 p-4 shadow-2xl backdrop-blur-md">
             {/* Gradient top line */}
             <div
               className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
               style={{ background: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
             />
 
-            <div className="route-lines rounded-lg p-2">
-              <svg viewBox="0 0 100 100" role="img" aria-label={copy.title} className="h-auto w-full">
+            {/* Map Container */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+              {/* Yemen map background image */}
+              <div className="absolute inset-0 z-0 opacity-40 pointer-events-none p-4">
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/graphics/yemen-map.svg"
+                    alt="Yemen Map"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              
+              {/* Route Lines overlay */}
+              <div 
+                className="absolute inset-0 z-1 opacity-[0.15] pointer-events-none mix-blend-screen"
+                style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+              />
+
+              {/* Interactive SVG overlay */}
+              <svg 
+                viewBox="0 0 100 100" 
+                className="absolute inset-0 z-10 w-full h-full select-none"
+              >
                 <defs>
-                  <linearGradient id="route-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="map-route-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#FF8A00" />
                     <stop offset="100%" stopColor="#FFC247" />
                   </linearGradient>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                  <filter id="glow-map">
+                    <feGaussianBlur stdDeviation="1.2" result="coloredBlur" />
                     <feMerge>
                       <feMergeNode in="coloredBlur" />
                       <feMergeNode in="SourceGraphic" />
                     </feMerge>
                   </filter>
                 </defs>
-                <path d="M31 13 L55 9 L79 23 L88 45 L82 70 L63 86 L43 82 L27 68 L18 46 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
-                <path d="M48 33 C40 40, 38 51, 42 66 M48 33 C60 40, 70 50, 78 62 M48 33 C42 37, 38 39, 34 44 M42 66 C49 71, 51 75, 54 78" fill="none" stroke="url(#route-gradient)" strokeWidth="1.1" strokeDasharray="4 3" />
-                {branches.map((branch) => (
-                  <g key={branch.city.en}>
-                    {/* Outer pulse ring */}
-                    <circle cx={branch.x} cy={branch.y} r="5" fill="none" stroke="#FF8A00" strokeOpacity="0.15" className="map-pulse" />
-                    <circle cx={branch.x} cy={branch.y} r="3.5" fill="none" stroke="#FF8A00" strokeOpacity="0.3" />
-                    <circle cx={branch.x} cy={branch.y} r="2" fill="#FFC247" filter="url(#glow)" />
-                    <text x={branch.x + 3.5} y={branch.y - 2.5} fill="rgba(255,255,255,0.72)" fontSize="3" fontWeight="700">
-                      {branch.city[locale]}
-                    </text>
-                  </g>
-                ))}
+
+                {/* Route lines paths */}
+                <path 
+                  d="M48 33 C40 40, 38 51, 42 66 M48 33 C60 40, 70 50, 78 62 M48 33 C42 37, 38 39, 34 44 M42 66 C49 71, 51 75, 54 78" 
+                  fill="none" 
+                  stroke="url(#map-route-gradient)" 
+                  strokeWidth="1.2" 
+                  strokeDasharray="4 3" 
+                  className="opacity-50"
+                />
+
+                {branches.map((branch) => {
+                  const isHovered = hoveredCity === branch.city.en;
+                  return (
+                    <g 
+                      key={branch.city.en}
+                      onMouseEnter={() => setHoveredCity(branch.city.en)}
+                      onMouseLeave={() => setHoveredCity(null)}
+                      className="cursor-pointer"
+                    >
+                      {/* Outer pulse ring */}
+                      <circle 
+                        cx={branch.x} 
+                        cy={branch.y} 
+                        r={isHovered ? "6.5" : "4.5"} 
+                        fill="none" 
+                        stroke="#FF8A00" 
+                        strokeOpacity={isHovered ? "0.6" : "0.2"} 
+                        className="transition-all duration-300"
+                        style={{ transformOrigin: `${branch.x}% ${branch.y}%` }}
+                      />
+                      <circle 
+                        cx={branch.x} 
+                        cy={branch.y} 
+                        r={isHovered ? "3.2" : "2.2"} 
+                        fill={isHovered ? "#FFC247" : "#FF8A00"} 
+                        filter={isHovered ? "url(#glow-map)" : ""}
+                        className="transition-all duration-300"
+                      />
+                      {/* Label tooltip */}
+                      {isHovered && (
+                        <g>
+                          <rect
+                            x={branch.x + 3.5}
+                            y={branch.y - 8.5}
+                            width={locale === "ar" ? "20" : "24"}
+                            height="7"
+                            rx="1.5"
+                            fill="rgba(20,20,22,0.95)"
+                            stroke="rgba(255,138,0,0.4)"
+                            strokeWidth="0.5"
+                          />
+                          <text 
+                            x={branch.x + (locale === "ar" ? 13.5 : 15.5)} 
+                            y={branch.y - 3.5} 
+                            fill="#FFFFFF" 
+                            fontSize="4.5" 
+                            fontWeight="900"
+                            textAnchor="middle"
+                          >
+                            {branch.city[locale]}
+                          </text>
+                        </g>
+                      )}
+                      {!isHovered && (
+                        <text 
+                          x={branch.x + 3.5} 
+                          y={branch.y - 1.5} 
+                          fill="rgba(255,255,255,0.72)" 
+                          fontSize="3.5" 
+                          fontWeight="700"
+                        >
+                          {branch.city[locale]}
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
               </svg>
             </div>
             <p className="mt-4 text-sm font-semibold leading-7 text-white/45">{copy.mapNote}</p>
@@ -360,45 +658,95 @@ function Fleet({ locale }: { locale: Locale }) {
   const copy = content[locale].fleet;
 
   return (
-    <section className="bg-[#F7F7F4] py-22">
-      <Container className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-        <Reveal direction="right">
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] p-8 text-white shadow-2xl">
-            {/* Gradient accent */}
-            <div
-              className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-              style={{ background: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
-            />
-            {/* Corner glow */}
-            <div className="pointer-events-none absolute -top-10 -end-10 h-32 w-32 rounded-full bg-[#FF8A00]/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-white py-24">
+      {/* Subtle route line background graphic */}
+      <div 
+        className="absolute inset-y-0 end-0 w-1/3 opacity-[0.03] pointer-events-none select-none"
+        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      />
 
-            <div className="relative">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00]/15 to-[#FFC247]/10 text-[#FFC247]">
-                <Truck size={34} aria-hidden="true" />
+      {/* Tire track background graphic */}
+      <div 
+        className="absolute inset-0 opacity-[0.015] pointer-events-none select-none mix-blend-overlay"
+        style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
+      />
+
+      <Container className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        {/* Text Column */}
+        <Reveal>
+          <div className="text-start">
+            <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
+            
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
+                <strong className="block text-2xl font-black text-[#FF8A00]">
+                  {locale === "ar" ? "تغطية جغرافية كاملة" : "Complete Coverage"}
+                </strong>
+                <p className="mt-2 text-sm leading-6 text-[#343438]/70">
+                  {locale === "ar" 
+                    ? "نصل إلى كافة المدن والمحافظات الرئيسية من خلال شبكة توريد متكاملة تضمن استقرار الإمداد للشركاء والتجار."
+                    : "We reach all major cities and governorates via an integrated supply network ensuring stability for traders and partners."}
+                </p>
               </div>
-              <div className="mt-6 text-7xl font-black">
-                <span className="text-gradient">
-                  <AnimatedCounter value={20} suffix="+" />
-                </span>
+
+              <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
+                <strong className="block text-2xl font-black text-[#FF8A00]">
+                  {locale === "ar" ? "جاهزية تشغيلية عالية" : "High Readiness"}
+                </strong>
+                <p className="mt-2 text-sm leading-6 text-[#343438]/70">
+                  {locale === "ar"
+                    ? "أسطولنا مجهز ومعد لنقل وتوزيع المنتجات الثقيلة والمختلفة تحت شتى الظروف الجغرافية والطرق الصعبة بكفاءة تامة."
+                    : "Our fleet is equipped and ready to transport heavy and diverse products under various terrains and difficult road conditions."}
+                </p>
               </div>
-              <p className="mt-4 text-lg font-bold text-white/55">{locale === "ar" ? "شاحنة توزيع" : "Distribution trucks"}</p>
-              {/* Mini progress bar */}
-              <div className="mt-6 h-1 w-full overflow-hidden rounded-full bg-white/8">
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: "85%",
-                    background: "linear-gradient(90deg, #ff8a00, #ffc247)",
-                    boxShadow: "0 0 10px rgba(255, 138, 0, 0.4)",
-                  }}
-                />
-              </div>
-              <p className="mt-2 text-xs font-bold text-white/30">{locale === "ar" ? "تغطية الجمهورية" : "Nationwide coverage"}</p>
             </div>
           </div>
         </Reveal>
-        <Reveal>
-          <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
+
+        {/* Image / Proof Column */}
+        <Reveal delay={0.12} direction="left">
+          <div className="relative">
+            {/* Glowing accent border background */}
+            <div 
+              className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
+            />
+            
+            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-neutral-950">
+                <Image
+                  src="/images/operations/fleet.webp"
+                  alt={locale === "ar" ? "أسطول شاحنات الوصابي للتوزيع" : "Al-Wosabe distribution trucks fleet"}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+                {/* Charcoal Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40 pointer-events-none" />
+
+                {/* Overlapping Route Lines for theme coherence */}
+                <div 
+                  className="absolute inset-0 z-1 opacity-20 pointer-events-none mix-blend-screen"
+                  style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+                />
+
+                {/* Big Badge Overlay (20+ Distribution Trucks) */}
+                <div className="absolute bottom-6 start-6 flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 p-4 shadow-xl backdrop-blur-md">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
+                    <Truck size={28} />
+                  </div>
+                  <div className="text-start">
+                    <span className="block text-2xl font-black text-white">
+                      <AnimatedCounter value={20} suffix="+" />
+                    </span>
+                    <span className="block text-xs font-bold text-[#FFC247] uppercase tracking-wider">
+                      {locale === "ar" ? "شاحنة توزيع نشطة" : "Active Trucks"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </Reveal>
       </Container>
     </section>
@@ -415,7 +763,12 @@ function Branches({ locale }: { locale: Locale }) {
         <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {branches.map((branch, index) => (
             <Reveal key={branch.city.en} delay={index * 0.04}>
-              <BranchCard city={branch.city[locale]} phones={branch.phones} callLabel={copy.call} />
+              <BranchCard
+                city={branch.city[locale]}
+                phones={branch.phones}
+                callLabel={copy.call}
+                locale={locale}
+              />
             </Reveal>
           ))}
         </div>
@@ -462,41 +815,91 @@ function Values({ locale }: { locale: Locale }) {
 
 function Team({ locale }: { locale: Locale }) {
   const copy = content[locale].team;
+  const isAr = locale === "ar";
 
   const teamItems = [
     {
+      title: isAr ? "خبرة السوق المحلي" : "Market Experience",
+      description: isAr 
+        ? "فريق متمكن بخبرة عريقة تتجاوز 35 عاماً في فهم احتياجات السوق اليمني لقطع المركبات والدراجات."
+        : "An expert team with over 35 years of experience in understanding Yemen's vehicle and motorcycle market.",
       Icon: Building2,
-      label: locale === "ar" ? "خبرة سوق محلي" : "Local market experience",
     },
     {
+      title: isAr ? "تنسيق العمليات واللوجستيات" : "Operations Coordination",
+      description: isAr
+        ? "نعمل بتزامن كامل لإدارة النقل والتوزيع وضمان وصول الشحنات بكفاءة تامة لكافة الفروع والموزعين."
+        : "We operate in sync to manage dispatch and distribution, ensuring deliveries reach all branches and distributors.",
       Icon: Truck,
-      label: locale === "ar" ? "تشغيل وتوزيع" : "Operations and distribution",
     },
     {
+      title: isAr ? "خدمة العملاء والتجار" : "Customer Service",
+      description: isAr
+        ? "نوفر قنوات تواصل مباشرة وسريعة لتلبية طلبات عروض الأسعار والتجهيز الفوري للمعاملات التجارية."
+        : "We offer direct, fast channels to fulfill quote requests and process commercial orders promptly.",
       Icon: CheckCircle2,
-      label: locale === "ar" ? "تعامل تجاري واضح" : "Clear business handling",
     },
   ];
 
   return (
-    <section className="bg-white py-22">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
-        <Reveal>
-          <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-        </Reveal>
-        <Reveal direction="left">
-          <div className="grid gap-4">
-            {teamItems.map(({ Icon, label }, index) => (
-              <div
-                key={index}
-                className="group flex items-center gap-4 rounded-xl border border-black/6 bg-[#F7F7F4] p-5 transition-all duration-300 hover:border-[#FF8A00]/20 hover:bg-gradient-to-r hover:from-[#FF8A00]/5 hover:to-transparent hover:shadow-[0_8px_24px_rgba(255,138,0,0.06)]"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#2a2a2e] text-[#FFC247] shadow-lg transition-all duration-300 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-[#1B1B1D] group-hover:shadow-[0_4px_15px_rgba(255,138,0,0.3)]">
-                  <Icon aria-hidden="true" />
-                </span>
-                <span className="font-black text-[#1B1B1D]">{label}</span>
+    <section className="relative overflow-hidden bg-white py-24">
+      <Container className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        {/* Left: Image Card */}
+        <Reveal direction="right">
+          <div className="relative">
+            {/* Ambient blur */}
+            <div 
+              className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
+            />
+            
+            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-neutral-950">
+                <Image
+                  src="/images/operations/team.webp"
+                  alt={isAr ? "فريق عمل الوصابي للتجارة" : "Al-Wosabe for Trading Team"}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+                
+                {/* Floating label */}
+                <div className="absolute bottom-4 start-4 rounded-lg border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md">
+                  <span className="text-xs font-black text-[#FFC247] uppercase tracking-wider">
+                    {isAr ? "فريق عمل متخصص" : "Professional Team"}
+                  </span>
+                </div>
               </div>
-            ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Right: Content & Strengths */}
+        <Reveal>
+          <div className="text-start">
+            <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
+            
+            <div className="mt-8 space-y-5">
+              {teamItems.map(({ title, description, Icon }, index) => (
+                <div 
+                  key={index} 
+                  className="group flex gap-4 rounded-xl border border-black/5 bg-[#F7F7F4] p-5 transition-all duration-300 hover:border-[#FF8A00]/20 hover:bg-gradient-to-r hover:from-[#FF8A00]/5 hover:to-transparent"
+                >
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#2a2a2e] text-[#FFC247] shadow-lg transition-all duration-300 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-[#1B1B1D]">
+                    <Icon aria-hidden="true" size={22} />
+                  </span>
+                  <div>
+                    <h4 className="text-base font-black text-[#1B1B1D] transition-colors duration-300 group-hover:text-[#E87500]">
+                      {title}
+                    </h4>
+                    <p className="mt-1 text-sm leading-6 text-[#343438]/70">
+                      {description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
       </Container>
@@ -510,7 +913,19 @@ function Quote({ locale }: { locale: Locale }) {
 
   return (
     <section id="quote" className="relative overflow-hidden bg-[#1B1B1D] py-22 text-white">
-      <div className="route-lines absolute inset-0" />
+      {/* Background SVG graphics */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+        {/* Tire track */}
+        <div 
+          className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
+          style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
+        />
+        {/* Route lines */}
+        <div 
+          className="absolute inset-0 opacity-[0.08] pointer-events-none"
+          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+      </div>
       {/* Background glows */}
       <div className="pointer-events-none absolute -start-40 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#FF8A00]/5 blur-3xl" />
       <div className="pointer-events-none absolute -end-40 top-1/4 h-60 w-60 rounded-full bg-[#FFC247]/5 blur-3xl" />

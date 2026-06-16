@@ -60,7 +60,7 @@ export const navigation = {
     ["العلامات التجارية", "brands"],
     ["شبكة التوزيع", "distribution"],
     ["الفروع", "branches"],
-    ["تواصل معنا", "contact"],
+    ["تواصل معنا", "quote"],
   ],
   en: [
     ["Home", "home"],
@@ -69,7 +69,7 @@ export const navigation = {
     ["Brands", "brands"],
     ["Distribution", "distribution"],
     ["Branches", "branches"],
-    ["Contact", "contact"],
+    ["Contact", "quote"],
   ],
 } satisfies Record<Locale, [string, string][]>;
 
@@ -282,22 +282,85 @@ export const content = {
 
 export const products = {
   ar: [
-    ["الإطارات", "مجموعة متنوعة من الإطارات المناسبة للاستخدام التجاري والشخصي، من علامات تلبي احتياجات السوق المحلي.", CircleGauge],
-    ["البطاريات", "بطاريات موثوقة لمختلف الاستخدامات، مع تركيز على الجودة والاستمرارية والقيمة المناسبة.", BatteryCharging],
-    ["الزيوت ومواد التشحيم", "زيوت ومواد تشحيم تساعد على تحسين الأداء والحفاظ على كفاءة المركبات والمعدات.", Cog],
-    ["قطع غيار الدراجات النارية", "توريد قطع غيار للدراجات النارية بما يلبي احتياجات التجار والعملاء في السوق.", Wrench],
-    ["الإكسسوارات", "تشكيلة من الإكسسوارات والمنتجات المكملة لقطاع المركبات والدراجات.", PackageCheck],
-    ["الأدوات", "أدوات ومنتجات مساعدة تدعم احتياجات الورش والعملاء التجاريين.", BriefcaseBusiness],
+    {
+      title: "الإطارات",
+      description: "مجموعة متنوعة من الإطارات المناسبة للاستخدام التجاري والشخصي، من علامات تلبي احتياجات السوق المحلي.",
+      image: "/images/products/tires.webp",
+      icon: CircleGauge,
+    },
+    {
+      title: "البطاريات",
+      description: "بطاريات موثوقة لمختلف الاستخدامات، مع تركيز على الجودة والاستمرارية والقيمة المناسبة.",
+      image: "/images/products/batteries.webp",
+      icon: BatteryCharging,
+    },
+    {
+      title: "الزيوت ومواد التشحيم",
+      description: "زيوت ومواد تشحيم تساعد على تحسين الأداء والحفاظ على كفاءة المركبات والمعدات.",
+      image: "/images/products/lubricants.webp",
+      icon: Cog,
+    },
+    {
+      title: "قطع غيار الدراجات النارية",
+      description: "توريد قطع غيار للدراجات النارية بما يلبي احتياجات التجار والعملاء في السوق.",
+      image: "/images/products/motorcycle-parts.webp",
+      icon: Wrench,
+    },
+    {
+      title: "الإكسسوارات",
+      description: "تشكيلة من الإكسسوارات والمنتجات المكملة لقطاع المركبات والدراجات.",
+      image: "/images/products/accessories.webp",
+      icon: PackageCheck,
+    },
+    {
+      title: "الأدوات",
+      description: "أدوات ومنتجات مساعدة تدعم احتياجات الورش والعملاء التجاريين.",
+      image: "/images/products/tools.webp",
+      icon: BriefcaseBusiness,
+    },
   ],
   en: [
-    ["Tires", "A diverse tire range for commercial and personal use, from brands that serve local market needs.", CircleGauge],
-    ["Batteries", "Reliable batteries for different applications, focused on quality, continuity, and suitable value.", BatteryCharging],
-    ["Lubricants", "Oils and lubricants that support performance and help maintain vehicle and equipment efficiency.", Cog],
-    ["Motorcycle Spare Parts", "Supplying motorcycle spare parts for traders and customers across the market.", Wrench],
-    ["Accessories", "A selection of accessories and complementary products for vehicles and motorcycles.", PackageCheck],
-    ["Tools", "Tools and support products for workshops and commercial customers.", BriefcaseBusiness],
+    {
+      title: "Tires",
+      description: "A diverse tire range for commercial and personal use, from brands that serve local market needs.",
+      image: "/images/products/tires.webp",
+      icon: CircleGauge,
+    },
+    {
+      title: "Batteries",
+      description: "Reliable batteries for different applications, focused on quality, continuity, and suitable value.",
+      image: "/images/products/batteries.webp",
+      icon: BatteryCharging,
+    },
+    {
+      title: "Lubricants",
+      description: "Oils and lubricants that support performance and help maintain vehicle and equipment efficiency.",
+      image: "/images/products/lubricants.webp",
+      icon: Cog,
+    },
+    {
+      title: "Motorcycle Spare Parts",
+      description: "Supplying motorcycle spare parts for traders and customers across the market.",
+      image: "/images/products/motorcycle-parts.webp",
+      icon: Wrench,
+    },
+    {
+      title: "Accessories",
+      description: "A selection of accessories and complementary products for vehicles and motorcycles.",
+      image: "/images/products/accessories.webp",
+      icon: PackageCheck,
+    },
+    {
+      title: "Tools",
+      description: "Tools and support products for workshops and commercial customers.",
+      image: "/images/products/tools.webp",
+      icon: BriefcaseBusiness,
+    },
   ],
-} satisfies Record<Locale, [string, string, typeof CircleGauge][]>;
+} satisfies Record<
+  Locale,
+  { title: string; description: string; image: string; icon: typeof CircleGauge }[]
+>;
 
 export const branches = [
   { city: { ar: "صنعاء", en: "Sana'a" }, phones: ["00967 1 374552", "00967 1 374550", "00967 1 474400", "00967 1 474401", "00967 1 474402", "00967 1 474403", "00967 1 621452", "00967 1 621453", "00967 1 325777", "00967 1 324777"], x: 48, y: 33 },
@@ -309,7 +372,73 @@ export const branches = [
   { city: { ar: "تعز", en: "Taiz" }, phones: ["00967 777215023"], x: 42, y: 66 },
 ];
 
-export const brandPlaceholders = ["AWT-01", "AWT-02", "AWT-03", "AWT-04", "AWT-05", "AWT-06", "AWT-07", "AWT-08"];
+export const brands = [
+  {
+    name: "Gulf",
+    logo: "/images/brands/Gulf_logo.png",
+    category: "Lubricants",
+  },
+  {
+    name: "Westlake",
+    logo: "/images/brands/Westlake-Tires-logo.png",
+    category: "Tires",
+  },
+  {
+    name: "Goodride",
+    logo: "/images/brands/goodride.svg",
+    category: "Tires",
+  },
+  {
+    name: "Trazano",
+    logo: "/images/brands/trazano.png",
+    category: "Tires",
+  },
+  {
+    name: "Golden Crown",
+    logo: "/images/brands/golden-crown.png",
+    category: "Tires",
+  },
+  {
+    name: "Chaoyang",
+    logo: "/images/brands/chaoyang.png",
+    category: "Tires",
+  },
+  {
+    name: "Rongxing",
+    logo: "/images/brands/Rongxing.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "AlMaijd",
+    logo: "/images/brands/AlMaijd.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "BT Sporty",
+    logo: "/images/brands/BT-sporty.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "Metro",
+    logo: "/images/brands/metro.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "Thunder Lite",
+    logo: "/images/brands/thunder-lite.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "RX Sporty",
+    logo: "/images/brands/rx-sporty.png",
+    category: "Motorcycle Parts",
+  },
+  {
+    name: "Tochka",
+    logo: "/images/brands/tochka.png",
+    category: "Motorcycle Parts",
+  },
+];
 
 export const valueIcons = [ShieldCheck, MapPin, Truck];
 
