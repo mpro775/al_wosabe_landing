@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/Button";
 export function Header({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
   const otherLocale = locale === "ar" ? "en" : "ar";
   const labels = content[locale];
   const links = navigation[locale];
@@ -24,6 +25,43 @@ export function Header({ locale }: { locale: Locale }) {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const sectionIds = links.map(([_, id]) => id);
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      rootMargin: "-30% 0px -50% 0px",
+      threshold: 0.1,
+    });
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+        const lastId = sectionIds[sectionIds.length - 1];
+        if (lastId) {
+          setActiveSection(lastId);
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [links]);
 
   return (
     <header
@@ -62,15 +100,22 @@ export function Header({ locale }: { locale: Locale }) {
         </Link>
 
         <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main navigation">
-          {links.map(([label, id]) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className="animated-underline focus-ring relative rounded-md px-3.5 py-2 text-sm font-bold text-white/70 transition-all duration-300 hover:text-[#FFC247]"
-            >
-              {label}
-            </a>
-          ))}
+          {links.map(([label, id]) => {
+            const isActive = activeSection === id;
+            return (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={cn(
+                  "animated-underline focus-ring relative rounded-md px-3.5 py-2 text-sm font-bold transition-all duration-300",
+                  isActive ? "text-[#f59930] active" : "text-white hover:text-[#FFC247]"
+                )}
+                style={isActive ? { color: "#f59930" } : undefined}
+              >
+                {label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-2.5 lg:flex">
@@ -104,16 +149,23 @@ export function Header({ locale }: { locale: Locale }) {
       >
         <div className="overflow-hidden">
           <nav className="grid gap-1 px-5 py-5" aria-label="Mobile navigation">
-            {links.map(([label, id]) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                onClick={() => setOpen(false)}
-                className="focus-ring rounded-md px-3 py-3 text-base font-bold text-white/78 transition-all duration-300 hover:bg-[#FF8A00]/8 hover:text-[#FFC247]"
-              >
-                {label}
-              </a>
-            ))}
+            {links.map(([label, id]) => {
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "focus-ring rounded-md px-3 py-3 text-base font-bold transition-all duration-300 hover:bg-[#FF8A00]/8",
+                    isActive ? "text-[#f59930]" : "text-white hover:text-[#FFC247]"
+                  )}
+                  style={isActive ? { color: "#f59930" } : undefined}
+                >
+                  {label}
+                </a>
+              );
+            })}
             <div className="mt-3 grid grid-cols-2 gap-3">
               <Link
                 href={`/${otherLocale}`}

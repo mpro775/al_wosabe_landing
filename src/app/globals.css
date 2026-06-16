@@ -221,7 +221,8 @@ textarea {
   border-radius: 2px;
 }
 
-.animated-underline:hover::after {
+.animated-underline:hover::after,
+.animated-underline.active::after {
   width: 100%;
 }
 
