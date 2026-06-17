@@ -52,15 +52,13 @@ export function AnimatedRouteMap({
       {/* Map Content & SVG Grid */}
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#111113]/50">
         {/* Base Map Graphic */}
-        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none p-4">
-          <div className="relative w-full h-full">
-            <Image
-              src="/images/graphics/yemen-map.svg"
-              alt="Yemen Map Grid"
-              fill
-              className="object-contain"
-            />
-          </div>
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+          <Image
+            src="/images/graphics/yemen-map.svg"
+            alt="Yemen Map Grid"
+            fill
+            className="object-fill"
+          />
         </div>
 
         {/* Route Lines overlay */}
@@ -76,6 +74,7 @@ export function AnimatedRouteMap({
         {/* Interactive Overlay Layer */}
         <svg
           viewBox="0 0 100 100"
+          preserveAspectRatio="none"
           className="absolute inset-0 z-10 w-full h-full select-none"
         >
           <defs>
@@ -93,9 +92,9 @@ export function AnimatedRouteMap({
           </defs>
 
           {/* SVG Paths for Routes */}
-          {/* Route 1: Sana'a to Hodeidah via Bajel */}
+          {/* Route 1: Western Coastal Route (Sana'a to Aden via Bajel, Hodeidah, Zabid, Taiz) */}
           <motion.path
-            d="M48 33 L38 39 L34 44"
+            d="M48 33 C44 34, 41 36, 38 39 C36 41, 35 42, 34 44 C33 47, 34 51, 37 54 C39 58, 40 62, 42 66 C46 70, 50 74, 54 78"
             fill="none"
             stroke="url(#route-gradient)"
             strokeWidth="0.8"
@@ -103,13 +102,13 @@ export function AnimatedRouteMap({
             initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
             whileInView={{ pathLength: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 2, ease: "easeOut" }}
+            transition={{ duration: 3.5, ease: "easeOut" }}
             className="opacity-60"
           />
 
-          {/* Route 2: Sana'a to Taiz to Aden */}
+          {/* Route 2: Direct Inland Route (Sana'a to Aden via Taiz) */}
           <motion.path
-            d="M48 33 C42 42, 40 54, 42 66 L54 78"
+            d="M48 33 C46 44, 44 55, 42 66 C45 70, 50 74, 54 78"
             fill="none"
             stroke="url(#route-gradient)"
             strokeWidth="0.8"
@@ -121,9 +120,9 @@ export function AnimatedRouteMap({
             className="opacity-60"
           />
 
-          {/* Route 3: Sana'a to Mukalla */}
+          {/* Route 3: Eastern Route (Sana'a to Mukalla) */}
           <motion.path
-            d="M48 33 C60 40, 70 50, 78 62"
+            d="M48 33 C58 38, 68 48, 78 62"
             fill="none"
             stroke="url(#route-gradient)"
             strokeWidth="0.8"
@@ -135,30 +134,52 @@ export function AnimatedRouteMap({
             className="opacity-60"
           />
 
+          {/* Route 4: Southern Coastal Route (Aden to Mukalla) */}
+          <motion.path
+            d="M54 78 C62 76, 70 72, 78 62"
+            fill="none"
+            stroke="url(#route-gradient)"
+            strokeWidth="0.8"
+            strokeDasharray="4 3"
+            initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 3, ease: "easeOut", delay: 0.9 }}
+            className="opacity-60"
+          />
+
           {/* Animated Delivery Signals (Active Fleet Representation) */}
           {!shouldReduceMotion && (
             <>
-              {/* Signal 1: Sana'a -> Hodeidah */}
+              {/* Signal 1: Western Coastal Route */}
               <circle r="1" fill="#FFC247" filter="url(#glow-map-effect)">
                 <animateMotion
-                  path="M48 33 L38 39 L34 44"
-                  dur="7s"
+                  path="M48 33 C44 34, 41 36, 38 39 C36 41, 35 42, 34 44 C33 47, 34 51, 37 54 C39 58, 40 62, 42 66 C46 70, 50 74, 54 78"
+                  dur="12s"
                   repeatCount="indefinite"
                 />
               </circle>
-              {/* Signal 2: Sana'a -> Taiz -> Aden */}
+              {/* Signal 2: Direct Inland Route */}
               <circle r="1" fill="#FF8A00" filter="url(#glow-map-effect)">
                 <animateMotion
-                  path="M48 33 C42 42, 40 54, 42 66 L54 78"
-                  dur="9s"
+                  path="M48 33 C46 44, 44 55, 42 66 C45 70, 50 74, 54 78"
+                  dur="8s"
                   repeatCount="indefinite"
                 />
               </circle>
-              {/* Signal 3: Sana'a -> Mukalla */}
+              {/* Signal 3: Eastern Route */}
               <circle r="1" fill="#FFC247" filter="url(#glow-map-effect)">
                 <animateMotion
-                  path="M48 33 C60 40, 70 50, 78 62"
-                  dur="12s"
+                  path="M48 33 C58 38, 68 48, 78 62"
+                  dur="10s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              {/* Signal 4: Southern Coastal Route */}
+              <circle r="1" fill="#FF8A00" filter="url(#glow-map-effect)">
+                <animateMotion
+                  path="M54 78 C62 76, 70 72, 78 62"
+                  dur="10s"
                   repeatCount="indefinite"
                 />
               </circle>
