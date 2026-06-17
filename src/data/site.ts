@@ -285,36 +285,42 @@ export const products = {
       description: "مجموعة متنوعة من الإطارات المناسبة للاستخدام التجاري والشخصي، من علامات تلبي احتياجات السوق المحلي.",
       image: "/images/products/tires.webp",
       icon: CircleGauge,
+      category: "تصنيف تجاري",
     },
     {
       title: "البطاريات",
       description: "بطاريات موثوقة لمختلف الاستخدامات، مع تركيز على الجودة والاستمرارية والقيمة المناسبة.",
       image: "/images/products/batteries.webp",
       icon: BatteryCharging,
+      category: "تصنيف تجاري",
     },
     {
       title: "الزيوت ومواد التشحيم",
       description: "زيوت ومواد تشحيم تساعد على تحسين الأداء والحفاظ على كفاءة المركبات والمعدات.",
       image: "/images/products/lubricants.webp",
       icon: Cog,
+      category: "تصنيف إمداد",
     },
     {
       title: "قطع غيار الدراجات النارية",
       description: "توريد قطع غيار للدراجات النارية بما يلبي احتياجات التجار والعملاء في السوق.",
       image: "/images/products/motorcycle-parts.webp",
       icon: Wrench,
+      category: "تصنيف إمداد",
     },
     {
       title: "الإكسسوارات",
       description: "تشكيلة من الإكسسوارات والمنتجات المكملة لقطاع المركبات والدراجات.",
       image: "/images/products/accessories.webp",
       icon: PackageCheck,
+      category: "تصنيف تجاري",
     },
     {
       title: "الأدوات",
       description: "أدوات ومنتجات مساعدة تدعم احتياجات الورش والعملاء التجاريين.",
       image: "/images/products/tools.webp",
       icon: BriefcaseBusiness,
+      category: "تصنيف إمداد",
     },
   ],
   en: [
@@ -323,41 +329,47 @@ export const products = {
       description: "A diverse tire range for commercial and personal use, from brands that serve local market needs.",
       image: "/images/products/tires.webp",
       icon: CircleGauge,
+      category: "Trading Category",
     },
     {
       title: "Batteries",
       description: "Reliable batteries for different applications, focused on quality, continuity, and suitable value.",
       image: "/images/products/batteries.webp",
       icon: BatteryCharging,
+      category: "Trading Category",
     },
     {
       title: "Lubricants",
       description: "Oils and lubricants that support performance and help maintain vehicle and equipment efficiency.",
       image: "/images/products/lubricants.webp",
       icon: Cog,
+      category: "Supply Category",
     },
     {
       title: "Motorcycle Spare Parts",
       description: "Supplying motorcycle spare parts for traders and customers across the market.",
       image: "/images/products/motorcycle-parts.webp",
       icon: Wrench,
+      category: "Supply Category",
     },
     {
       title: "Accessories",
       description: "A selection of accessories and complementary products for vehicles and motorcycles.",
       image: "/images/products/accessories.webp",
       icon: PackageCheck,
+      category: "Trading Category",
     },
     {
       title: "Tools",
       description: "Tools and support products for workshops and commercial customers.",
       image: "/images/products/tools.webp",
       icon: BriefcaseBusiness,
+      category: "Supply Category",
     },
   ],
 } satisfies Record<
   Locale,
-  { title: string; description: string; image: string; icon: typeof CircleGauge }[]
+  { title: string; description: string; image: string; icon: typeof CircleGauge; category: string }[]
 >;
 
 export const branches = [

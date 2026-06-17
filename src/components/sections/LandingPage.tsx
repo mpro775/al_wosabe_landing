@@ -479,13 +479,14 @@ function Products({ locale }: { locale: Locale }) {
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
         <div className="mt-12 grid grid-cols-2 gap-3.5 md:gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {products[locale].map(({ title, description, image, icon }, index) => (
+          {products[locale].map(({ title, description, image, icon, category }, index) => (
             <Reveal key={title} delay={index * 0.05}>
               <ProductCategoryCard
                 title={title}
                 description={description}
                 image={image}
                 icon={icon}
+                category={category}
               />
             </Reveal>
           ))}
