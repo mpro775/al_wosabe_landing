@@ -48,27 +48,37 @@ const citiesList = [
 
 export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }) {
   const [form, setForm] = useState(initialState);
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const isAr = locale === "ar";
 
   const update = (field: keyof typeof initialState, value: string) => {
+    setError(null);
     setForm((current) => ({ ...current, [field]: value }));
   };
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
-    // Simple validation check
+    // Check required fields
     if (!form.name.trim() || !form.phone.trim() || !form.city || !form.product) {
-      alert(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
+      setError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
       return;
     }
 
-    const message =
-      isAr
-        ? `طلب عرض سعر من موقع الوصابي للتجارة%0Aالاسم: ${form.name}%0Aالشركة/المحل: ${form.business}%0Aالهاتف: ${form.phone}%0Aالمدينة: ${form.city}%0Aالمنتج: ${form.product}%0Aالكمية: ${form.quantity}%0Aالتفاصيل: ${form.message}`
-        : `Quote request from Al-Wosabe website%0AName: ${form.name}%0ABusiness: ${form.business}%0APhone: ${form.phone}%0ACity: ${form.city}%0AProduct: ${form.product}%0AQuantity: ${form.quantity}%0ADetails: ${form.message}`;
+    setError(null);
+    setSuccessMsg(isAr ? "تم تجهيز رسالة واتساب، سيتم تحويلك الآن." : "WhatsApp message is ready. Redirecting now.");
 
-    window.open(whatsappHref(company.whatsappNumber, decodeURIComponent(message)), "_blank", "noopener,noreferrer");
+    const formattedMessage =
+      isAr
+        ? `طلب عرض سعر من موقع الوصابي للتجارة\n\nالاسم: ${form.name}\nالشركة/المحل: ${form.business || "غير محدد"}\nالهاتف: ${form.phone}\nالمدينة: ${form.city}\nالمنتج: ${form.product}\nالكمية: ${form.quantity || "غير محدد"}\nالتفاصيل: ${form.message || "لا يوجد"}`
+        : `Quote request from Al-Wosabe website\n\nName: ${form.name}\nBusiness: ${form.business || "Not specified"}\nPhone: ${form.phone}\nCity: ${form.city}\nProduct: ${form.product}\nQuantity: ${form.quantity || "Not specified"}\nDetails: ${form.message || "None"}`;
+
+    setTimeout(() => {
+      window.open(whatsappHref(company.whatsappNumber, formattedMessage), "_blank", "noopener,noreferrer");
+      setSuccessMsg(null);
+      setForm(initialState);
+    }, 1100);
   };
 
   const inputClass =
@@ -82,7 +92,7 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
       {/* Top gradient accent */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-        style={{ background: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
+        style={{ background: "gradient-to-r from-transparent via-[#ff8a00] to-transparent", backgroundImage: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
       />
 
       {/* Corner glow */}
@@ -95,20 +105,20 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         
         {/* City Dropdown */}
         <select 
-          className={`${inputClass} text-white/90 bg-[#1B1B1D]`}
+          className={`${inputClass} text-white/95 bg-[#1C1C1E]`}
           required 
           value={form.city} 
           onChange={(e) => update("city", e.target.value)} 
           aria-label={labels.city}
         >
-          <option value="" disabled className="text-white/40 bg-[#1B1B1D]">
+          <option value="" disabled className="text-white/40 bg-[#1C1C1E]">
             {labels.city}
           </option>
           {citiesList.map((item) => (
             <option 
               key={item.value} 
-              value={item.value} 
-              className="text-white bg-[#1B1B1D]"
+              value={item.label[locale]} 
+              className="text-white bg-[#1C1C1E]"
             >
               {item.label[locale]}
             </option>
@@ -117,20 +127,20 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
 
         {/* Product Category Dropdown */}
         <select 
-          className={`${inputClass} text-white/90 bg-[#1B1B1D]`}
+          className={`${inputClass} text-white/95 bg-[#1C1C1E]`}
           required 
           value={form.product} 
           onChange={(e) => update("product", e.target.value)} 
           aria-label={labels.product}
         >
-          <option value="" disabled className="text-white/40 bg-[#1B1B1D]">
+          <option value="" disabled className="text-white/40 bg-[#1C1C1E]">
             {labels.product}
           </option>
           {productsList.map((item) => (
             <option 
               key={item.value} 
-              value={item.value} 
-              className="text-white bg-[#1B1B1D]"
+              value={item.label[locale]} 
+              className="text-white bg-[#1C1C1E]"
             >
               {item.label[locale]}
             </option>
@@ -138,6 +148,7 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         </select>
 
         <input className={inputClass} value={form.quantity} onChange={(e) => update("quantity", e.target.value)} placeholder={labels.quantity} aria-label={labels.quantity} />
+        
         <textarea
           className={`${inputClass} min-h-28 resize-y md:col-span-2`}
           value={form.message}
@@ -145,13 +156,26 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
           placeholder={labels.message}
           aria-label={labels.message}
         />
+
+        {error && (
+          <div className="text-red-400 text-xs font-bold leading-6 md:col-span-2 text-start bg-red-950/30 border border-red-500/20 px-3.5 py-2.5 rounded-lg">
+            {error}
+          </div>
+        )}
+
+        {successMsg && (
+          <div className="text-green-400 text-xs font-bold leading-6 md:col-span-2 text-start bg-green-950/30 border border-green-500/20 px-3.5 py-2.5 rounded-lg animate-pulse">
+            {successMsg}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="focus-ring group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#FF8A00] to-[#E87500] px-5 py-3 text-sm font-black text-[#1B1B1D] shadow-[0_12px_30px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_16px_40px_rgba(255,138,0,0.4)] hover:scale-[1.02] active:scale-[0.98] md:col-span-2"
+          className="focus-ring group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#FF8A00] to-[#E87500] px-5 py-3 text-sm font-black text-[#1B1B1D] shadow-[0_12px_30px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_16px_40px_rgba(255,138,0,0.4)] hover:scale-[1.02] active:scale-[0.98] md:col-span-2 cursor-pointer"
         >
           {/* Shimmer overlay */}
           <div className="pointer-events-none absolute inset-0 shimmer opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          <Send aria-hidden="true" size={18} className="relative" />
+          <Send aria-hidden="true" size={18} className="relative animate-none" />
           <span className="relative">{labels.submit}</span>
         </button>
       </div>

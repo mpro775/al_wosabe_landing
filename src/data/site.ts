@@ -121,7 +121,7 @@ export const content = {
       title: "علامات تجارية نعمل معها",
       description:
         "نعمل مع مجموعة متنوعة من العلامات التجارية التي تخدم قطاعات الإطارات، البطاريات، الزيوت، قطع الغيار والمنتجات المكملة، بما يساعدنا على تلبية احتياجات شرائح مختلفة من السوق.",
-      note: "أماكن الشعارات جاهزة للاستبدال عند توفير ملفات العلامات التجارية النهائية.",
+      note: "نعرض مجموعة من العلامات التجارية التي نعمل معها ضمن قطاعات الإطارات، الزيوت، البطاريات وقطع الغيار، دون ادعاء وكالة حصرية إلا عند وجود تأكيد رسمي.",
     },
     distribution: {
       eyebrow: "شبكة التوزيع",
@@ -223,7 +223,7 @@ export const content = {
       title: "Brands We Work With",
       description:
         "We work with a diverse portfolio of brands serving tires, batteries, lubricants, spare parts, and related product categories, helping us meet different market needs.",
-      note: "Logo placeholders are ready to be replaced when final brand files are available.",
+      note: "A selected portfolio of brands we work with across tires, lubricants, batteries, and spare parts, without claiming exclusivity unless officially confirmed.",
     },
     distribution: {
       eyebrow: "Distribution Network",

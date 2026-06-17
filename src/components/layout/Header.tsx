@@ -92,14 +92,14 @@ export function Header({ locale }: { locale: Locale }) {
           <Image
             src={company.logo}
             alt=""
-            width={250}
-            height={65}
+            width={220}
+            height={55}
             priority
-            className="h-12 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_12px_rgba(255,138,0,0.3)]"
+            className="h-10 xl:h-11 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_12px_rgba(255,138,0,0.3)]"
           />
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main navigation">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main navigation">
           {links.map(([label, id]) => {
             const isActive = activeSection === id;
             return (
@@ -118,10 +118,11 @@ export function Header({ locale }: { locale: Locale }) {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2.5 lg:flex">
+        <div className="hidden items-center gap-2.5 xl:flex">
           <Link
             href={`/${otherLocale}`}
             className="focus-ring rounded-md border border-white/12 bg-white/5 px-4 py-2 text-sm font-extrabold text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.1)]"
+            aria-label={locale === "ar" ? "تغيير اللغة إلى الإنجليزية" : "Switch language to English"}
           >
             {labels.language}
           </Link>
@@ -132,7 +133,7 @@ export function Header({ locale }: { locale: Locale }) {
 
         <button
           type="button"
-          className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] lg:hidden"
+          className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] xl:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
@@ -143,7 +144,7 @@ export function Header({ locale }: { locale: Locale }) {
 
       <div
         className={cn(
-          "grid border-t border-white/8 bg-[#141416]/95 backdrop-blur-2xl transition-[grid-template-rows] duration-300 lg:hidden",
+          "grid border-t border-white/8 bg-[#141416]/95 backdrop-blur-2xl transition-[grid-template-rows] duration-300 xl:hidden",
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
       >

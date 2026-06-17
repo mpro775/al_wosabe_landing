@@ -4,24 +4,14 @@ import { notFound } from "next/navigation";
 import "@/app/globals.css";
 import { isLocale, localeDirection, locales, type Locale } from "@/lib/locales";
 import { siteMeta } from "@/data/site";
+import { Preloader } from "@/components/layout/Preloader";
+import { PageTransition } from "@/components/layout/PageTransition";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { FloatingWhatsAppButton } from "@/components/ui/FloatingWhatsAppButton";
+import { BackToTopButton } from "@/components/ui/BackToTopButton";
 
 const alexandria = localFont({
   src: [
-    {
-      path: "../../../public/fonts/Alexandria-Thin.ttf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/Alexandria-ExtraLight.ttf",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/Alexandria-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
     {
       path: "../../../public/fonts/Alexandria-Regular.ttf",
       weight: "400",
@@ -30,11 +20,6 @@ const alexandria = localFont({
     {
       path: "../../../public/fonts/Alexandria-Medium.ttf",
       weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../../public/fonts/Alexandria-SemiBold.ttf",
-      weight: "600",
       style: "normal",
     },
     {
@@ -126,8 +111,13 @@ export default async function LocaleLayout({
       <body
         className={`${alexandria.variable} font-[var(--font-alexandria)] antialiased`}
       >
-        {children}
+        <Preloader locale={locale} />
+        <ScrollProgress />
+        <PageTransition>{children}</PageTransition>
+        <FloatingWhatsAppButton locale={locale} />
+        <BackToTopButton />
       </body>
     </html>
   );
 }
+

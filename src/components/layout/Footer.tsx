@@ -80,15 +80,15 @@ export function Footer({ locale }: { locale: Locale }) {
             <Image
               src="/logo/logo-white.png"
               alt={isAr ? "شعار الوصابي للتجارة باللون الأبيض" : "Al-Wosabe for Trading white logo"}
-              width={310}
-              height={81}
-              className="h-14 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,138,0,0.1)]"
+              width={260}
+              height={70}
+              className="h-11 xl:h-12 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,138,0,0.1)]"
             />
             <p className="mt-6 text-sm leading-8 text-white/55">{labels.footer.description}</p>
             {/* Social-proof badge */}
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/5 px-4 py-2 text-xs font-bold text-white/50">
-              <span className="inline-block h-2 w-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: "0 0 6px rgba(74, 222, 128, 0.6)" }} />
-              {isAr ? "نشط منذ 1986" : "Active since 1986"}
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#FF8A00]/20 bg-white/5 px-4 py-2 text-xs font-bold text-white/70">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#FF8A00] animate-pulse" style={{ boxShadow: "0 0 6px rgba(255, 138, 0, 0.6)" }} />
+              <span className="text-[#FFC247]">{isAr ? "منذ 1986" : "Since 1986"}</span>
             </div>
           </div>
 
