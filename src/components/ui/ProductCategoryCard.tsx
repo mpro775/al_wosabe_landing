@@ -15,7 +15,7 @@ export function ProductCategoryCard({
   category: string;
 }) {
   return (
-    <article className="gradient-top-border group relative overflow-hidden rounded-xl border border-black/8 bg-white shadow-[0_18px_50px_rgba(27,27,29,0.06)] transition-all duration-400 hover:-translate-y-1.5 hover:border-[#FF8A00]/40 hover:shadow-[0_0_25px_rgba(255,138,0,0.15),0_18px_50px_rgba(27,27,29,0.06)] flex flex-col h-full">
+    <article className="gradient-top-border group relative overflow-hidden rounded-xl border border-black/8 bg-white shadow-[0_18px_50px_rgba(27,27,29,0.06)] transition-all duration-400 hover:-translate-y-1.5 hover:border-[#FF8A00]/40 hover:shadow-[0_0_25px_rgba(255,138,0,0.15),0_18px_50px_rgba(27,27,29,0.06)] flex flex-col h-full" style={{ animation: "none" }} onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "border-glow 1.5s ease-in-out infinite"; }} onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = "none"; }}>
       {/* Product Image Header (16:10 Aspect Ratio for modern crops) */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#1B1B1D] shrink-0">
         <Image

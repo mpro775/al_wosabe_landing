@@ -108,16 +108,17 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
           className="absolute -end-10 top-0 h-full w-[350px] opacity-[0.02] mix-blend-overlay rotate-6 pointer-events-none bg-repeat-y"
           style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: 'contain' }}
         />
-        {/* Route lines animated drifting background */}
+        {/* Route lines animated drifting background — slow horizontal pan */}
         <motion.div
           className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: '120% 120%', backgroundPosition: 'center' }}
           animate={{
-            rotate: [0, 360],
+            x: ["0%", "-10%"],
           }}
           transition={{
-            duration: 220,
+            duration: 60,
             repeat: Infinity,
+            repeatType: "reverse",
             ease: "linear",
           }}
         />
@@ -218,8 +219,14 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
             style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.2) 0%, transparent 70%)" }}
           />
 
-          {/* Main Image Container (Trucks) */}
-          <Reveal delay={0.2} direction="left" className="relative z-10">
+          {/* Main Image Container (Trucks) — scale entry from 1.04 */}
+          <motion.div
+            className="relative z-10"
+            initial={{ scale: 1.04, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          >
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/12 bg-white/5 p-2 shadow-2xl backdrop-blur-sm">
               <ParallaxImage
                 src="/images/hero/hero-trucks.webp"
@@ -231,7 +238,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1B1B1D]/80 via-transparent to-black/20 pointer-events-none rounded-xl m-2" />
             </div>
-          </Reveal>
+          </motion.div>
 
           {/* Secondary Image Card (Warehouse) - Desktop Only */}
           <div className="hidden md:block absolute -bottom-10 -start-10 w-[55%] aspect-[4/3] rounded-xl border border-white/15 bg-[#1B1B1D]/90 p-1.5 shadow-2xl z-20">
@@ -291,7 +298,7 @@ function Stats({ locale, years }: { locale: Locale; years: number }) {
             const suffix = value.includes("+") || isYears ? "+" : "";
 
             return (
-              <Reveal key={label} delay={index * 0.06} className={cn(index === 4 && "col-span-2 sm:col-span-1")}>
+              <Reveal key={label} delay={index * 0.1} className={cn(index === 4 && "col-span-2 sm:col-span-1")}>
                 <div className="gradient-top-border group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-5 sm:p-6 text-center shadow-sm transition-all duration-400 hover:shadow-[0_20px_50px_rgba(255,138,0,0.12)] hover:-translate-y-1">
                   {/* Subtle gradient overlay on hover */}
                   <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#FF8A00]/0 to-[#FFC247]/0 opacity-0 transition-opacity duration-400 group-hover:from-[#FF8A00]/4 group-hover:to-[#FFC247]/2 group-hover:opacity-100" />
@@ -323,18 +330,30 @@ function About({ locale }: { locale: Locale }) {
               style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
             />
             <div className="route-lines rounded-lg border border-white/8 p-6">
-              {about.timeline.map(([year, text]) => (
-                <div key={year} className="relative border-s-2 border-[#FF8A00]/30 pb-8 ps-7 last:pb-0">
-                  {/* Glowing dot */}
-                  <span
-                    className="absolute -start-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#FF8A00]"
+              {about.timeline.map(([year, text], idx) => (
+                <div
+                  key={year}
+                  className="relative pb-8 ps-7 last:pb-0"
+                >
+                  {/* Timeline vertical line — draw animation */}
+                  <div
+                    className="absolute start-0 top-0 bottom-0 w-[2px] bg-[#FF8A00]/30"
                     style={{
+                      transformOrigin: "top",
+                      animation: `timeline-draw 1.2s ease-out ${idx * 0.3}s both`,
+                    }}
+                  />
+                  {/* Glowing dot with pulse animation */}
+                  <span
+                    className="absolute -start-[4px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#FF8A00]"
+                    style={{
+                      animation: `timeline-dot-glow 2.5s ease-in-out ${idx * 0.4 + 0.8}s infinite`,
                       boxShadow: "0 0 10px rgba(255, 138, 0, 0.5), 0 0 20px rgba(255, 138, 0, 0.2)",
                     }}
                   />
                   {/* Outer ring */}
                   <span
-                    className="absolute -start-[9px] top-[2px] h-[18px] w-[18px] rounded-full border-2 border-[#FF8A00]/25"
+                    className="absolute -start-[8px] top-[2px] h-[18px] w-[18px] rounded-full border-2 border-[#FF8A00]/25"
                   />
                   <strong className="text-2xl font-bold text-[#FFC247]">{year}</strong>
                   <p className="mt-2 text-sm leading-7 text-white/60">{text}</p>
@@ -480,7 +499,7 @@ function Products({ locale }: { locale: Locale }) {
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
         <div className="mt-12 grid grid-cols-2 gap-3.5 md:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {products[locale].map(({ title, description, image, icon, category }, index) => (
-            <Reveal key={title} delay={index * 0.05}>
+            <Reveal key={title} delay={index * 0.08}>
               <ProductCategoryCard
                 title={title}
                 description={description}
@@ -647,20 +666,30 @@ function Fleet({ locale }: { locale: Locale }) {
                 style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
               />
 
-              {/* Big Badge Overlay (20+ Distribution Trucks) */}
-              <div className="absolute bottom-6 start-6 flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 p-4 shadow-xl backdrop-blur-md z-10">
-                <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
-                  <Truck size={28} />
+              {/* Slow drifting route line behind the badge */}
+              <motion.div
+                className="absolute bottom-0 start-0 end-0 h-24 z-[9] opacity-15 pointer-events-none"
+                style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: '200% 100%', backgroundPosition: 'center' }}
+                animate={{ x: ["0%", "-15%"] }}
+                transition={{ duration: 30, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              />
+
+              {/* Big Badge Overlay (20+ Distribution Trucks) — enters from bottom */}
+              <Reveal delay={0.3} direction="up" className="absolute bottom-6 start-6 z-10">
+                <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 p-4 shadow-xl backdrop-blur-md">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
+                    <Truck size={28} />
+                  </div>
+                  <div className="text-start">
+                    <span className="block text-2xl font-bold text-white">
+                      <AnimatedCounter value={20} suffix="+" />
+                    </span>
+                    <span className="block text-xs font-bold text-[#FFC247] uppercase tracking-wider">
+                      {isAr ? "شاحنة توزيع نشطة" : "Active Trucks"}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-start">
-                  <span className="block text-2xl font-bold text-white">
-                    <AnimatedCounter value={20} suffix="+" />
-                  </span>
-                  <span className="block text-xs font-bold text-[#FFC247] uppercase tracking-wider">
-                    {isAr ? "شاحنة توزيع نشطة" : "Active Trucks"}
-                  </span>
-                </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </Reveal>
@@ -935,7 +964,7 @@ function Quote({ locale }: { locale: Locale }) {
       <div className="pointer-events-none absolute -end-40 top-1/4 h-60 w-60 rounded-full bg-[#FFC247]/5 blur-3xl" />
 
       <Container className="relative grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-        <Reveal>
+        <Reveal direction="right">
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} dark />
           <Button href={whatsappHref(company.whatsappNumber, directMessage)} className="mt-8 select-none">
             {copy.submit}

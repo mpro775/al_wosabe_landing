@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Phone, MapPin, X } from "lucide-react";
 import { branches } from "@/data/site";
@@ -176,7 +176,7 @@ export function AnimatedRouteMap({
                 onClick={() => setHoveredCity(branch.city.en)}
                 className="cursor-pointer"
               >
-                {/* Glow ring */}
+                {/* Glow ring with subtle pulse */}
                 <circle
                   cx={branch.x}
                   cy={branch.y}
@@ -188,7 +188,16 @@ export function AnimatedRouteMap({
                   style={{
                     transformOrigin: `${branch.x}% ${branch.y}%`,
                   }}
-                />
+                >
+                  {!isHovered && !shouldReduceMotion && (
+                    <animate
+                      attributeName="r"
+                      values="3.5;5;3.5"
+                      dur="3s"
+                      repeatCount="indefinite"
+                    />
+                  )}
+                </circle>
 
                 {/* Core point */}
                 <circle
@@ -200,39 +209,47 @@ export function AnimatedRouteMap({
                   className="transition-all duration-300"
                 />
 
-                {/* Desktop Overlay Tooltips */}
-                {isHovered && (
-                  <g className="hidden md:block">
-                    <rect
-                      x={branch.x + 3.5}
-                      y={branch.y - 10}
-                      width={isAr ? 35 : 42}
-                      height="12"
-                      rx="2"
-                      fill="rgba(17, 17, 19, 0.95)"
-                      stroke="rgba(255, 138, 0, 0.4)"
-                      strokeWidth="0.5"
-                    />
-                    <text
-                      x={branch.x + 5.5}
-                      y={branch.y - 5}
-                      fill="#FFFFFF"
-                      fontSize="3.8"
-                      fontWeight="900"
+                {/* Desktop Overlay Tooltips with smooth fade */}
+                <AnimatePresence>
+                  {isHovered && (
+                    <motion.g
+                      className="hidden md:block"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
                     >
-                      {branch.city[locale]}
-                    </text>
-                    <text
-                      x={branch.x + 5.5}
-                      y={branch.y - 1}
-                      fill="rgba(255, 255, 255, 0.5)"
-                      fontSize="3.0"
-                      fontWeight="700"
-                    >
-                      {branch.phones.length} {branch.phones.length > 1 ? labels.phoneCountPlural : labels.phoneCountSingular}
-                    </text>
-                  </g>
-                )}
+                      <rect
+                        x={branch.x + 3.5}
+                        y={branch.y - 10}
+                        width={isAr ? 35 : 42}
+                        height="12"
+                        rx="2"
+                        fill="rgba(17, 17, 19, 0.95)"
+                        stroke="rgba(255, 138, 0, 0.4)"
+                        strokeWidth="0.5"
+                      />
+                      <text
+                        x={branch.x + 5.5}
+                        y={branch.y - 5}
+                        fill="#FFFFFF"
+                        fontSize="3.8"
+                        fontWeight="900"
+                      >
+                        {branch.city[locale]}
+                      </text>
+                      <text
+                        x={branch.x + 5.5}
+                        y={branch.y - 1}
+                        fill="rgba(255, 255, 255, 0.5)"
+                        fontSize="3.0"
+                        fontWeight="700"
+                      >
+                        {branch.phones.length} {branch.phones.length > 1 ? labels.phoneCountPlural : labels.phoneCountSingular}
+                      </text>
+                    </motion.g>
+                  )}
+                </AnimatePresence>
 
                 {/* Static Text labels for visible cities when NOT hovered */}
                 {!isHovered && (
