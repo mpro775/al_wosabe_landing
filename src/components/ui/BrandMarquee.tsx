@@ -38,15 +38,14 @@ export function BrandMarquee({
     <div className="w-full overflow-hidden py-4 select-none relative">
       <style dangerouslySetInnerHTML={{ __html: marqueeCss }} />
 
-      {/* Desktop view: Infinite Marquee */}
-      <div className="hidden md:block relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         {/* Soft fading overlays on edges */}
-        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-28 bg-gradient-to-r from-white via-white/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-12 md:w-28 bg-gradient-to-r from-white via-white/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-12 md:w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
 
         <div className="flex w-full overflow-hidden">
           <div
-            className={`flex gap-6 whitespace-nowrap ${
+            className={`flex gap-4 md:gap-6 whitespace-nowrap ${
               isAr ? "animate-marquee-rtl" : "animate-marquee-ltr"
             }`}
             style={{
@@ -59,14 +58,14 @@ export function BrandMarquee({
             {duplicatedBrands.map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex h-24 w-44 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-[#F7F7F4]/50 p-5 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(255,138,0,0.08)] group"
+                className="flex h-20 w-36 md:h-24 md:w-44 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-[#F7F7F4]/50 p-4 md:p-5 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(255,138,0,0.08)] group"
               >
-                <div className="relative h-12 w-full transition-all duration-300">
+                <div className="relative h-10 w-full md:h-12 transition-all duration-300">
                   <Image
                     src={brand.logo}
                     alt={brand.name}
                     fill
-                    sizes="180px"
+                    sizes="(max-width: 768px) 120px, 180px"
                     className="object-contain filter grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
                   />
                 </div>
@@ -74,26 +73,6 @@ export function BrandMarquee({
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Mobile view: Horizontal Scroll Snap */}
-      <div className="md:hidden flex w-full gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory px-5 pb-4">
-        {brands.map((brand) => (
-          <div
-            key={brand.name}
-            className="snap-center shrink-0 flex h-24 w-40 items-center justify-center rounded-xl border border-black/5 bg-[#F7F7F4]/80 p-5 shadow-sm"
-          >
-            <div className="relative h-10 w-full">
-              <Image
-                src={brand.logo}
-                alt={brand.name}
-                fill
-                sizes="150px"
-                className="object-contain filter grayscale opacity-75"
-              />
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

@@ -76,7 +76,7 @@ export function Footer({ locale }: { locale: Locale }) {
       <Container className="relative z-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.9fr_0.9fr_1.1fr]">
           {/* Column 1: Info */}
-          <div>
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
             <Image
               src="/logo/logo-white.png"
               alt={isAr ? "شعار الوصابي للتجارة باللون الأبيض" : "Al-Wosabe for Trading white logo"}
@@ -84,7 +84,7 @@ export function Footer({ locale }: { locale: Locale }) {
               height={70}
               className="h-11 xl:h-12 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,138,0,0.1)]"
             />
-            <p className="mt-6 text-sm leading-8 text-white/55">{labels.footer.description}</p>
+            <p className="mt-6 text-sm leading-8 text-white/55 max-w-sm">{labels.footer.description}</p>
             {/* Social-proof badge */}
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#FF8A00]/20 bg-white/5 px-4 py-2 text-xs font-bold text-white/70">
               <span className="inline-block h-2 w-2 rounded-full bg-[#FF8A00] animate-pulse" style={{ boxShadow: "0 0 6px rgba(255, 138, 0, 0.6)" }} />
@@ -93,9 +93,9 @@ export function Footer({ locale }: { locale: Locale }) {
           </div>
 
           {/* Column 2: Products */}
-          <div>
-            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "المنتجات" : "Products"}</h3>
-            <div className="grid gap-2.5 text-sm text-white/55">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
+            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "المنتجات" : "Products"}</h3>
+            <div className="grid gap-2.5 text-sm text-white/55 justify-items-center sm:justify-items-start">
               {productLinks.map(([label, href]) => (
                 <a
                   key={label}
@@ -109,9 +109,9 @@ export function Footer({ locale }: { locale: Locale }) {
           </div>
 
           {/* Column 3: Branches */}
-          <div>
-            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "الفروع" : "Branches"}</h3>
-            <div className="grid gap-2.5 text-sm text-white/55">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
+            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "الفروع" : "Branches"}</h3>
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2.5 sm:grid sm:gap-2.5 text-sm text-white/55 w-full">
               {branchLinks.map(([label, href]) => (
                 <a
                   key={label}
@@ -123,7 +123,7 @@ export function Footer({ locale }: { locale: Locale }) {
               ))}
               <a
                 href="#branches"
-                className="mt-2 flex items-center gap-1 text-xs font-bold text-[#FF8A00] hover:text-[#FFC247] transition-colors"
+                className="mt-2 flex items-center justify-center sm:justify-start gap-1 text-xs font-bold text-[#FF8A00] hover:text-[#FFC247] transition-colors w-full sm:w-auto"
               >
                 <span>{isAr ? "استعراض كل الفروع" : "View All Branches"}</span>
                 <ArrowUpRight size={14} />
@@ -132,9 +132,9 @@ export function Footer({ locale }: { locale: Locale }) {
           </div>
 
           {/* Column 4: Contact & Quote */}
-          <div className="flex flex-col items-start">
-            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
-            <div className="grid gap-3 text-sm text-white/55 w-full">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
+            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
+            <div className="grid gap-3 text-sm text-white/55 w-full justify-items-center sm:justify-items-start">
               {/* Main Phone */}
               <a
                 href={phoneHref(company.whatsappNumber)}
@@ -166,7 +166,7 @@ export function Footer({ locale }: { locale: Locale }) {
               </a>
 
               {/* WhatsApp Button */}
-              <div className="mt-3 w-full">
+              <div className="mt-3 w-full max-w-[280px] sm:max-w-none">
                 <a
                   href={whatsappHref(company.whatsappNumber, directMessage)}
                   target="_blank"

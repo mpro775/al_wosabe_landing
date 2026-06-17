@@ -32,11 +32,11 @@ export function ProductCategoryCard({
         </div>
       </div>
 
-      <div className="p-6 relative">
-        <h3 className="text-xl font-bold text-[#1B1B1D]">{title}</h3>
+      <div className="p-4 sm:p-6 relative">
+        <h3 className="text-lg sm:text-xl font-bold text-[#1B1B1D]">{title}</h3>
         {/* Orange line expanding on Hover */}
-        <div className="my-3 h-1 w-12 rounded-full bg-gradient-to-r from-[#FF8A00] to-[#FFC247] transition-all duration-400 group-hover:w-24" />
-        <p className="text-sm leading-7 text-[#343438]/75">{description}</p>
+        <div className="my-2.5 h-1 w-10 sm:w-12 rounded-full bg-gradient-to-r from-[#FF8A00] to-[#FFC247] transition-all duration-400 group-hover:w-20 sm:group-hover:w-24" />
+        <p className="text-xs sm:text-sm leading-6 sm:leading-7 text-[#343438]/75">{description}</p>
       </div>
 
       {/* Orange accent line at the absolute bottom of the card expanding to 100% width on hover */}

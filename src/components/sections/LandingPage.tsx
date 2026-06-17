@@ -478,7 +478,7 @@ function Products({ locale }: { locale: Locale }) {
     <section id="products" className="relative bg-[#F7F7F4] py-22">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-2 gap-3.5 md:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {products[locale].map(({ title, description, image, icon }, index) => (
             <Reveal key={title} delay={index * 0.05}>
               <ProductCategoryCard
@@ -527,25 +527,25 @@ function Distribution({ locale }: { locale: Locale }) {
       <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <Reveal>
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} dark />
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <div className="mt-8 grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3">
             {branches.map((branch) => (
               <div
                 key={branch.city.en}
                 onMouseEnter={() => setHoveredCity(branch.city.en)}
                 onMouseLeave={() => setHoveredCity(null)}
                 onClick={() => setHoveredCity(branch.city.en)}
-                className={`group rounded-lg border px-4 py-3.5 text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer ${hoveredCity === branch.city.en
+                className={`group rounded-lg border p-2 text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${hoveredCity === branch.city.en
                   ? "border-[#FF8A00] bg-[#FF8A00]/15 text-white"
                   : "border-white/8 bg-white/5 text-white/65 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
                   }`}
               >
                 <MapPin
-                  className={`me-2 inline transition-all duration-300 ${hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
+                  className={`transition-all duration-300 shrink-0 ${hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
                     }`}
-                  size={16}
+                  size={12}
                   aria-hidden="true"
                 />
-                {branch.city[locale]}
+                <span className="truncate max-w-full">{branch.city[locale]}</span>
               </div>
             ))}
           </div>
@@ -676,28 +676,28 @@ function Branches({ locale }: { locale: Locale }) {
     <section id="branches" className="bg-white py-22">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4 md:gap-5">
           {branches.map((branch, index) => (
             <Reveal key={branch.city.en} delay={index * 0.04}>
               <button
                 onClick={() => setSelectedBranch(branch)}
-                className="group relative flex items-center justify-between rounded-xl border border-black/8 bg-[#F7F7F4]/50 p-6 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/40 hover:bg-white hover:shadow-md text-start w-full cursor-pointer"
+                className="group relative flex items-center justify-between rounded-xl border border-black/8 bg-[#F7F7F4]/50 p-3 sm:p-4 md:p-6 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/40 hover:bg-white hover:shadow-md text-start w-full cursor-pointer"
               >
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] text-[#FFC247] shadow-md group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white transition-all duration-300">
-                    <MapPin size={22} aria-hidden="true" />
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 overflow-hidden">
+                  <span className="flex h-9 w-9 sm:h-10 sm:w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] text-[#FFC247] shadow-md group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white transition-all duration-300">
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 md:h-5.5 md:w-5.5" aria-hidden="true" />
                   </span>
-                  <div>
-                    <h3 className="text-lg font-bold text-[#1B1B1D] transition-colors group-hover:text-[#E87500]">
+                  <div className="overflow-hidden">
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-[#1B1B1D] transition-colors group-hover:text-[#E87500] truncate">
                       {branch.city[locale]}
                     </h3>
-                    <span className="text-xs text-[#343438]/50 mt-1 block">
-                      {locale === "ar" ? "اضغط لعرض أرقام التواصل" : "Click to view contact numbers"}
+                    <span className="text-[9px] sm:text-xs text-[#343438]/50 mt-0.5 block truncate">
+                      {locale === "ar" ? "اضغط للتواصل" : "Click to connect"}
                     </span>
                   </div>
                 </div>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/5 text-[#E87500] group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
-                  <Phone size={14} />
+                <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-black/5 text-[#E87500] group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
+                  <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </span>
               </button>
             </Reveal>
@@ -790,24 +790,24 @@ function Values({ locale }: { locale: Locale }) {
     <section className="bg-[#F7F7F4] py-22">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} align="center" />
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3">
           {copy.items.map(([title, description], index) => {
             const Icon = valueIcons[index];
             return (
-              <Reveal key={title} delay={index * 0.06}>
-                <article className="card-hover-glow group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-7 text-center shadow-sm">
+              <Reveal key={title} delay={index * 0.06} className={cn(index === 2 && "col-span-2 sm:col-span-1")}>
+                <article className="card-hover-glow group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-5 sm:p-7 text-center shadow-sm">
                   {/* Gradient overlay on hover */}
                   <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#FF8A00]/0 to-[#FFC247]/0 opacity-0 transition-opacity duration-400 group-hover:from-[#FF8A00]/4 group-hover:to-[#FFC247]/2 group-hover:opacity-100" />
                   <div className="relative">
-                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00]/12 to-[#FFC247]/8 text-[#FF8A00] transition-all duration-400 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white group-hover:shadow-[0_8px_24px_rgba(255,138,0,0.3)]">
-                      <Icon aria-hidden="true" size={28} />
+                    <div className="mx-auto mb-5 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00]/12 to-[#FFC247]/8 text-[#FF8A00] transition-all duration-400 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white group-hover:shadow-[0_8px_24px_rgba(255,138,0,0.3)]">
+                      <Icon aria-hidden="true" size={24} className="sm:h-7 sm:w-7" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#1B1B1D]">{title}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-[#1B1B1D]">{title}</h3>
                     <div
-                      className="mx-auto my-4 h-[2px] w-10 rounded-full transition-all duration-400 group-hover:w-16"
+                      className="mx-auto my-3.5 h-[2px] w-10 rounded-full transition-all duration-400 group-hover:w-16"
                       style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
                     />
-                    <p className="text-sm leading-7 text-[#343438]/68">{description}</p>
+                    <p className="text-xs sm:text-sm leading-6 sm:leading-7 text-[#343438]/68">{description}</p>
                   </div>
                 </article>
               </Reveal>
