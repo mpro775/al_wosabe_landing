@@ -12,40 +12,40 @@ export function Footer({ locale }: { locale: Locale }) {
 
   const productLinks = isAr
     ? [
-        ["الإطارات", "#products"],
-        ["البطاريات", "#products"],
-        ["الزيوت ومواد التشحيم", "#products"],
-        ["قطع غيار الدراجات النارية", "#products"],
-        ["الإكسسوارات", "#products"],
-        ["الأدوات والعدد", "#products"],
-      ]
+      ["الإطارات", "#products"],
+      ["البطاريات", "#products"],
+      ["الزيوت ومواد التشحيم", "#products"],
+      ["قطع غيار الدراجات النارية", "#products"],
+      ["الإكسسوارات", "#products"],
+      ["الأدوات والعدد", "#products"],
+    ]
     : [
-        ["Tires", "#products"],
-        ["Batteries", "#products"],
-        ["Lubricants", "#products"],
-        ["Motorcycle Spare Parts", "#products"],
-        ["Accessories", "#products"],
-        ["Tools & Hardware", "#products"],
-      ];
+      ["Tires", "#products"],
+      ["Batteries", "#products"],
+      ["Lubricants", "#products"],
+      ["Motorcycle Spare Parts", "#products"],
+      ["Accessories", "#products"],
+      ["Tools & Hardware", "#products"],
+    ];
 
   const branchLinks = isAr
     ? [
-        ["فرع صنعاء", "#branches"],
-        ["فرع الحديدة", "#branches"],
-        ["فرع المكلا", "#branches"],
-        ["فرع عدن", "#branches"],
-        ["فرع تعز", "#branches"],
-      ]
+      ["فرع صنعاء", "#branches"],
+      ["فرع الحديدة", "#branches"],
+      ["فرع المكلا", "#branches"],
+      ["فرع عدن", "#branches"],
+      ["فرع تعز", "#branches"],
+    ]
     : [
-        ["Sana'a Branch", "#branches"],
-        ["Hodeidah Branch", "#branches"],
-        ["Mukalla Branch", "#branches"],
-        ["Aden Branch", "#branches"],
-        ["Taiz Branch", "#branches"],
-      ];
+      ["Sana'a Branch", "#branches"],
+      ["Hodeidah Branch", "#branches"],
+      ["Mukalla Branch", "#branches"],
+      ["Aden Branch", "#branches"],
+      ["Taiz Branch", "#branches"],
+    ];
 
-  const directMessage = isAr 
-    ? "مرحباً، أريد التواصل مع الوصابي للتجارة." 
+  const directMessage = isAr
+    ? "مرحباً، أريد التواصل مع الوصابي للتجارة."
     : "Hello, I would like to contact Al-Wosabe for Trading.";
 
   return (
@@ -53,12 +53,12 @@ export function Footer({ locale }: { locale: Locale }) {
       {/* Background SVG graphics */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
         {/* Tire track */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
           style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '350px' }}
         />
         {/* Route lines */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.015] pointer-events-none"
           style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
@@ -94,7 +94,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
           {/* Column 2: Products */}
           <div>
-            <h3 className="mb-5 text-base font-black text-[#FFC247]">{isAr ? "المنتجات" : "Products"}</h3>
+            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "المنتجات" : "Products"}</h3>
             <div className="grid gap-2.5 text-sm text-white/55">
               {productLinks.map(([label, href]) => (
                 <a
@@ -110,7 +110,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
           {/* Column 3: Branches */}
           <div>
-            <h3 className="mb-5 text-base font-black text-[#FFC247]">{isAr ? "الفروع" : "Branches"}</h3>
+            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "الفروع" : "Branches"}</h3>
             <div className="grid gap-2.5 text-sm text-white/55">
               {branchLinks.map(([label, href]) => (
                 <a
@@ -123,7 +123,7 @@ export function Footer({ locale }: { locale: Locale }) {
               ))}
               <a
                 href="#branches"
-                className="mt-2 flex items-center gap-1 text-xs font-extrabold text-[#FF8A00] hover:text-[#FFC247] transition-colors"
+                className="mt-2 flex items-center gap-1 text-xs font-bold text-[#FF8A00] hover:text-[#FFC247] transition-colors"
               >
                 <span>{isAr ? "استعراض كل الفروع" : "View All Branches"}</span>
                 <ArrowUpRight size={14} />
@@ -133,7 +133,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
           {/* Column 4: Contact & Quote */}
           <div className="flex flex-col items-start">
-            <h3 className="mb-5 text-base font-black text-[#FFC247]">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
+            <h3 className="mb-5 text-base font-bold text-[#FFC247]">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
             <div className="grid gap-3 text-sm text-white/55 w-full">
               {/* Main Phone */}
               <a
@@ -171,7 +171,7 @@ export function Footer({ locale }: { locale: Locale }) {
                   href={whatsappHref(company.whatsappNumber, directMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-black text-white shadow-lg transition-all duration-300 hover:bg-emerald-500 hover:scale-[1.02] active:scale-[0.98] w-full"
+                  className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg transition-all duration-300 hover:bg-emerald-500 hover:scale-[1.02] active:scale-[0.98] w-full"
                 >
                   <MessageSquare size={16} />
                   <span>{isAr ? "تواصل عبر واتساب" : "Chat on WhatsApp"}</span>

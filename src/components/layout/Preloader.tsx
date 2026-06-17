@@ -35,7 +35,7 @@ export function Preloader({ locale }: { locale: "ar" | "en" }) {
       {loading && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ 
+          exit={{
             opacity: 0,
             transition: { duration: 0.4, ease: "easeInOut" }
           }}
@@ -57,15 +57,15 @@ export function Preloader({ locale }: { locale: "ar" | "en" }) {
                 className="object-contain"
               />
             </motion.div>
-            
+
             {/* Title & Badge */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.6 }}
               className="mt-4 flex flex-col items-center text-center"
             >
-              <h1 className="text-sm font-black uppercase tracking-[0.2em] text-[#FF8A00]">
+              <h1 className="text-sm font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
                 {locale === "ar" ? "الوصابي للتجارة" : "Al-Wosabe for Trading"}
               </h1>
               <span className="mt-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold text-white/55">

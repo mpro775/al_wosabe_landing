@@ -25,7 +25,7 @@ export function ProductCategoryCard({
         />
         {/* Subtle dark gradient overlay on image */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-        
+
         {/* Icon Corner Badge */}
         <div className="absolute top-4 end-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[#1B1B1D]/80 text-[#FFC247] backdrop-blur-md transition-all duration-400 group-hover:bg-gradient-to-br group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-[#1B1B1D] group-hover:rotate-[4deg] group-hover:shadow-[0_8px_20px_rgba(255,138,0,0.35)]">
           <Icon aria-hidden="true" size={20} strokeWidth={2.2} className="transition-transform duration-300 group-hover:rotate-[4deg]" />
@@ -33,7 +33,7 @@ export function ProductCategoryCard({
       </div>
 
       <div className="p-6 relative">
-        <h3 className="text-xl font-black text-[#1B1B1D]">{title}</h3>
+        <h3 className="text-xl font-bold text-[#1B1B1D]">{title}</h3>
         {/* Orange line expanding on Hover */}
         <div className="my-3 h-1 w-12 rounded-full bg-gradient-to-r from-[#FF8A00] to-[#FFC247] transition-all duration-400 group-hover:w-24" />
         <p className="text-sm leading-7 text-[#343438]/75">{description}</p>

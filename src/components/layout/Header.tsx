@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Globe, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { company, content, navigation } from "@/data/site";
 import type { Locale } from "@/lib/locales";
@@ -108,9 +108,9 @@ export function Header({ locale }: { locale: Locale }) {
                 href={`#${id}`}
                 className={cn(
                   "animated-underline focus-ring relative rounded-md px-3.5 py-2 text-sm font-bold transition-all duration-300",
-                  isActive ? "text-[#f59930] active" : "text-white hover:text-[#FFC247]"
+                  isActive ? "text-[#f59930] active" : "text-white hover:!text-[#FFC247]"
                 )}
-                style={isActive ? { color: "#f59930" } : undefined}
+                style={isActive ? { color: "#f59930" } : { color: "#ffffff" }}
               >
                 {label}
               </a>
@@ -121,25 +121,35 @@ export function Header({ locale }: { locale: Locale }) {
         <div className="hidden items-center gap-2.5 xl:flex">
           <Link
             href={`/${otherLocale}`}
-            className="focus-ring rounded-md border border-white/12 bg-white/5 px-4 py-2 text-sm font-extrabold text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.1)]"
+            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.15)]"
             aria-label={locale === "ar" ? "تغيير اللغة إلى الإنجليزية" : "Switch language to English"}
           >
-            {labels.language}
+            <Globe className="h-5 w-5 text-white/70 transition-transform duration-500 group-hover:rotate-12 group-hover:text-[#FFC247]" />
           </Link>
           <Button href="#quote" className="min-h-11 px-4 py-2">
             {labels.cta}
           </Button>
         </div>
 
-        <button
-          type="button"
-          className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] xl:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-        </button>
+        <div className="flex items-center gap-3 xl:hidden">
+          <Link
+            href={`/${otherLocale}`}
+            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.15)]"
+            aria-label={locale === "ar" ? "تغيير اللغة إلى الإنجليزية" : "Switch language to English"}
+          >
+            <Globe className="h-5 w-5 text-white/70 transition-transform duration-500 group-hover:rotate-12 group-hover:text-[#FFC247]" />
+          </Link>
+
+          <button
+            type="button"
+            className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247]"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+          </button>
+        </div>
       </div>
 
       <div
@@ -159,25 +169,19 @@ export function Header({ locale }: { locale: Locale }) {
                   onClick={() => setOpen(false)}
                   className={cn(
                     "focus-ring rounded-md px-3 py-3 text-base font-bold transition-all duration-300 hover:bg-[#FF8A00]/8",
-                    isActive ? "text-[#f59930]" : "text-white hover:text-[#FFC247]"
+                    isActive ? "text-[#f59930]" : "text-white hover:!text-[#FFC247]"
                   )}
-                  style={isActive ? { color: "#f59930" } : undefined}
+                  style={isActive ? { color: "#f59930" } : { color: "#ffffff" }}
                 >
                   {label}
                 </a>
               );
             })}
-            <div className="mt-3 grid grid-cols-2 gap-3">
-              <Link
-                href={`/${otherLocale}`}
-                className="focus-ring flex min-h-12 items-center justify-center rounded-md border border-white/15 bg-white/5 text-sm font-extrabold text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10"
-              >
-                {labels.language}
-              </Link>
+            <div className="mt-3">
               <a
                 href="#quote"
                 onClick={() => setOpen(false)}
-                className="focus-ring flex min-h-12 items-center justify-center rounded-md bg-gradient-to-r from-[#FF8A00] to-[#E87500] text-sm font-extrabold text-[#1B1B1D] shadow-[0_8px_24px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00]"
+                className="focus-ring flex min-h-12 items-center justify-center rounded-md bg-gradient-to-r from-[#FF8A00] to-[#E87500] text-sm font-bold text-[#1B1B1D] shadow-[0_8px_24px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00]"
               >
                 {labels.cta}
               </a>

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Building2, CheckCircle2, MapPin, Truck } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowUpRight, Building2, CheckCircle2, MapPin, Phone, Truck, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { BranchCard } from "@/components/ui/BranchCard";
+
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { ProductCategoryCard } from "@/components/ui/ProductCategoryCard";
@@ -28,7 +28,7 @@ import {
   valueIcons,
 } from "@/data/site";
 import type { Locale } from "@/lib/locales";
-import { whatsappHref } from "@/lib/utils";
+import { cn, phoneHref, whatsappHref } from "@/lib/utils";
 
 export function LandingPage({ locale }: { locale: Locale }) {
   const years = new Date().getFullYear() - company.establishedYear;
@@ -70,7 +70,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
   const renderTitle = () => {
     if (isAr) {
       return (
-        <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-start text-white">
+        <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-center lg:text-start text-white w-full">
           <SplitTextReveal text="الوصابي" />{" "}
           <span className="text-[#FF8A00] drop-shadow-[0_0_15px_rgba(255,138,0,0.2)]">
             <SplitTextReveal text="للتجارة" />
@@ -79,7 +79,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
       );
     }
     return (
-      <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-start text-white">
+      <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-center lg:text-start text-white w-full">
         <SplitTextReveal text="Al-Wosabe" />{" "}
         <span className="text-[#FF8A00] drop-shadow-[0_0_15px_rgba(255,138,0,0.2)]">
           <SplitTextReveal text="for Trading" />
@@ -104,15 +104,15 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
       {/* SVG Background Layers */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-1">
         {/* Tire track svg layer */}
-        <div 
+        <div
           className="absolute -end-10 top-0 h-full w-[350px] opacity-[0.02] mix-blend-overlay rotate-6 pointer-events-none bg-repeat-y"
           style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: 'contain' }}
         />
         {/* Route lines animated drifting background */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0 opacity-[0.06] pointer-events-none"
           style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-          animate={{ 
+          animate={{
             rotate: [0, 360],
           }}
           transition={{
@@ -129,9 +129,8 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
         whileInView={{ x: "0%", opacity: 0.12 }}
         viewport={{ once: true }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className={`absolute top-0 bottom-0 w-[45%] bg-[#FF8A00] pointer-events-none z-[1] -skew-x-[12deg] ${
-          isAr ? "right-[-10%]" : "left-[-10%]"
-        }`}
+        className={`absolute top-0 bottom-0 w-[45%] bg-[#FF8A00] pointer-events-none z-[1] -skew-x-[12deg] ${isAr ? "right-[-10%]" : "left-[-10%]"
+          }`}
       />
 
       {/* Grid Pattern and Overlay */}
@@ -139,9 +138,9 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
       <div className="hero-gradient-overlay absolute inset-0 z-1 pointer-events-none" />
 
       <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-12 py-14 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-start w-full">
           {/* Small floating logo badge */}
-          <Reveal>
+          <Reveal className="hidden lg:block">
             <div className="relative mb-6 flex items-center gap-3 rounded-xl border border-white/10 bg-black/45 p-2 pe-3.5 backdrop-blur-md">
               <div className="relative flex h-9 w-14 items-center justify-center overflow-hidden rounded bg-white p-1">
                 <Image
@@ -153,7 +152,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
                 />
               </div>
               <div className="flex flex-col text-start">
-                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF8A00]">
+                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#FF8A00]">
                   {isAr ? "الوصابي للتجارة" : "Al-Wosabe Trading"}
                 </span>
                 <span className="text-[9px] font-bold text-white/50">
@@ -165,7 +164,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
 
           {/* Hero Eyebrow */}
           <Reveal delay={0.1}>
-            <div className="relative mb-5 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#FF8A00]/30 bg-[#FF8A00]/8 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-[#FFC247]">
+            <div className="relative mb-5 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#FF8A00]/30 bg-[#FF8A00]/8 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#FFC247]">
               <span className="relative">{hero.eyebrow}</span>
             </div>
           </Reveal>
@@ -184,8 +183,8 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
             />
           </Reveal>
 
-          <Reveal delay={0.3}>
-            <p className="text-xl font-extrabold leading-tight text-[#FFC247] text-start">
+          <Reveal delay={0.3} className="w-full">
+            <p className="text-xl font-bold leading-tight text-[#FFC247] text-center lg:text-start w-full">
               {hero.subtitle}{" "}
               <span className="text-white font-normal text-sm opacity-50 block md:inline md:ms-2">
                 ({isAr ? "منذ 1986" : "Since 1986"})
@@ -193,30 +192,20 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
             </p>
           </Reveal>
 
-          <Reveal delay={0.4}>
-            <p className="mt-4 max-w-xl text-base leading-8 text-white/75 text-start">{hero.description}</p>
+          <Reveal delay={0.4} className="w-full flex justify-center lg:justify-start">
+            <p className="mt-4 max-w-xl text-base leading-8 text-white/75 text-center lg:text-start w-full">{hero.description}</p>
           </Reveal>
-          
+
           {/* CTAs */}
-          <Reveal delay={0.5}>
-            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row w-full sm:w-auto">
-              <Button href="#quote" className="w-full sm:w-auto min-h-12 px-6">
+          <Reveal delay={0.5} className="w-full flex justify-center lg:justify-start">
+            <div className="mt-8 flex flex-row gap-3 w-full max-w-md sm:max-w-none sm:w-auto justify-center lg:justify-start">
+              <Button href="#quote" className="flex-1 sm:flex-none min-h-12 px-4 sm:px-6 text-sm">
                 {hero.primary}
                 <ArrowUpRight aria-hidden="true" size={18} />
               </Button>
-              <Button href="#products" variant="secondary" className="w-full sm:w-auto min-h-12 px-6">
+              <Button href="#products" variant="secondary" className="flex-1 sm:flex-none min-h-12 px-4 sm:px-6 text-sm">
                 {hero.secondary}
               </Button>
-            </div>
-          </Reveal>
-
-          {/* Quick stats horizontal list */}
-          <Reveal delay={0.6}>
-            <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-4 border-t border-white/8 pt-8 w-full sm:grid-cols-4">
-              <QuickStatItem value="Since 1986" label={isAr ? "عراقة وتأسيس" : "Established"} />
-              <QuickStatItem value="20+ Trucks" label={isAr ? "شاحنة توزيع" : "Active Fleet"} />
-              <QuickStatItem value="7+ Branches" label={isAr ? "فروع رئيسية" : "Branch Cities"} />
-              <QuickStatItem value="Nationwide" label={isAr ? "توزيع الجمهورية" : "Distribution"} />
             </div>
           </Reveal>
         </div>
@@ -255,7 +244,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <span className="absolute bottom-2.5 start-3 text-[10px] font-black tracking-wider text-[#FFC247] uppercase bg-black/60 px-2 py-0.5 rounded">
+              <span className="absolute bottom-2.5 start-3 text-[10px] font-bold tracking-wider text-[#FFC247] uppercase bg-black/60 px-2 py-0.5 rounded">
                 {isAr ? "المستودعات والمخازن" : "Logistics & Storage"}
               </span>
             </div>
@@ -268,7 +257,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
                 <Truck size={20} />
               </div>
               <div className="text-start">
-                <span className="block text-xs font-black text-white">{isAr ? "أسطول نشط" : "Active Fleet"}</span>
+                <span className="block text-xs font-bold text-white">{isAr ? "أسطول نشط" : "Active Fleet"}</span>
                 <span className="block text-[10px] font-bold text-white/50">{isAr ? "توزيع الجمهورية" : "Nationwide Delivery"}</span>
               </div>
             </div>
@@ -282,28 +271,19 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
   );
 }
 
-function QuickStatItem({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="flex flex-col text-start">
-      <strong className="text-xl font-black text-[#FF8A00] sm:text-2xl">{value}</strong>
-      <span className="mt-1 text-[10px] font-black uppercase tracking-wider text-white/45">{label}</span>
-    </div>
-  );
-}
-
 function Stats({ locale, years }: { locale: Locale; years: number }) {
   const stats = content[locale].stats;
 
   return (
     <section className="relative overflow-hidden bg-[#F7F7F4] py-18">
       {/* Route lines background graphic */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.02] pointer-events-none select-none"
         style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
       <Container className="relative z-10">
         <SectionHeading eyebrow={stats.eyebrow} title={stats.title} align="center" />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
           {stats.items.map(([value, label], index) => {
             const isYears = value === "years";
             const numeric = /^\d/.test(value);
@@ -311,14 +291,14 @@ function Stats({ locale, years }: { locale: Locale; years: number }) {
             const suffix = value.includes("+") || isYears ? "+" : "";
 
             return (
-              <Reveal key={label} delay={index * 0.06}>
-                <div className="gradient-top-border group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-6 text-center shadow-sm transition-all duration-400 hover:shadow-[0_20px_50px_rgba(255,138,0,0.12)] hover:-translate-y-1">
+              <Reveal key={label} delay={index * 0.06} className={cn(index === 4 && "col-span-2 sm:col-span-1")}>
+                <div className="gradient-top-border group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-5 sm:p-6 text-center shadow-sm transition-all duration-400 hover:shadow-[0_20px_50px_rgba(255,138,0,0.12)] hover:-translate-y-1">
                   {/* Subtle gradient overlay on hover */}
                   <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#FF8A00]/0 to-[#FFC247]/0 opacity-0 transition-opacity duration-400 group-hover:from-[#FF8A00]/4 group-hover:to-[#FFC247]/2 group-hover:opacity-100" />
-                  <strong className="relative block text-4xl font-black text-[#FF8A00]">
+                  <strong className="relative block text-3xl sm:text-4xl font-bold text-[#FF8A00]">
                     {numberValue === null ? value : <AnimatedCounter value={numberValue} suffix={suffix} />}
                   </strong>
-                  <span className="relative mt-3 block text-sm font-bold leading-6 text-[#343438]/65">{label}</span>
+                  <span className="relative mt-2.5 sm:mt-3 block text-xs sm:text-sm font-bold leading-6 text-[#343438]/65">{label}</span>
                 </div>
               </Reveal>
             );
@@ -356,7 +336,7 @@ function About({ locale }: { locale: Locale }) {
                   <span
                     className="absolute -start-[9px] top-[2px] h-[18px] w-[18px] rounded-full border-2 border-[#FF8A00]/25"
                   />
-                  <strong className="text-2xl font-black text-[#FFC247]">{year}</strong>
+                  <strong className="text-2xl font-bold text-[#FFC247]">{year}</strong>
                   <p className="mt-2 text-sm leading-7 text-white/60">{text}</p>
                 </div>
               ))}
@@ -378,11 +358,11 @@ function About({ locale }: { locale: Locale }) {
 
 function Operations({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
-  
+
   return (
     <section className="relative overflow-hidden bg-[#F7F7F4] py-22">
       {/* Background graphic track */}
-      <div 
+      <div
         className="absolute inset-y-0 start-0 w-1/3 opacity-[0.02] pointer-events-none select-none"
         style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
@@ -392,7 +372,7 @@ function Operations({ locale }: { locale: Locale }) {
         <Reveal direction="right">
           <div className="relative">
             {/* Glow effect behind image */}
-            <div 
+            <div
               className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
               style={{ background: "radial-gradient(circle, rgba(255, 194, 71, 0.12) 0%, transparent 70%)" }}
             />
@@ -408,7 +388,7 @@ function Operations({ locale }: { locale: Locale }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 pointer-events-none" />
 
               {/* Overlapping Route Lines for theme coherence */}
-              <div 
+              <div
                 className="absolute inset-0 z-1 opacity-15 pointer-events-none mix-blend-screen"
                 style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
               />
@@ -416,21 +396,21 @@ function Operations({ locale }: { locale: Locale }) {
               {/* Floating labels over image */}
               <div className="absolute top-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
                 <span className="h-2 w-2 rounded-full bg-[#FF8A00]" />
-                <span className="text-[10px] font-black text-white uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
                   {isAr ? "تخزين آمن منذ 1986" : "Secure Storage Since 1986"}
                 </span>
               </div>
 
               <div className="absolute top-1/2 -translate-y-1/2 end-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
                 <span className="h-2 w-2 rounded-full bg-[#FFC247]" />
-                <span className="text-[10px] font-black text-[#FFC247] uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[#FFC247] uppercase tracking-wider">
                   {isAr ? "مخزون منظم وضخم" : "Organized Inventory"}
                 </span>
               </div>
 
               <div className="absolute bottom-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
                 <span className="h-2 w-2 rounded-full bg-green-400" />
-                <span className="text-[10px] font-black text-white uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
                   {isAr ? "سلاسل إمداد وتوزيع مستمر" : "Continuous Supply Chains"}
                 </span>
               </div>
@@ -440,12 +420,12 @@ function Operations({ locale }: { locale: Locale }) {
 
         {/* Text / Info Column */}
         <Reveal>
-          <div className="text-start">
-            <SectionHeading 
-              eyebrow={isAr ? "الجاهزية التشغيلية" : "Operational Strength"} 
-              title={isAr ? "جاهزية تشغيلية ومستودعات منظمة" : "Organized Storage & Distribution Readiness"} 
+          <div className="text-start ">
+            <SectionHeading
+              eyebrow={isAr ? "الجاهزية التشغيلية" : "Operational Strength"}
+              title={isAr ? "جاهزية تشغيلية ومستودعات منظمة" : "Organized Storage & Distribution Readiness"}
               description={
-                isAr 
+                isAr
                   ? "نعتمد في الوصابي للتجارة على بنية تحتية قوية لإدارة المخزون والتوريد، تضمن تلبية احتياجات التجار والعملاء في كافة الأوقات وبجاهزية كاملة."
                   : "At Al-Wosabe for Trading, we rely on a robust supply and inventory management infrastructure to serve our business partners efficiently and meet demand at all times."
               }
@@ -453,11 +433,11 @@ function Operations({ locale }: { locale: Locale }) {
 
             <div className="mt-8 space-y-4">
               <div className="flex gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-black">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-bold">
                   1
                 </span>
                 <div>
-                  <h4 className="text-base font-black text-[#1B1B1D]">
+                  <h4 className="text-base font-bold text-[#1B1B1D]">
                     {isAr ? "مستودعات منظمة وجاهزية توريد" : "Organized Warehousing & Supply Readiness"}
                   </h4>
                   <p className="mt-1 text-sm leading-6 text-[#343438]/70">
@@ -469,11 +449,11 @@ function Operations({ locale }: { locale: Locale }) {
               </div>
 
               <div className="flex gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-black">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-bold">
                   2
                 </span>
                 <div>
-                  <h4 className="text-base font-black text-[#1B1B1D]">
+                  <h4 className="text-base font-bold text-[#1B1B1D]">
                     {isAr ? "إدارة منظمة للمخزون" : "Organized Inventory Management"}
                   </h4>
                   <p className="mt-1 text-sm leading-6 text-[#343438]/70">
@@ -521,13 +501,10 @@ function Brands({ locale }: { locale: Locale }) {
   return (
     <section id="brands" className="bg-white py-22">
       <Container>
-        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end mb-12">
+        <div className="mb-12">
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-          <p className="rounded-xl border border-[#FF8A00]/20 bg-gradient-to-r from-[#FF8A00]/8 to-[#FFC247]/5 p-5 text-sm font-bold leading-7 text-[#7A4700]">
-            {copy.note}
-          </p>
         </div>
-        
+
         {/* Dynamic Partner Marquee wrapper */}
         <Reveal delay={0.1}>
           <BrandMarquee brands={brands} locale={locale} />
@@ -557,25 +534,23 @@ function Distribution({ locale }: { locale: Locale }) {
                 onMouseEnter={() => setHoveredCity(branch.city.en)}
                 onMouseLeave={() => setHoveredCity(null)}
                 onClick={() => setHoveredCity(branch.city.en)}
-                className={`group rounded-lg border px-4 py-3.5 text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer ${
-                  hoveredCity === branch.city.en
-                    ? "border-[#FF8A00] bg-[#FF8A00]/15 text-white"
-                    : "border-white/8 bg-white/5 text-white/65 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
-                }`}
+                className={`group rounded-lg border px-4 py-3.5 text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer ${hoveredCity === branch.city.en
+                  ? "border-[#FF8A00] bg-[#FF8A00]/15 text-white"
+                  : "border-white/8 bg-white/5 text-white/65 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
+                  }`}
               >
-                <MapPin 
-                  className={`me-2 inline transition-all duration-300 ${
-                    hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
-                  }`} 
-                  size={16} 
-                  aria-hidden="true" 
+                <MapPin
+                  className={`me-2 inline transition-all duration-300 ${hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
+                    }`}
+                  size={16}
+                  aria-hidden="true"
                 />
                 {branch.city[locale]}
               </div>
             ))}
           </div>
         </Reveal>
-        
+
         {/* Animated Interactive SVG Route Map */}
         <Reveal direction="left">
           <AnimatedRouteMap
@@ -596,13 +571,13 @@ function Fleet({ locale }: { locale: Locale }) {
   return (
     <section className="relative overflow-hidden bg-white py-24">
       {/* Subtle route line background graphic */}
-      <div 
+      <div
         className="absolute inset-y-0 end-0 w-1/3 opacity-[0.03] pointer-events-none select-none"
         style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
 
       {/* Tire track background graphic */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none select-none mix-blend-overlay"
         style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
       />
@@ -612,21 +587,21 @@ function Fleet({ locale }: { locale: Locale }) {
         <Reveal>
           <div className="text-start">
             <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-            
+
             <div className="mt-8 grid gap-6 sm:grid-cols-2">
               <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
-                <strong className="block text-2xl font-black text-[#FF8A00]">
+                <strong className="block text-2xl font-bold text-[#FF8A00]">
                   {isAr ? "تغطية جغرافية منظمة" : "Organized Reach"}
                 </strong>
                 <p className="mt-2 text-sm leading-6 text-[#343438]/70">
-                  {isAr 
+                  {isAr
                     ? "نخدم المدن الرئيسية ونطاقًا واسعًا من السوق اليمني عبر شبكة فروع وتوزيع منظمة تضمن استقرار الإمداد للشركاء."
                     : "We serve main cities and a wide scope of the Yemeni market through an organized branch and distribution network."}
                 </p>
               </div>
 
               <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
-                <strong className="block text-2xl font-black text-[#FF8A00]">
+                <strong className="block text-2xl font-bold text-[#FF8A00]">
                   {isAr ? "جاهزية تشغيلية عالية" : "High Readiness"}
                 </strong>
                 <p className="mt-2 text-sm leading-6 text-[#343438]/70">
@@ -650,11 +625,11 @@ function Fleet({ locale }: { locale: Locale }) {
         <Reveal delay={0.12} direction="left">
           <div className="relative">
             {/* Glowing accent border background */}
-            <div 
+            <div
               className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
               style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
             />
-            
+
             <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
               <ParallaxImage
                 src="/images/operations/fleet.webp"
@@ -666,7 +641,7 @@ function Fleet({ locale }: { locale: Locale }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40 pointer-events-none animate-none" />
 
               {/* Overlapping Route Lines for theme coherence */}
-              <div 
+              <div
                 className="absolute inset-0 z-1 opacity-20 pointer-events-none mix-blend-screen"
                 style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
               />
@@ -677,7 +652,7 @@ function Fleet({ locale }: { locale: Locale }) {
                   <Truck size={28} />
                 </div>
                 <div className="text-start">
-                  <span className="block text-2xl font-black text-white">
+                  <span className="block text-2xl font-bold text-white">
                     <AnimatedCounter value={20} suffix="+" />
                   </span>
                   <span className="block text-xs font-bold text-[#FFC247] uppercase tracking-wider">
@@ -695,6 +670,7 @@ function Fleet({ locale }: { locale: Locale }) {
 
 function Branches({ locale }: { locale: Locale }) {
   const copy = content[locale].branches;
+  const [selectedBranch, setSelectedBranch] = useState<typeof branches[0] | null>(null);
 
   return (
     <section id="branches" className="bg-white py-22">
@@ -703,16 +679,106 @@ function Branches({ locale }: { locale: Locale }) {
         <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {branches.map((branch, index) => (
             <Reveal key={branch.city.en} delay={index * 0.04}>
-              <BranchCard
-                city={branch.city[locale]}
-                phones={branch.phones}
-                callLabel={copy.call}
-                locale={locale}
-              />
+              <button
+                onClick={() => setSelectedBranch(branch)}
+                className="group relative flex items-center justify-between rounded-xl border border-black/8 bg-[#F7F7F4]/50 p-6 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/40 hover:bg-white hover:shadow-md text-start w-full cursor-pointer"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] text-[#FFC247] shadow-md group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white transition-all duration-300">
+                    <MapPin size={22} aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#1B1B1D] transition-colors group-hover:text-[#E87500]">
+                      {branch.city[locale]}
+                    </h3>
+                    <span className="text-xs text-[#343438]/50 mt-1 block">
+                      {locale === "ar" ? "اضغط لعرض أرقام التواصل" : "Click to view contact numbers"}
+                    </span>
+                  </div>
+                </div>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/5 text-[#E87500] group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
+                  <Phone size={14} />
+                </span>
+              </button>
             </Reveal>
           ))}
         </div>
       </Container>
+
+      {/* Modern Dialog Modal */}
+      <AnimatePresence>
+        {selectedBranch && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedBranch(null)}
+              className="absolute inset-0 bg-[#141416]/75 backdrop-blur-md"
+            />
+
+            {/* Modal Content */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#1B1B1D] p-6 shadow-2xl text-white"
+            >
+              {/* Top Accent line */}
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#FF8A00] to-[#FFC247]" />
+
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedBranch(null)}
+                className="absolute top-4 end-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+
+              {/* Header */}
+              <div className="flex items-center gap-3.5 mb-6 text-start">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
+                  <MapPin size={22} />
+                </span>
+                <div>
+                  <h3 className="text-xl font-bold">{selectedBranch.city[locale]}</h3>
+                  <p className="text-xs text-[#FFC247] uppercase tracking-wider font-semibold mt-0.5">
+                    {locale === "ar" ? "أرقام التواصل والفرع" : "Branch Contact Numbers"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone List */}
+              <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                {selectedBranch.phones.map((phone) => (
+                  <a
+                    key={phone}
+                    href={phoneHref(phone)}
+                    className="flex items-center justify-between gap-4 rounded-xl border border-white/8 bg-white/5 px-4 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_4px_15px_rgba(255,138,0,0.15)] group"
+                  >
+                    <span dir="ltr">{phone}</span>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 group-hover:bg-[#FF8A00] group-hover:text-white transition-colors duration-300">
+                      <Phone size={14} />
+                    </span>
+                  </a>
+                ))}
+              </div>
+
+              {/* Footer info */}
+              <div className="mt-6 border-t border-white/8 pt-4 text-center">
+                <p className="text-xs text-white/50">
+                  {locale === "ar"
+                    ? "جميع الأرقام قابلة للضغط للاتصال المباشر"
+                    : "All numbers are clickable for direct calls"}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -736,7 +802,7 @@ function Values({ locale }: { locale: Locale }) {
                     <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00]/12 to-[#FFC247]/8 text-[#FF8A00] transition-all duration-400 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white group-hover:shadow-[0_8px_24px_rgba(255,138,0,0.3)]">
                       <Icon aria-hidden="true" size={28} />
                     </div>
-                    <h3 className="text-xl font-black text-[#1B1B1D]">{title}</h3>
+                    <h3 className="text-xl font-bold text-[#1B1B1D]">{title}</h3>
                     <div
                       className="mx-auto my-4 h-[2px] w-10 rounded-full transition-all duration-400 group-hover:w-16"
                       style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
@@ -760,7 +826,7 @@ function Team({ locale }: { locale: Locale }) {
   const teamItems = [
     {
       title: isAr ? "خبرة السوق المحلي" : "Market Experience",
-      description: isAr 
+      description: isAr
         ? "فريق متمكن بخبرة عريقة تتجاوز 35 عاماً في فهم احتياجات السوق اليمني لقطع المركبات والدراجات."
         : "An expert team with over 35 years of experience in understanding Yemen's vehicle and motorcycle market.",
       Icon: Building2,
@@ -788,11 +854,11 @@ function Team({ locale }: { locale: Locale }) {
         <Reveal direction="right">
           <div className="relative">
             {/* Ambient blur */}
-            <div 
+            <div
               className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl pointer-events-none"
               style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
             />
-            
+
             <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
               <ParallaxImage
                 src="/images/operations/team.webp"
@@ -801,10 +867,10 @@ function Team({ locale }: { locale: Locale }) {
                 aspectRatio="aspect-[16/10]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-              
+
               {/* Floating label */}
               <div className="absolute bottom-4 start-4 rounded-lg border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md z-10">
-                <span className="text-xs font-black text-[#FFC247] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#FFC247] uppercase tracking-wider">
                   {isAr ? "فريق عمل متخصص" : "Professional Team"}
                 </span>
               </div>
@@ -816,18 +882,18 @@ function Team({ locale }: { locale: Locale }) {
         <Reveal>
           <div className="text-start">
             <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-            
+
             <div className="mt-8 space-y-5">
               {teamItems.map(({ title, description, Icon }, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="group flex gap-4 rounded-xl border border-black/5 bg-[#F7F7F4] p-5 transition-all duration-300 hover:border-[#FF8A00]/20 hover:bg-gradient-to-r hover:from-[#FF8A00]/5 hover:to-transparent"
                 >
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#2a2a2e] text-[#FFC247] shadow-lg transition-all duration-300 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-[#1B1B1D]">
                     <Icon aria-hidden="true" size={22} />
                   </span>
                   <div>
-                    <h4 className="text-base font-black text-[#1B1B1D] transition-colors duration-300 group-hover:text-[#E87500]">
+                    <h4 className="text-base font-bold text-[#1B1B1D] transition-colors duration-300 group-hover:text-[#E87500]">
                       {title}
                     </h4>
                     <p className="mt-1 text-sm leading-6 text-[#343438]/70">
@@ -853,12 +919,12 @@ function Quote({ locale }: { locale: Locale }) {
       {/* Background SVG graphics */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
         {/* Tire track */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
           style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
         />
         {/* Route lines */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.08] pointer-events-none"
           style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         />

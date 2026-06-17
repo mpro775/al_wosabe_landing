@@ -59,7 +59,7 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     // Check required fields
     if (!form.name.trim() || !form.phone.trim() || !form.city || !form.product) {
       setError(isAr ? "يرجى ملء جميع الحقول المطلوبة." : "Please fill in all required fields.");
@@ -102,22 +102,22 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         <input className={inputClass} required value={form.name} onChange={(e) => update("name", e.target.value)} placeholder={labels.name} aria-label={labels.name} />
         <input className={inputClass} value={form.business} onChange={(e) => update("business", e.target.value)} placeholder={labels.business} aria-label={labels.business} />
         <input className={inputClass} required value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder={labels.phone} aria-label={labels.phone} />
-        
+
         {/* City Dropdown */}
-        <select 
+        <select
           className={`${inputClass} text-white/95 bg-[#1C1C1E]`}
-          required 
-          value={form.city} 
-          onChange={(e) => update("city", e.target.value)} 
+          required
+          value={form.city}
+          onChange={(e) => update("city", e.target.value)}
           aria-label={labels.city}
         >
           <option value="" disabled className="text-white/40 bg-[#1C1C1E]">
             {labels.city}
           </option>
           {citiesList.map((item) => (
-            <option 
-              key={item.value} 
-              value={item.label[locale]} 
+            <option
+              key={item.value}
+              value={item.label[locale]}
               className="text-white bg-[#1C1C1E]"
             >
               {item.label[locale]}
@@ -126,20 +126,20 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         </select>
 
         {/* Product Category Dropdown */}
-        <select 
+        <select
           className={`${inputClass} text-white/95 bg-[#1C1C1E]`}
-          required 
-          value={form.product} 
-          onChange={(e) => update("product", e.target.value)} 
+          required
+          value={form.product}
+          onChange={(e) => update("product", e.target.value)}
           aria-label={labels.product}
         >
           <option value="" disabled className="text-white/40 bg-[#1C1C1E]">
             {labels.product}
           </option>
           {productsList.map((item) => (
-            <option 
-              key={item.value} 
-              value={item.label[locale]} 
+            <option
+              key={item.value}
+              value={item.label[locale]}
               className="text-white bg-[#1C1C1E]"
             >
               {item.label[locale]}
@@ -148,7 +148,7 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
         </select>
 
         <input className={inputClass} value={form.quantity} onChange={(e) => update("quantity", e.target.value)} placeholder={labels.quantity} aria-label={labels.quantity} />
-        
+
         <textarea
           className={`${inputClass} min-h-28 resize-y md:col-span-2`}
           value={form.message}
@@ -171,7 +171,7 @@ export function QuoteForm({ labels, locale }: { labels: Labels; locale: Locale }
 
         <button
           type="submit"
-          className="focus-ring group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#FF8A00] to-[#E87500] px-5 py-3 text-sm font-black text-[#1B1B1D] shadow-[0_12px_30px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_16px_40px_rgba(255,138,0,0.4)] hover:scale-[1.02] active:scale-[0.98] md:col-span-2 cursor-pointer"
+          className="focus-ring group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#FF8A00] to-[#E87500] px-5 py-3 text-sm font-bold text-[#1B1B1D] shadow-[0_12px_30px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_16px_40px_rgba(255,138,0,0.4)] hover:scale-[1.02] active:scale-[0.98] md:col-span-2 cursor-pointer"
         >
           {/* Shimmer overlay */}
           <div className="pointer-events-none absolute inset-0 shimmer opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

@@ -189,7 +189,7 @@ export function AnimatedRouteMap({
                     transformOrigin: `${branch.x}% ${branch.y}%`,
                   }}
                 />
-                
+
                 {/* Core point */}
                 <circle
                   cx={branch.x}
@@ -270,7 +270,7 @@ export function AnimatedRouteMap({
                 <MapPin size={16} />
               </span>
               <div>
-                <h4 className="text-sm font-black text-white">
+                <h4 className="text-sm font-bold text-white">
                   {activeBranch.city[locale]}
                 </h4>
                 <p className="text-xs text-white/50">
