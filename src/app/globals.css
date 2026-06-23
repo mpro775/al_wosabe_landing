@@ -30,6 +30,10 @@
   --color-sand-100: #f3f1ec;
   --color-paper: #ffffff;
 
+  /* ─── On dark utility variables ─── */
+  --color-on-dark: #eeeff1;
+  --color-on-dark-muted: #9a9da2;
+
   /* ─── Elevation: neutral, warm-tinted — replaces the orange neon glow ─── */
   --shadow-elev-1: 0 1px 2px rgba(23, 24, 27, 0.06), 0 4px 12px rgba(23, 24, 27, 0.05);
   --shadow-elev-2: 0 8px 24px rgba(23, 24, 27, 0.08), 0 2px 6px rgba(23, 24, 27, 0.06);
@@ -375,4 +379,17 @@ h3,
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ─── Header Navigation Links Styles ─── */
+header nav a {
+  color: var(--color-steel-200) !important;
+}
+
+header nav a.active {
+  color: var(--color-brand-bright) !important;
+}
+
+header nav a:hover {
+  color: #ffffff !important;
 }
