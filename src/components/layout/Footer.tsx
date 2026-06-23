@@ -49,29 +49,11 @@ export function Footer({ locale }: { locale: Locale }) {
     : "Hello, I would like to contact Al-Wosabe for Trading.";
 
   return (
-    <footer id="contact" className="relative overflow-hidden bg-[#111113] py-16 text-white">
-      {/* Background SVG graphics */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-        {/* Tire track */}
-        <div
-          className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '350px' }}
-        />
-        {/* Route lines */}
-        <div
-          className="absolute inset-0 opacity-[0.015] pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-      </div>
+    <footer id="contact" className="relative overflow-hidden bg-ink-950 py-16 text-white">
+      <div className="blueprint-grid pointer-events-none absolute inset-0 z-0 opacity-40" />
 
-      {/* Top gradient border */}
-      <div
-        className="absolute inset-x-0 top-0 h-[2px] z-1"
-        style={{ background: "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)" }}
-      />
-
-      {/* Subtle glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#FF8A00]/3 to-transparent z-1" />
+      {/* Top hairline accent */}
+      <div className="absolute inset-x-0 top-0 z-[1] h-px bg-gradient-to-r from-transparent via-brand/50 to-transparent" />
 
       <Container className="relative z-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.9fr_0.9fr_1.1fr]">
@@ -82,20 +64,20 @@ export function Footer({ locale }: { locale: Locale }) {
               alt={isAr ? "شعار الوصابي للتجارة باللون الأبيض" : "Al-Wosabe for Trading white logo"}
               width={260}
               height={70}
-              className="h-11 xl:h-12 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,138,0,0.1)]"
+              className="h-11 w-auto object-contain xl:h-12"
             />
-            <p className="mt-6 text-sm leading-8 text-white/55 max-w-sm">{labels.footer.description}</p>
+            <p className="mt-6 max-w-sm text-sm leading-8 text-steel-400">{labels.footer.description}</p>
             {/* Social-proof badge */}
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#FF8A00]/20 bg-white/5 px-4 py-2 text-xs font-bold text-white/70">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#FF8A00] animate-pulse" style={{ boxShadow: "0 0 6px rgba(255, 138, 0, 0.6)" }} />
-              <span className="text-[#FFC247]">{isAr ? "منذ 1986" : "Since 1986"}</span>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold text-steel-300">
+              <span className="inline-block h-2 w-2 rounded-full bg-brand" />
+              <span className="text-brand-bright">{isAr ? "منذ 1986" : "Since 1986"}</span>
             </div>
           </div>
 
           {/* Column 2: Products */}
           <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
-            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "المنتجات" : "Products"}</h3>
-            <div className="grid gap-2.5 text-sm text-white/55 justify-items-center sm:justify-items-start">
+            <h3 className="font-display mb-5 w-full text-base font-bold text-brand-bright">{isAr ? "المنتجات" : "Products"}</h3>
+            <div className="grid justify-items-center gap-2.5 text-sm text-steel-400 sm:justify-items-start">
               {productLinks.map(([label, href]) => (
                 <a
                   key={label}
@@ -110,8 +92,8 @@ export function Footer({ locale }: { locale: Locale }) {
 
           {/* Column 3: Branches */}
           <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
-            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "الفروع" : "Branches"}</h3>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2.5 sm:grid sm:gap-2.5 text-sm text-white/55 w-full">
+            <h3 className="font-display mb-5 w-full text-base font-bold text-brand-bright">{isAr ? "الفروع" : "Branches"}</h3>
+            <div className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2.5 text-sm text-steel-400 sm:grid sm:gap-2.5">
               {branchLinks.map(([label, href]) => (
                 <a
                   key={label}
@@ -123,24 +105,24 @@ export function Footer({ locale }: { locale: Locale }) {
               ))}
               <a
                 href="#branches"
-                className="mt-2 flex items-center justify-center sm:justify-start gap-1 text-xs font-bold text-[#FF8A00] hover:text-[#FFC247] transition-colors w-full sm:w-auto"
+                className="mt-2 flex w-full items-center justify-center gap-1 text-xs font-bold text-brand transition-colors hover:text-brand-bright sm:w-auto sm:justify-start"
               >
                 <span>{isAr ? "استعراض كل الفروع" : "View All Branches"}</span>
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={14} className="rtl:-scale-x-100" />
               </a>
             </div>
           </div>
 
           {/* Column 4: Contact & Quote */}
           <div className="flex flex-col items-center text-center sm:items-start sm:text-start">
-            <h3 className="mb-5 text-base font-bold text-[#FFC247] w-full">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
-            <div className="grid gap-3 text-sm text-white/55 w-full justify-items-center sm:justify-items-start">
+            <h3 className="font-display mb-5 w-full text-base font-bold text-brand-bright">{isAr ? "تواصل وطلب عرض سعر" : "Contact & Quote"}</h3>
+            <div className="grid w-full justify-items-center gap-3 text-sm text-steel-400 sm:justify-items-start">
               {/* Main Phone */}
               <a
                 href={phoneHref(company.whatsappNumber)}
                 className="flex items-center gap-3 transition-colors duration-300 hover:text-white"
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/8 text-[#FF8A00]">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-brand">
                   <Phone size={15} aria-hidden="true" />
                 </span>
                 <span dir="ltr" className="font-bold">+967 777 265 744</span>
@@ -148,7 +130,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
               {/* Main Office Location */}
               <span className="flex items-center gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/8 text-[#FF8A00]">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-brand">
                   <MapPin size={15} aria-hidden="true" />
                 </span>
                 <span>{isAr ? "صنعاء، الجمهورية اليمنية" : "Sana'a, Yemen"}</span>
@@ -159,7 +141,7 @@ export function Footer({ locale }: { locale: Locale }) {
                 href="#quote"
                 className="flex items-center gap-3 transition-colors duration-300 hover:text-white"
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/8 text-[#FF8A00]">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-brand">
                   <Mail size={15} aria-hidden="true" />
                 </span>
                 <span>{isAr ? "طلب عرض السعر" : "Request a Quote"}</span>

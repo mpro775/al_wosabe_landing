@@ -12,7 +12,7 @@ export function ScrollProgress() {
 
   return (
     <motion.div
-      className="fixed inset-x-0 top-0 z-[100] h-[3px] bg-gradient-to-r from-[#FF8A00] via-[#FFC247] to-[#FF8A00] origin-left"
+      className="fixed inset-x-0 top-0 z-[100] h-[3px] origin-left bg-[image:var(--grad-brand)]"
       style={{ scaleX }}
     />
   );

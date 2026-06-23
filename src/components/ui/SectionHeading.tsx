@@ -15,27 +15,41 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
-      <p className="mb-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-[#FF8A00]">
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full bg-[#FF8A00]"
-          style={{ boxShadow: "0 0 8px rgba(255, 138, 0, 0.5)" }}
-        />
+      <span
+        className={cn(
+          "mb-5 inline-flex items-center gap-2.5 rounded-full border py-1.5 ps-2.5 pe-3.5 text-xs font-bold uppercase tracking-[0.2em]",
+          dark
+            ? "border-white/10 bg-white/[0.04] text-steel-300"
+            : "border-steel-200 bg-paper text-graphite-500 shadow-[var(--shadow-elev-1)]",
+        )}
+      >
+        <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
         {eyebrow}
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full bg-[#FF8A00]"
-          style={{ boxShadow: "0 0 8px rgba(255, 138, 0, 0.5)" }}
-        />
-      </p>
-      <h2 className={cn("text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl", dark ? "text-white" : "text-[#1B1B1D]")}>
+      </span>
+
+      <h2
+        className={cn(
+          "font-display text-[1.75rem] font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-[2.75rem]",
+          dark ? "text-white" : "text-ink-900",
+        )}
+      >
         {title}
       </h2>
-      {/* Gradient underline accent */}
+
       <div
-        className={cn("mx-0 mt-4 h-1 w-16 rounded-full", align === "center" && "mx-auto")}
-        style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
+        className={cn(
+          "mt-5 h-[3px] w-14 rounded-full bg-[image:var(--grad-brand)]",
+          align === "center" && "mx-auto",
+        )}
       />
+
       {description ? (
-        <p className={cn("mt-5 text-base leading-8 sm:text-lg", dark ? "text-white/70" : "text-[#343438]/75")}>
+        <p
+          className={cn(
+            "mt-6 text-base leading-[1.85] sm:text-lg",
+            dark ? "text-steel-300" : "text-graphite-600",
+          )}
+        >
           {description}
         </p>
       ) : null}

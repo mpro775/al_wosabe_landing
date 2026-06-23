@@ -4,33 +4,42 @@ import { cn } from "@/lib/utils";
 
 type ButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "steel";
   children: ReactNode;
 };
 
 export function Button({ href, variant = "primary", children, className, ...props }: ButtonProps) {
   const internal = href.startsWith("/") || href.startsWith("#");
   const classes = cn(
-    "focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold transition-all duration-300",
+    "group focus-ring relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-lg px-6 py-3 text-sm font-bold tracking-tight transition-all duration-300 active:scale-[0.98]",
     variant === "primary" &&
-      "bg-gradient-to-r from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-[0_16px_40px_rgba(255,138,0,0.28)] hover:from-[#FFC247] hover:to-[#FF8A00] hover:shadow-[0_20px_50px_rgba(255,138,0,0.38)] hover:scale-[1.03] active:scale-[0.98]",
+      "bg-[image:var(--grad-brand)] text-ink-950 shadow-[var(--shadow-elev-2)] hover:shadow-[var(--shadow-elev-3)] hover:brightness-[1.04]",
     variant === "secondary" &&
-      "border border-white/20 bg-white/8 text-white backdrop-blur hover:border-[#FF8A00]/60 hover:bg-[#FF8A00]/12 hover:text-[#FFC247] hover:shadow-[0_0_20px_rgba(255,138,0,0.1)]",
-    variant === "ghost" && "text-[#1B1B1D] hover:bg-black/5",
+      "border border-white/15 bg-white/[0.04] text-on-dark backdrop-blur hover:border-brand/50 hover:bg-white/[0.07] hover:text-white",
+    variant === "steel" &&
+      "border border-steel-200 bg-paper text-ink-900 shadow-[var(--shadow-elev-1)] hover:border-steel-300 hover:shadow-[var(--shadow-elev-2)]",
+    variant === "ghost" && "text-ink-900 hover:bg-ink-950/5",
     className,
+  );
+
+  const content = (
+    <>
+      {variant === "primary" ? <span className="btn-sheen" aria-hidden="true" /> : null}
+      <span className="relative inline-flex items-center gap-2">{children}</span>
+    </>
   );
 
   if (internal) {
     return (
       <Link href={href} className={classes} {...props}>
-        {children}
+        {content}
       </Link>
     );
   }
 
   return (
     <a href={href} className={classes} {...props}>
-      {children}
+      {content}
     </a>
   );
 }

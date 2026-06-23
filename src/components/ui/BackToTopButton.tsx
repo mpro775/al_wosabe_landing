@@ -32,7 +32,7 @@ export function BackToTopButton() {
           transition={{ duration: 0.3, ease: "easeOut" }}
           onClick={scrollToTop}
           type="button"
-          className="fixed bottom-[84px] end-6 z-[90] flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#1B1B1D]/90 text-[#FFC247] shadow-2xl backdrop-blur-md hover:bg-[#FF8A00] hover:text-[#1B1B1D] hover:border-[#FF8A00] hover:shadow-[0_0_15px_rgba(255,138,0,0.3)] transition-all cursor-pointer select-none"
+          className="focus-ring fixed bottom-[84px] end-6 z-[90] flex h-11 w-11 cursor-pointer select-none items-center justify-center rounded-full border border-white/10 bg-ink-900/90 text-brand-bright shadow-[var(--shadow-elev-3)] backdrop-blur-md transition-all hover:border-brand hover:bg-brand hover:text-ink-950"
           aria-label="Back to top"
         >
           <ArrowUp size={18} />

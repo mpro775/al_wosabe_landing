@@ -1,21 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  --color-primary: #ff8a00;
-  --color-primary-dark: #e87500;
-  --color-primary-light: #ffc247;
-  --color-dark: #1b1b1d;
-  --color-dark-soft: #252529;
-  --color-graphite: #343438;
-  --color-light: #f7f7f4;
-  --color-muted: #a7a7a7;
+/* ════════════════════════════════════════════════════════════════
+   Al Wosabe — Premium Industrial Editorial Design System
+   Identity extracted from the logo: warm orange + brushed steel/graphite.
+   Tokens are exposed to Tailwind v4 via @theme (bg-brand, text-ink-900…).
+   ════════════════════════════════════════════════════════════════ */
 
-  /* Premium additions */
-  --glow-orange: 0 0 30px rgba(255, 138, 0, 0.35), 0 0 60px rgba(255, 138, 0, 0.15);
-  --glow-orange-sm: 0 0 15px rgba(255, 138, 0, 0.25);
-  --gradient-primary: linear-gradient(135deg, #ff8a00, #ffc247);
-  --gradient-dark: linear-gradient(135deg, #1b1b1d, #2a2a2e);
-  --gradient-card: linear-gradient(145deg, rgba(255,138,0,0.08), rgba(255,194,71,0.03));
+@theme {
+  /* ─── Brand: logo orange, calmed from neon toward a refined copper tone ─── */
+  --color-brand: #ed8b00;
+  --color-brand-bright: #f8a21e;
+  --color-brand-deep: #c26a06;
+  --color-brand-ember: #8a4b08;
+
+  /* ─── Ink / graphite / steel: the metallic identity (logo ring) ─── */
+  --color-ink-950: #17181b;
+  --color-ink-900: #1f2023;
+  --color-ink-800: #2a2c30;
+  --color-ink-700: #34373c;
+  --color-graphite-600: #4a4d52;
+  --color-graphite-500: #6b6e73;
+  --color-steel-400: #9a9da2;
+  --color-steel-300: #c2c5c9;
+  --color-steel-200: #dee0e3;
+  --color-steel-100: #eeeff1;
+
+  /* ─── Warm neutrals: light sections ─── */
+  --color-sand-50: #faf9f6;
+  --color-sand-100: #f3f1ec;
+  --color-paper: #ffffff;
+
+  /* ─── Elevation: neutral, warm-tinted — replaces the orange neon glow ─── */
+  --shadow-elev-1: 0 1px 2px rgba(23, 24, 27, 0.06), 0 4px 12px rgba(23, 24, 27, 0.05);
+  --shadow-elev-2: 0 8px 24px rgba(23, 24, 27, 0.08), 0 2px 6px rgba(23, 24, 27, 0.06);
+  --shadow-elev-3: 0 24px 60px rgba(23, 24, 27, 0.14), 0 8px 20px rgba(23, 24, 27, 0.08);
+}
+
+/* ─── Semantic + gradient tokens (not Tailwind utilities, used via var()) ─── */
+:root {
+  --bg: var(--color-sand-50);
+  --surface: var(--color-paper);
+  --bg-dark: var(--color-ink-950);
+  --surface-dark: var(--color-ink-900);
+  --border: var(--color-steel-200);
+  --border-dark: rgba(255, 255, 255, 0.09);
+  --text: var(--color-ink-900);
+  --text-muted: var(--color-graphite-500);
+  --on-dark: var(--color-steel-100);
+  --on-dark-muted: var(--color-steel-400);
+  --accent: var(--color-brand);
+  --ring: var(--color-brand);
+
+  --grad-brand: linear-gradient(135deg, #f8a21e, #ed8b00);
+  --grad-brand-deep: linear-gradient(135deg, #ed8b00, #c26a06);
+  --grad-chrome: linear-gradient(
+    145deg,
+    #edeff1 0%,
+    #c2c5c9 28%,
+    #7c7f84 52%,
+    #c2c5c9 74%,
+    #9a9da2 100%
+  );
+  --grad-dark: linear-gradient(160deg, #1f2023, #17181b 60%);
 }
 
 * {
@@ -28,8 +74,12 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-light);
-  color: var(--color-dark);
+  background: var(--bg);
+  color: var(--text);
+  /* next/font vars are set on <body> by the layout, so reference them directly */
+  font-family: var(--font-plex-arabic), var(--font-sora), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -44,78 +94,46 @@ textarea {
   font: inherit;
 }
 
-::selection {
-  background: rgba(255, 138, 0, 0.28);
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-noto-kufi), var(--font-sora), system-ui, sans-serif;
 }
 
-/* ─── Scrollbar Styling ─── */
+.font-body {
+  font-family: var(--font-plex-arabic), var(--font-sora), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(237, 139, 0, 0.22);
+  color: var(--color-ink-950);
+}
+
+/* ─── Scrollbar — brushed steel + brand thumb ─── */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1b1b1d;
+  background: var(--color-ink-950);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ff8a00, #e87500);
-  border-radius: 4px;
+  background: linear-gradient(180deg, #6b6e73, #34373c);
+  border-radius: 6px;
+  border: 2px solid var(--color-ink-950);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #ffc247, #ff8a00);
+  background: linear-gradient(180deg, #f8a21e, #ed8b00);
 }
 
-/* ─── Keyframe Animations ─── */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(255, 138, 0, 0.3); }
-  50% { box-shadow: 0 0 22px rgba(255, 138, 0, 0.55), 0 0 40px rgba(255, 138, 0, 0.2); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-8px) rotate(1deg); }
-  66% { transform: translateY(4px) rotate(-1deg); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes dot-pulse {
-  0%, 100% { opacity: 0.45; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.5); }
-}
-
-@keyframes border-glow {
-  0%, 100% { border-color: rgba(255, 138, 0, 0.2); }
-  50% { border-color: rgba(255, 138, 0, 0.5); }
-}
-
-@keyframes text-glow {
-  0%, 100% { text-shadow: 0 0 10px rgba(255, 138, 0, 0.3); }
-  50% { text-shadow: 0 0 25px rgba(255, 138, 0, 0.5), 0 0 50px rgba(255, 138, 0, 0.2); }
-}
-
+/* ════════════════════════════════════════════════════════════════
+   Keyframes — calm, purposeful (no infinite neon glows)
+   ════════════════════════════════════════════════════════════════ */
 @keyframes slide-in-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -124,115 +142,116 @@ textarea {
   to { transform: scaleY(1); }
 }
 
-@keyframes timeline-dot-glow {
-  0%, 100% { box-shadow: 0 0 6px rgba(255, 138, 0, 0.3), 0 0 12px rgba(255, 138, 0, 0.1); }
-  50% { box-shadow: 0 0 14px rgba(255, 138, 0, 0.6), 0 0 28px rgba(255, 138, 0, 0.25); }
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.35); }
 }
 
 @keyframes drift-horizontal {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-10%); }
+  100% { transform: translateX(-8%); }
 }
 
-/* ─── Background Patterns ─── */
-.industrial-grid {
+@keyframes sheen {
+  0% { transform: translateX(-130%) skewX(-18deg); }
+  60%, 100% { transform: translateX(260%) skewX(-18deg); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Surfaces & textures — restrained, one quiet layer at a time
+   ════════════════════════════════════════════════════════════════ */
+
+/* Faint engineering grid for dark sections (very low contrast) */
+.blueprint-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 42px 42px;
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 35%, transparent 100%);
 }
 
-.route-lines {
-  background-image:
-    radial-gradient(circle at 15% 20%, rgba(255, 138, 0, 0.18), transparent 25%),
-    linear-gradient(120deg, transparent 0 18%, rgba(255, 138, 0, 0.22) 18% 19%, transparent 19% 100%),
-    linear-gradient(150deg, transparent 0 38%, rgba(255, 194, 71, 0.14) 38% 39%, transparent 39% 100%);
+/* Soft brand ambience for hero — single quiet radial */
+.ambient-dark {
+  background:
+    radial-gradient(ellipse 60% 50% at 78% 18%, rgba(248, 162, 30, 0.10), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 12% 90%, rgba(107, 110, 115, 0.18), transparent 65%);
 }
 
-.tire-track {
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0 9px,
-    transparent 9px 18px
+/* Brushed-steel surface — the metallic identity nod */
+.chrome {
+  background: var(--grad-chrome);
+}
+
+.chrome-text {
+  background: var(--grad-chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hairline divider in steel */
+.hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-steel-300) 18%,
+    var(--color-steel-300) 82%,
+    transparent
   );
 }
 
-/* ─── Glassmorphism ─── */
-.glass {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.hairline-dark {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
 }
 
+/* ─── Glass (refined, neutral — used sparingly on dark) ─── */
 .glass-dark {
-  background: rgba(27, 27, 29, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(31, 32, 35, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(23, 24, 27, 0.06);
 }
 
-/* ─── Gradient Borders ─── */
-.gradient-border {
+/* ─── Steel-framed media (images get a thin metallic frame) ─── */
+.steel-frame {
   position: relative;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  border-radius: 18px;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(255,138,0,0.5), rgba(255,194,71,0.2), rgba(255,138,0,0.5));
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  pointer-events: none;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.35), rgba(154, 157, 162, 0.25) 45%, rgba(52, 55, 60, 0.4));
+  box-shadow: var(--shadow-elev-3);
 }
 
-/* ─── Text Gradient ─── */
+/* ─── Text gradient — brand, static (no infinite animation) ─── */
 .text-gradient {
-  background: linear-gradient(135deg, #ff8a00, #ffc247, #ff8a00);
-  background-size: 200% auto;
+  background: linear-gradient(135deg, #f8a21e, #ed8b00);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-shift 4s ease infinite;
 }
 
-/* ─── Shimmer Effect ─── */
-.shimmer {
-  background: linear-gradient(
-    110deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 70%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* ─── Animated Underline ─── */
+/* ─── Animated underline (nav) — brand ─── */
 .animated-underline {
   position: relative;
 }
 
 .animated-underline::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: -6px;
   inset-inline-start: 0;
   width: 0;
   height: 2px;
-  background: var(--gradient-primary);
-  transition: width 0.35s ease;
+  background: var(--grad-brand);
+  transition: width 0.3s ease;
   border-radius: 2px;
 }
 
@@ -241,115 +260,78 @@ textarea {
   width: 100%;
 }
 
-/* ─── Glowing Dot ─── */
-.glow-dot {
-  position: relative;
+/* ─── Card hover — neutral elevation lift (no orange glow) ─── */
+.card-rise {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
 }
 
-.glow-dot::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: rgba(255, 138, 0, 0.4);
-  animation: dot-pulse 2s ease-in-out infinite;
+.card-rise:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-elev-3);
 }
 
-/* ─── Card Hover Glow ─── */
-.card-hover-glow {
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.card-hover-glow:hover {
-  box-shadow: 0 20px 60px rgba(255, 138, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
-  transform: translateY(-4px);
-}
-
-/* ─── Gradient Top Border for Cards ─── */
-.gradient-top-border {
+/* ─── Top accent rule that reveals on hover ─── */
+.accent-top {
   position: relative;
   overflow: hidden;
 }
 
-.gradient-top-border::before {
-  content: '';
+.accent-top::before {
+  content: "";
   position: absolute;
   top: 0;
   inset-inline-start: 0;
   inset-inline-end: 0;
   height: 3px;
-  background: var(--gradient-primary);
+  background: var(--grad-brand);
+  transform: scaleX(0);
+  transform-origin: var(--accent-origin, left);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.accent-top:hover::before {
+  transform: scaleX(1);
+}
+
+/* ─── Button sheen (subtle, on hover only) ─── */
+.btn-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
   opacity: 0;
-  transition: opacity 0.35s ease;
 }
 
-.gradient-top-border:hover::before {
+.group:hover .btn-sheen::after {
   opacity: 1;
+  animation: sheen 0.9s ease forwards;
 }
 
-/* ─── Focus Ring ─── */
+/* ─── Focus ring ─── */
 .focus-ring {
   outline: 2px solid transparent;
   outline-offset: 3px;
 }
 
 .focus-ring:focus-visible {
-  outline-color: var(--color-primary);
+  outline-color: var(--color-brand);
 }
 
-/* ─── Floating Shapes ─── */
-.floating-shape {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.07;
-  pointer-events: none;
-}
-
-.floating-shape-1 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, #ff8a00, transparent);
-  top: 10%;
-  inset-inline-end: 15%;
-  animation: float-slow 8s ease-in-out infinite;
-}
-
-.floating-shape-2 {
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #ffc247, transparent);
-  bottom: 20%;
-  inset-inline-start: 10%;
-  animation: float-slow 12s ease-in-out infinite reverse;
-}
-
-.floating-shape-3 {
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, #ff8a00, transparent);
-  top: 50%;
-  inset-inline-start: 45%;
-  animation: float-slow 10s ease-in-out infinite 2s;
-}
-
-/* ─── Hero Gradient Overlay ─── */
-.hero-gradient-overlay {
-  background:
-    radial-gradient(ellipse at 20% 80%, rgba(255, 138, 0, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(255, 194, 71, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(255, 138, 0, 0.04) 0%, transparent 70%);
-}
-
-/* ─── Section Divider ─── */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 138, 0, 0.3), transparent);
-}
-
-/* ─── Map Pulse Points (SVG) ─── */
+/* ─── Map pulse (SVG, mild) ─── */
 .map-pulse {
-  animation: dot-pulse 2.5s ease-in-out infinite;
+  animation: dot-pulse 2.6s ease-in-out infinite;
 }
 
 /* ─── Reduced Motion ─── */

@@ -60,237 +60,176 @@ export function LandingPage({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Hero ───────────────────────── */
 function Hero({ locale, years }: { locale: Locale; years: number }) {
   const hero = content[locale].hero;
   const isAr = locale === "ar";
 
-  // Split title to style specific words
-  // "الوصابي للتجارة" -> "الوصابي" (white), "للتجارة" (orange)
-  // "Al-Wosabe for Trading" -> "Al-Wosabe" (white), "for Trading" (orange)
-  const renderTitle = () => {
-    if (isAr) {
-      return (
-        <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-center lg:text-start text-white w-full">
-          <SplitTextReveal text="الوصابي" />{" "}
-          <span className="text-[#FF8A00] drop-shadow-[0_0_15px_rgba(255,138,0,0.2)]">
-            <SplitTextReveal text="للتجارة" />
-          </span>
-        </h1>
-      );
-    }
-    return (
-      <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl xl:text-7xl text-center lg:text-start text-white w-full">
-        <SplitTextReveal text="Al-Wosabe" />{" "}
-        <span className="text-[#FF8A00] drop-shadow-[0_0_15px_rgba(255,138,0,0.2)]">
-          <SplitTextReveal text="for Trading" />
-        </span>
-      </h1>
-    );
-  };
+  const credentials: [string, string][] = isAr
+    ? [
+        ["1986", "سنة التأسيس"],
+        [`${years}+`, "عامًا من الخبرة"],
+        [`${branches.length}`, "فروع رئيسية"],
+        ["50K+", "عميل وتاجر"],
+      ]
+    : [
+        ["1986", "Established"],
+        [`${years}+`, "Years"],
+        [`${branches.length}`, "Branches"],
+        ["50K+", "Clients"],
+      ];
+
+  const renderTitle = () => (
+    <h1 className="font-display w-full text-center text-[2.6rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-start lg:text-[4.25rem] xl:text-[4.75rem]">
+      <SplitTextReveal text={isAr ? "الوصابي" : "Al-Wosabe"} />{" "}
+      <span className="text-gradient">
+        <SplitTextReveal text={isAr ? "للتجارة" : "for Trading"} />
+      </span>
+    </h1>
+  );
 
   return (
-    <section id="home" className="relative min-h-[760px] md:min-h-screen overflow-hidden bg-[#1B1B1D] pt-28 text-white flex items-center">
-      {/* Ambient warehouse background image */}
-      <div className="absolute inset-0 z-0 opacity-[0.04] filter grayscale pointer-events-none">
-        <Image
-          src="/images/hero/hero-warehouse.webp"
-          alt=""
-          fill
-          priority
-          className="object-cover"
-        />
+    <section
+      id="home"
+      className="relative flex min-h-[760px] items-center overflow-hidden bg-ink-950 pt-28 text-on-dark md:min-h-screen"
+    >
+      {/* Single quiet ambient layer + faint engineering grid */}
+      <div className="ambient-dark pointer-events-none absolute inset-0 z-0" />
+      <div className="blueprint-grid pointer-events-none absolute inset-0 z-0 opacity-70" />
+
+      {/* Ambient warehouse texture — very faint */}
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.05] grayscale">
+        <Image src="/images/hero/hero-warehouse.webp" alt="" fill priority className="object-cover" />
       </div>
 
-      {/* SVG Background Layers */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-1">
-        {/* Tire track svg layer */}
-        <div
-          className="absolute -end-10 top-0 h-full w-[350px] opacity-[0.02] mix-blend-overlay rotate-6 pointer-events-none bg-repeat-y"
-          style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: 'contain' }}
-        />
-        {/* Route lines animated drifting background — slow horizontal pan */}
-        <motion.div
-          className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: '120% 120%', backgroundPosition: 'center' }}
-          animate={{
-            x: ["0%", "-10%"],
-          }}
-          transition={{
-            duration: 60,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "linear",
-          }}
-        />
-      </div>
-
-      {/* Diagonal orange stripe */}
-      <motion.div
-        initial={{ x: isAr ? "100%" : "-100%", opacity: 0 }}
-        whileInView={{ x: "0%", opacity: 0.12 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className={`absolute top-0 bottom-0 w-[45%] bg-[#FF8A00] pointer-events-none z-[1] -skew-x-[12deg] ${isAr ? "right-[-10%]" : "left-[-10%]"
-          }`}
-      />
-
-      {/* Grid Pattern and Overlay */}
-      <div className="industrial-grid absolute inset-0 opacity-20 z-1 pointer-events-none" />
-      <div className="hero-gradient-overlay absolute inset-0 z-1 pointer-events-none" />
-
-      <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-12 py-14 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-start w-full">
-          {/* Small floating logo badge */}
-          <Reveal className="hidden lg:block">
-            <div className="relative mb-6 flex items-center gap-3 rounded-xl border border-white/10 bg-black/45 p-2 pe-3.5 backdrop-blur-md">
-              <div className="relative flex h-9 w-14 items-center justify-center overflow-hidden rounded bg-white p-1">
-                <Image
-                  src={company.logo}
-                  alt=""
-                  width={100}
-                  height={28}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <div className="flex flex-col text-start">
-                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#FF8A00]">
-                  {isAr ? "الوصابي للتجارة" : "Al-Wosabe Trading"}
-                </span>
-                <span className="text-[9px] font-bold text-white/50">
-                  {isAr ? "تأسست عام 1986" : "Since 1986"}
-                </span>
-              </div>
-            </div>
+      <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* Copy column */}
+        <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-start">
+          <Reveal delay={0.05}>
+            <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] py-1.5 ps-2.5 pe-4 text-xs font-bold uppercase tracking-[0.18em] text-steel-300 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+              {hero.eyebrow}
+            </span>
           </Reveal>
 
-          {/* Hero Eyebrow */}
-          <Reveal delay={0.1}>
-            <div className="relative mb-5 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#FF8A00]/30 bg-[#FF8A00]/8 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#FFC247]">
-              <span className="relative">{hero.eyebrow}</span>
-            </div>
-          </Reveal>
-
-          {/* Title */}
           {renderTitle()}
 
-          {/* Separator */}
-          <Reveal delay={0.2}>
-            <div
-              className="my-5 h-[3px] w-20 rounded-full"
-              style={{
-                background: "linear-gradient(90deg, #ff8a00, #ffc247)",
-                boxShadow: "0 0 15px rgba(255, 138, 0, 0.4)",
-              }}
-            />
-          </Reveal>
-
-          <Reveal delay={0.3} className="w-full">
-            <p className="text-xl font-bold leading-tight text-[#FFC247] text-center lg:text-start w-full">
-              {hero.subtitle}{" "}
-              <span className="text-white font-normal text-sm opacity-50 block md:inline md:ms-2">
-                ({isAr ? "منذ 1986" : "Since 1986"})
-              </span>
+          <Reveal delay={0.25} className="w-full">
+            <p className="mt-7 w-full text-lg font-bold leading-snug text-steel-200 sm:text-xl">
+              {hero.subtitle}
             </p>
           </Reveal>
 
-          <Reveal delay={0.4} className="w-full flex justify-center lg:justify-start">
-            <p className="mt-4 max-w-xl text-base leading-8 text-white/75 text-center lg:text-start w-full">{hero.description}</p>
+          <Reveal delay={0.35} className="flex w-full justify-center lg:justify-start">
+            <p className="mt-4 max-w-xl text-base leading-[1.9] text-steel-400">{hero.description}</p>
           </Reveal>
 
-          {/* CTAs */}
-          <Reveal delay={0.5} className="w-full flex justify-center lg:justify-start">
-            <div className="mt-8 flex flex-row gap-3 w-full max-w-md sm:max-w-none sm:w-auto justify-center lg:justify-start">
-              <Button href="#quote" className="flex-1 sm:flex-none min-h-12 px-4 sm:px-6 text-sm">
+          <Reveal delay={0.45} className="flex w-full justify-center lg:justify-start">
+            <div className="mt-9 flex w-full max-w-md flex-row gap-3 sm:w-auto sm:max-w-none">
+              <Button href="#quote" className="flex-1 sm:flex-none">
                 {hero.primary}
-                <ArrowUpRight aria-hidden="true" size={18} />
+                <ArrowUpRight aria-hidden="true" size={18} className="rtl:-scale-x-100" />
               </Button>
-              <Button href="#products" variant="secondary" className="flex-1 sm:flex-none min-h-12 px-4 sm:px-6 text-sm">
+              <Button href="#products" variant="secondary" className="flex-1 sm:flex-none">
                 {hero.secondary}
               </Button>
             </div>
           </Reveal>
+
+          {/* Credential strip — replaces floating glassy badges */}
+          <Reveal delay={0.55} className="w-full">
+            <div className="mt-12 flex w-full items-stretch justify-center gap-0 lg:justify-start">
+              {credentials.map(([value, label], i) => (
+                <div key={label} className="flex items-stretch">
+                  {i > 0 && <span className="mx-4 w-px self-stretch bg-white/10 sm:mx-6" aria-hidden="true" />}
+                  <div className="text-center lg:text-start">
+                    <div className="font-display text-2xl font-extrabold tabular-nums text-white sm:text-3xl">
+                      {value}
+                    </div>
+                    <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-steel-400">
+                      {label}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
-        {/* Hero Visual Column */}
+        {/* Visual column */}
         <div className="relative w-full max-lg:order-2">
-          {/* Glowing backdrop elements */}
-          <div
-            className="absolute -inset-10 skew-x-[-6deg] rounded-3xl opacity-30 blur-3xl pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.2) 0%, transparent 70%)" }}
-          />
-
-          {/* Main Image Container (Trucks) — scale entry from 1.04 */}
           <motion.div
             className="relative z-10"
-            initial={{ scale: 1.04, opacity: 0 }}
+            initial={{ scale: 1.03, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/12 bg-white/5 p-2 shadow-2xl backdrop-blur-sm">
-              <ParallaxImage
-                src="/images/hero/hero-trucks.webp"
-                alt={isAr ? "صورة تعبيرية لأسطول توزيع" : "Illustrative image of distribution fleet"}
-                aspectRatio="aspect-auto h-full"
-                containerClassName="rounded-xl overflow-hidden h-full"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1B1B1D]/80 via-transparent to-black/20 pointer-events-none rounded-xl m-2" />
+            <div className="steel-frame">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[17px] bg-ink-900">
+                <ParallaxImage
+                  src="/images/hero/hero-trucks.webp"
+                  alt={isAr ? "أسطول توزيع الوصابي للتجارة" : "Al-Wosabe distribution fleet"}
+                  aspectRatio="aspect-auto h-full"
+                  containerClassName="h-full"
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  priority
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/75 via-transparent to-transparent" />
+              </div>
             </div>
           </motion.div>
 
-          {/* Secondary Image Card (Warehouse) - Desktop Only */}
-          <div className="hidden md:block absolute -bottom-10 -start-10 w-[55%] aspect-[4/3] rounded-xl border border-white/15 bg-[#1B1B1D]/90 p-1.5 shadow-2xl z-20">
-            <div className="relative h-full w-full overflow-hidden rounded-lg bg-neutral-950">
-              <Image
-                src="/images/hero/hero-warehouse.webp"
-                alt={isAr ? "صورة تعبيرية لمستودعات ومنتجات" : "Illustrative image of warehouse and product storage"}
-                fill
-                sizes="20vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-              <span className="absolute bottom-2.5 start-3 text-[10px] font-bold tracking-wider text-[#FFC247] uppercase bg-black/60 px-2 py-0.5 rounded">
-                {isAr ? "المستودعات والمخازن" : "Logistics & Storage"}
-              </span>
+          {/* Offset secondary card */}
+          <div className="absolute -bottom-10 -start-8 z-20 hidden w-[52%] md:block">
+            <div className="steel-frame">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[17px] bg-ink-900">
+                <Image
+                  src="/images/hero/hero-warehouse.webp"
+                  alt={isAr ? "مستودعات الوصابي" : "Al-Wosabe warehouses"}
+                  fill
+                  sizes="22vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 to-transparent" />
+                <span className="absolute bottom-3 start-3 rounded-md bg-ink-950/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-steel-200 backdrop-blur">
+                  {isAr ? "المستودعات والمخازن" : "Logistics & Storage"}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Floating interactive badge */}
-          <Reveal delay={0.4} className="absolute -top-6 -end-4 z-20">
-            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#141416]/95 p-3 shadow-xl backdrop-blur-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FFC247]">
+          {/* Single metallic floating badge */}
+          <Reveal delay={0.4} className="absolute -top-5 -end-3 z-30">
+            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink-900/90 p-3 shadow-[var(--shadow-elev-3)] backdrop-blur-md">
+              <div className="chrome flex h-10 w-10 items-center justify-center rounded-lg text-ink-950">
                 <Truck size={20} />
               </div>
               <div className="text-start">
                 <span className="block text-xs font-bold text-white">{isAr ? "أسطول نشط" : "Active Fleet"}</span>
-                <span className="block text-[10px] font-bold text-white/50">{isAr ? "توزيع الجمهورية" : "Nationwide Delivery"}</span>
+                <span className="block text-[10px] font-bold text-steel-400">
+                  {isAr ? "توزيع للجمهورية" : "Nationwide Delivery"}
+                </span>
               </div>
             </div>
           </Reveal>
         </div>
       </Container>
 
-      {/* Bottom gradient fade */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F7F7F4] to-transparent z-2" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24 bg-gradient-to-t from-sand-50 to-transparent" />
     </section>
   );
 }
 
+/* ───────────────────────── Stats ───────────────────────── */
 function Stats({ locale, years }: { locale: Locale; years: number }) {
   const stats = content[locale].stats;
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F7F4] py-18">
-      {/* Route lines background graphic */}
-      <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none select-none"
-        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-      />
-      <Container className="relative z-10">
+    <section className="bg-sand-50 py-20 sm:py-24">
+      <Container>
         <SectionHeading eyebrow={stats.eyebrow} title={stats.title} align="center" />
-        <div className="mt-12 grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-5">
           {stats.items.map(([value, label], index) => {
             const isYears = value === "years";
             const numeric = /^\d/.test(value);
@@ -298,14 +237,12 @@ function Stats({ locale, years }: { locale: Locale; years: number }) {
             const suffix = value.includes("+") || isYears ? "+" : "";
 
             return (
-              <Reveal key={label} delay={index * 0.1} className={cn(index === 4 && "col-span-2 sm:col-span-1")}>
-                <div className="gradient-top-border group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-5 sm:p-6 text-center shadow-sm transition-all duration-400 hover:shadow-[0_20px_50px_rgba(255,138,0,0.12)] hover:-translate-y-1">
-                  {/* Subtle gradient overlay on hover */}
-                  <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#FF8A00]/0 to-[#FFC247]/0 opacity-0 transition-opacity duration-400 group-hover:from-[#FF8A00]/4 group-hover:to-[#FFC247]/2 group-hover:opacity-100" />
-                  <strong className="relative block text-3xl sm:text-4xl font-bold text-[#FF8A00]">
+              <Reveal key={label} delay={index * 0.08} className={cn(index === 4 && "col-span-2 lg:col-span-1")}>
+                <div className="accent-top card-rise group h-full rounded-2xl border border-steel-200 bg-paper p-6 text-center shadow-[var(--shadow-elev-1)] hover:border-steel-300">
+                  <strong className="font-display block text-3xl font-extrabold tabular-nums text-ink-900 sm:text-[2.5rem]">
                     {numberValue === null ? value : <AnimatedCounter value={numberValue} suffix={suffix} />}
                   </strong>
-                  <span className="relative mt-2.5 sm:mt-3 block text-xs sm:text-sm font-bold leading-6 text-[#343438]/65">{label}</span>
+                  <span className="mt-3 block text-xs font-bold leading-6 text-graphite-500 sm:text-sm">{label}</span>
                 </div>
               </Reveal>
             );
@@ -316,47 +253,26 @@ function Stats({ locale, years }: { locale: Locale; years: number }) {
   );
 }
 
+/* ───────────────────────── About + Timeline ───────────────────────── */
 function About({ locale }: { locale: Locale }) {
   const about = content[locale].about;
 
   return (
-    <section id="about" className="bg-white py-22">
-      <Container className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+    <section id="about" className="bg-paper py-20 sm:py-28">
+      <Container className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <Reveal direction="right">
-          <div className="overflow-hidden rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] p-7 text-white shadow-2xl">
-            {/* Gradient accent */}
-            <div
-              className="mb-6 h-[2px] w-20 rounded-full"
-              style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
-            />
-            <div className="route-lines rounded-lg border border-white/8 p-6">
+          <div className="overflow-hidden rounded-2xl bg-[image:var(--grad-dark)] p-8 text-white shadow-[var(--shadow-elev-3)]">
+            <div className="mb-7 h-[3px] w-16 rounded-full bg-[image:var(--grad-brand)]" />
+            <div className="rounded-xl border border-white/8 p-7">
               {about.timeline.map(([year, text], idx) => (
-                <div
-                  key={year}
-                  className="relative pb-8 ps-7 last:pb-0"
-                >
-                  {/* Timeline vertical line — draw animation */}
+                <div key={year} className="relative pb-9 ps-7 last:pb-0">
                   <div
-                    className="absolute start-0 top-0 bottom-0 w-[2px] bg-[#FF8A00]/30"
-                    style={{
-                      transformOrigin: "top",
-                      animation: `timeline-draw 1.2s ease-out ${idx * 0.3}s both`,
-                    }}
+                    className="absolute bottom-0 start-[3px] top-1 w-px bg-steel-400/25"
+                    style={{ transformOrigin: "top", animation: `timeline-draw 1.1s ease-out ${idx * 0.25}s both` }}
                   />
-                  {/* Glowing dot with pulse animation */}
-                  <span
-                    className="absolute -start-[4px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#FF8A00]"
-                    style={{
-                      animation: `timeline-dot-glow 2.5s ease-in-out ${idx * 0.4 + 0.8}s infinite`,
-                      boxShadow: "0 0 10px rgba(255, 138, 0, 0.5), 0 0 20px rgba(255, 138, 0, 0.2)",
-                    }}
-                  />
-                  {/* Outer ring */}
-                  <span
-                    className="absolute -start-[8px] top-[2px] h-[18px] w-[18px] rounded-full border-2 border-[#FF8A00]/25"
-                  />
-                  <strong className="text-2xl font-bold text-[#FFC247]">{year}</strong>
-                  <p className="mt-2 text-sm leading-7 text-white/60">{text}</p>
+                  <span className="absolute -start-[3px] top-1.5 h-3 w-3 rounded-full border-2 border-ink-900 bg-brand ring-2 ring-brand/25" />
+                  <strong className="font-display text-xl font-extrabold text-brand-bright">{year}</strong>
+                  <p className="mt-2 text-sm leading-7 text-steel-400">{text}</p>
                 </div>
               ))}
             </div>
@@ -364,7 +280,7 @@ function About({ locale }: { locale: Locale }) {
         </Reveal>
         <Reveal>
           <SectionHeading eyebrow={about.eyebrow} title={about.title} />
-          <div className="mt-6 grid gap-4 text-base leading-8 text-[#343438]/75">
+          <div className="mt-7 grid gap-4 text-base leading-[1.9] text-graphite-600">
             {about.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -375,114 +291,70 @@ function About({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Operations ───────────────────────── */
 function Operations({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
 
+  const points: [string, string][] = [
+    [
+      isAr ? "مستودعات منظمة وجاهزية توريد" : "Organized Warehousing & Supply Readiness",
+      isAr
+        ? "مستودعاتنا مجهزة لتخزين الإطارات والبطاريات والزيوت بطرق منظمة تحافظ على سلامة وجودة المنتجات وتسهل عمليات الشحن السريع."
+        : "Our storage spaces are tailored to house tires, batteries, and lubricants systematically, preserving product quality and facilitating rapid dispatch.",
+    ],
+    [
+      isAr ? "إدارة منظمة للمخزون" : "Organized Inventory Management",
+      isAr
+        ? "نطبق أنظمة دقيقة لمراقبة المخزون تضمن توفر الفئات المطلوبة بشكل دائم وسد النقص الفوري في نقاط التوزيع المختلفة."
+        : "We employ precise inventory tracking systems to maintain stock levels, avoiding supply bottlenecks and ensuring continuous availability.",
+    ],
+  ];
+
   return (
-    <section className="relative overflow-hidden bg-[#F7F7F4] py-22">
-      {/* Background graphic track */}
-      <div
-        className="absolute inset-y-0 start-0 w-1/3 opacity-[0.02] pointer-events-none select-none"
-        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-      />
-
-      <Container className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        {/* Image / Stats Column */}
+    <section className="bg-sand-50 py-20 sm:py-28">
+      <Container className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <Reveal direction="right">
-          <div className="relative">
-            {/* Glow effect behind image */}
-            <div
-              className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(255, 194, 71, 0.12) 0%, transparent 70%)" }}
-            />
-
-            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+          <div className="steel-frame">
+            <div className="relative overflow-hidden rounded-[17px] bg-ink-900">
               <ParallaxImage
                 src="/images/operations/warehouse.webp"
-                alt={isAr ? "صورة تعبيرية لمستودعات ومنتجات" : "Illustrative image of warehouse and product storage"}
-                containerClassName="rounded-xl overflow-hidden"
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                alt={isAr ? "مستودعات ومخزون الوصابي" : "Al-Wosabe warehouse and inventory"}
+                containerClassName=""
+                sizes="(max-width: 1024px) 100vw, 45vw"
               />
-              {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 pointer-events-none" />
-
-              {/* Overlapping Route Lines for theme coherence */}
-              <div
-                className="absolute inset-0 z-1 opacity-15 pointer-events-none mix-blend-screen"
-                style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-              />
-
-              {/* Floating labels over image */}
-              <div className="absolute top-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
-                <span className="h-2 w-2 rounded-full bg-[#FF8A00]" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/15 to-transparent" />
+              <div className="absolute top-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-ink-950/70 px-3 py-1.5 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-steel-200">
                   {isAr ? "تخزين آمن منذ 1986" : "Secure Storage Since 1986"}
-                </span>
-              </div>
-
-              <div className="absolute top-1/2 -translate-y-1/2 end-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
-                <span className="h-2 w-2 rounded-full bg-[#FFC247]" />
-                <span className="text-[10px] font-bold text-[#FFC247] uppercase tracking-wider">
-                  {isAr ? "مخزون منظم وضخم" : "Organized Inventory"}
-                </span>
-              </div>
-
-              <div className="absolute bottom-4 start-4 flex items-center gap-2 rounded-lg border border-white/10 bg-black/75 px-3 py-1.5 shadow-md backdrop-blur-md z-10">
-                <span className="h-2 w-2 rounded-full bg-green-400" />
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                  {isAr ? "سلاسل إمداد وتوزيع مستمر" : "Continuous Supply Chains"}
                 </span>
               </div>
             </div>
           </div>
         </Reveal>
 
-        {/* Text / Info Column */}
         <Reveal>
-          <div className="text-start ">
-            <SectionHeading
-              eyebrow={isAr ? "الجاهزية التشغيلية" : "Operational Strength"}
-              title={isAr ? "جاهزية تشغيلية ومستودعات منظمة" : "Organized Storage & Distribution Readiness"}
-              description={
-                isAr
-                  ? "نعتمد في الوصابي للتجارة على بنية تحتية قوية لإدارة المخزون والتوريد، تضمن تلبية احتياجات التجار والعملاء في كافة الأوقات وبجاهزية كاملة."
-                  : "At Al-Wosabe for Trading, we rely on a robust supply and inventory management infrastructure to serve our business partners efficiently and meet demand at all times."
-              }
-            />
-
-            <div className="mt-8 space-y-4">
-              <div className="flex gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-bold">
-                  1
+          <SectionHeading
+            eyebrow={isAr ? "الجاهزية التشغيلية" : "Operational Strength"}
+            title={isAr ? "جاهزية تشغيلية ومستودعات منظمة" : "Organized Storage & Distribution Readiness"}
+            description={
+              isAr
+                ? "نعتمد في الوصابي للتجارة على بنية تحتية قوية لإدارة المخزون والتوريد، تضمن تلبية احتياجات التجار والعملاء في كافة الأوقات وبجاهزية كاملة."
+                : "At Al-Wosabe for Trading, we rely on a robust supply and inventory management infrastructure to serve our business partners efficiently and meet demand at all times."
+            }
+          />
+          <div className="mt-9 space-y-5">
+            {points.map(([title, body], i) => (
+              <div key={title} className="flex gap-4">
+                <span className="font-display flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-brand/20 bg-brand/10 text-base font-extrabold text-brand-deep">
+                  {i + 1}
                 </span>
                 <div>
-                  <h4 className="text-base font-bold text-[#1B1B1D]">
-                    {isAr ? "مستودعات منظمة وجاهزية توريد" : "Organized Warehousing & Supply Readiness"}
-                  </h4>
-                  <p className="mt-1 text-sm leading-6 text-[#343438]/70">
-                    {isAr
-                      ? "مستودعاتنا مجهزة لتخزين الإطارات والبطاريات والزيوت بطرق منظمة تحافظ على سلامة وجودة المنتجات وتسهل عمليات الشحن السريع."
-                      : "Our storage spaces are tailored to house tires, batteries, and lubricants systematically, preserving product quality and facilitating rapid dispatch."}
-                  </p>
+                  <h4 className="text-base font-bold text-ink-900">{title}</h4>
+                  <p className="mt-1.5 text-sm leading-7 text-graphite-600">{body}</p>
                 </div>
               </div>
-
-              <div className="flex gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FF8A00] font-bold">
-                  2
-                </span>
-                <div>
-                  <h4 className="text-base font-bold text-[#1B1B1D]">
-                    {isAr ? "إدارة منظمة للمخزون" : "Organized Inventory Management"}
-                  </h4>
-                  <p className="mt-1 text-sm leading-6 text-[#343438]/70">
-                    {isAr
-                      ? "نطبق أنظمة دقيقة لمراقبة المخزون تضمن توفر الفئات المطلوبة بشكل دائم وسد النقص الفوري في نقاط التوزيع المختلفة."
-                      : "We employ precise inventory tracking systems to maintain stock levels, avoiding supply bottlenecks and ensuring continuous availability."}
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </Reveal>
       </Container>
@@ -490,16 +362,17 @@ function Operations({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Products ───────────────────────── */
 function Products({ locale }: { locale: Locale }) {
   const copy = content[locale].products;
 
   return (
-    <section id="products" className="relative bg-[#F7F7F4] py-22">
+    <section id="products" className="bg-paper py-20 sm:py-28">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-        <div className="mt-12 grid grid-cols-2 gap-3.5 md:gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
           {products[locale].map(({ title, description, image, icon, category }, index) => (
-            <Reveal key={title} delay={index * 0.08}>
+            <Reveal key={title} delay={index * 0.07}>
               <ProductCategoryCard
                 title={title}
                 description={description}
@@ -515,17 +388,16 @@ function Products({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Brands ───────────────────────── */
 function Brands({ locale }: { locale: Locale }) {
   const copy = content[locale].brands;
 
   return (
-    <section id="brands" className="bg-white py-22">
+    <section id="brands" className="bg-sand-50 py-20 sm:py-28">
       <Container>
         <div className="mb-12">
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
         </div>
-
-        {/* Dynamic Partner Marquee wrapper */}
         <Reveal delay={0.1}>
           <BrandMarquee brands={brands} locale={locale} />
         </Reveal>
@@ -534,157 +406,116 @@ function Brands({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Distribution ───────────────────────── */
 function Distribution({ locale }: { locale: Locale }) {
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const copy = content[locale].distribution;
 
   return (
-    <section id="distribution" className="relative overflow-hidden bg-[#1B1B1D] py-22 text-white">
-      {/* Floating shapes */}
-      <div className="pointer-events-none absolute -start-40 top-20 h-80 w-80 rounded-full bg-[#FF8A00]/5 blur-3xl" />
-      <div className="pointer-events-none absolute -end-40 bottom-20 h-60 w-60 rounded-full bg-[#FFC247]/5 blur-3xl" />
+    <section id="distribution" className="relative overflow-hidden bg-ink-950 py-20 text-on-dark sm:py-28">
+      <div className="ambient-dark pointer-events-none absolute inset-0" />
+      <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-60" />
 
-      <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <Container className="relative grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <Reveal>
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} dark />
-          <div className="mt-8 grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3">
-            {branches.map((branch) => (
-              <div
-                key={branch.city.en}
-                onMouseEnter={() => setHoveredCity(branch.city.en)}
-                onMouseLeave={() => setHoveredCity(null)}
-                onClick={() => setHoveredCity(branch.city.en)}
-                className={`group rounded-lg border p-2 text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-300 backdrop-blur cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${hoveredCity === branch.city.en
-                  ? "border-[#FF8A00] bg-[#FF8A00]/15 text-white"
-                  : "border-white/8 bg-white/5 text-white/65 hover:border-[#FF8A00]/30 hover:bg-[#FF8A00]/8 hover:text-white/85"
-                  }`}
-              >
-                <MapPin
-                  className={`transition-all duration-300 shrink-0 ${hoveredCity === branch.city.en ? "text-[#FFC247] scale-110" : "text-[#FF8A00]"
-                    }`}
-                  size={12}
-                  aria-hidden="true"
-                />
-                <span className="truncate max-w-full">{branch.city[locale]}</span>
-              </div>
-            ))}
+          <div className="mt-9 grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3">
+            {branches.map((branch) => {
+              const active = hoveredCity === branch.city.en;
+              return (
+                <button
+                  key={branch.city.en}
+                  type="button"
+                  onMouseEnter={() => setHoveredCity(branch.city.en)}
+                  onMouseLeave={() => setHoveredCity(null)}
+                  onClick={() => setHoveredCity(branch.city.en)}
+                  className={cn(
+                    "focus-ring flex flex-col items-center justify-center gap-1 rounded-lg border p-2 text-center text-[10px] font-bold transition-all duration-300 sm:flex-row sm:gap-2 sm:text-xs md:text-sm",
+                    active
+                      ? "border-brand bg-brand/15 text-white"
+                      : "border-white/8 bg-white/[0.04] text-steel-400 hover:border-brand/30 hover:bg-white/[0.07] hover:text-steel-100",
+                  )}
+                >
+                  <MapPin
+                    size={12}
+                    aria-hidden="true"
+                    className={cn("shrink-0 transition-all duration-300", active ? "scale-110 text-brand-bright" : "text-brand")}
+                  />
+                  <span className="max-w-full truncate">{branch.city[locale]}</span>
+                </button>
+              );
+            })}
           </div>
         </Reveal>
 
-        {/* Animated Interactive SVG Route Map */}
         <Reveal direction="left">
-          <AnimatedRouteMap
-            locale={locale}
-            hoveredCity={hoveredCity}
-            setHoveredCity={setHoveredCity}
-          />
+          <AnimatedRouteMap locale={locale} hoveredCity={hoveredCity} setHoveredCity={setHoveredCity} />
         </Reveal>
       </Container>
     </section>
   );
 }
 
+/* ───────────────────────── Fleet ───────────────────────── */
 function Fleet({ locale }: { locale: Locale }) {
   const copy = content[locale].fleet;
   const isAr = locale === "ar";
 
+  const boxes: [string, string][] = [
+    [
+      isAr ? "تغطية جغرافية منظمة" : "Organized Reach",
+      isAr
+        ? "نخدم المدن الرئيسية ونطاقًا واسعًا من السوق اليمني عبر شبكة فروع وتوزيع منظمة تضمن استقرار الإمداد للشركاء."
+        : "We serve main cities and a wide scope of the Yemeni market through an organized branch and distribution network.",
+    ],
+    [
+      isAr ? "جاهزية تشغيلية عالية" : "High Readiness",
+      isAr
+        ? "أسطولنا مجهز ومعد لنقل وتوزيع المنتجات الثقيلة والمختلفة تحت شتى الظروف الجغرافية والطرق الصعبة بكفاءة تامة."
+        : "Our fleet is equipped and ready to transport heavy and diverse products under various terrains and difficult road conditions.",
+    ],
+  ];
+
   return (
-    <section className="relative overflow-hidden bg-white py-24">
-      {/* Subtle route line background graphic */}
-      <div
-        className="absolute inset-y-0 end-0 w-1/3 opacity-[0.03] pointer-events-none select-none"
-        style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-      />
-
-      {/* Tire track background graphic */}
-      <div
-        className="absolute inset-0 opacity-[0.015] pointer-events-none select-none mix-blend-overlay"
-        style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
-      />
-
-      <Container className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        {/* Text Column */}
+    <section className="bg-paper py-20 sm:py-28">
+      <Container className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <Reveal>
-          <div className="text-start">
-            <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
-                <strong className="block text-2xl font-bold text-[#FF8A00]">
-                  {isAr ? "تغطية جغرافية منظمة" : "Organized Reach"}
-                </strong>
-                <p className="mt-2 text-sm leading-6 text-[#343438]/70">
-                  {isAr
-                    ? "نخدم المدن الرئيسية ونطاقًا واسعًا من السوق اليمني عبر شبكة فروع وتوزيع منظمة تضمن استقرار الإمداد للشركاء."
-                    : "We serve main cities and a wide scope of the Yemeni market through an organized branch and distribution network."}
-                </p>
+          <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
+          <div className="mt-9 grid gap-5 sm:grid-cols-2">
+            {boxes.map(([title, body]) => (
+              <div key={title} className="rounded-2xl border border-steel-200 bg-sand-50 p-6">
+                <strong className="font-display block text-lg font-extrabold text-ink-900">{title}</strong>
+                <p className="mt-2.5 text-sm leading-7 text-graphite-600">{body}</p>
               </div>
-
-              <div className="rounded-xl border border-black/5 bg-[#F7F7F4] p-5">
-                <strong className="block text-2xl font-bold text-[#FF8A00]">
-                  {isAr ? "جاهزية تشغيلية عالية" : "High Readiness"}
-                </strong>
-                <p className="mt-2 text-sm leading-6 text-[#343438]/70">
-                  {isAr
-                    ? "أسطولنا مجهز ومعد لنقل وتوزيع المنتجات الثقيلة والمختلفة تحت شتى الظروف الجغرافية والطرق الصعبة بكفاءة تامة."
-                    : "Our fleet is equipped and ready to transport heavy and diverse products under various terrains and difficult road conditions."}
-                </p>
-              </div>
-            </div>
-
-            {/* Direct branch communication shortcut */}
-            <div className="mt-6">
-              <Button href="#branches" variant="secondary" className="min-h-11 text-xs py-2.5 px-5 select-none">
-                {isAr ? "تواصل مع أقرب فرع" : "Contact nearest branch"}
-              </Button>
-            </div>
+            ))}
+          </div>
+          <div className="mt-7">
+            <Button href="#branches" variant="steel">
+              {isAr ? "تواصل مع أقرب فرع" : "Contact nearest branch"}
+            </Button>
           </div>
         </Reveal>
 
-        {/* Image / Proof Column */}
-        <Reveal delay={0.12} direction="left">
-          <div className="relative">
-            {/* Glowing accent border background */}
-            <div
-              className="absolute -inset-4 rounded-2xl opacity-40 blur-2xl pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
-            />
-
-            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+        <Reveal delay={0.1} direction="left">
+          <div className="steel-frame">
+            <div className="relative overflow-hidden rounded-[17px] bg-ink-900">
               <ParallaxImage
                 src="/images/operations/fleet.webp"
-                alt={isAr ? "صورة تعبيرية لأسطول توزيع" : "Illustrative image of distribution fleet"}
-                containerClassName="rounded-xl overflow-hidden"
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                alt={isAr ? "أسطول توزيع الوصابي" : "Al-Wosabe distribution fleet"}
+                containerClassName=""
+                sizes="(max-width: 1024px) 100vw, 45vw"
               />
-              {/* Charcoal Dark Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40 pointer-events-none animate-none" />
-
-              {/* Overlapping Route Lines for theme coherence */}
-              <div
-                className="absolute inset-0 z-1 opacity-20 pointer-events-none mix-blend-screen"
-                style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-              />
-
-              {/* Slow drifting route line behind the badge */}
-              <motion.div
-                className="absolute bottom-0 start-0 end-0 h-24 z-[9] opacity-15 pointer-events-none"
-                style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: '200% 100%', backgroundPosition: 'center' }}
-                animate={{ x: ["0%", "-15%"] }}
-                transition={{ duration: 30, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              />
-
-              {/* Big Badge Overlay (20+ Distribution Trucks) — enters from bottom */}
-              <Reveal delay={0.3} direction="up" className="absolute bottom-6 start-6 z-10">
-                <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-black/75 p-4 shadow-xl backdrop-blur-md">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
-                    <Truck size={28} />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/20 to-transparent" />
+              <Reveal delay={0.25} direction="up" className="absolute bottom-6 start-6 z-10">
+                <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-ink-950/75 p-4 shadow-[var(--shadow-elev-3)] backdrop-blur-md">
+                  <div className="chrome flex h-13 w-13 items-center justify-center rounded-lg text-ink-950">
+                    <Truck size={26} />
                   </div>
                   <div className="text-start">
-                    <span className="block text-2xl font-bold text-white">
+                    <span className="font-display block text-2xl font-extrabold tabular-nums text-white">
                       <AnimatedCounter value={20} suffix="+" />
                     </span>
-                    <span className="block text-xs font-bold text-[#FFC247] uppercase tracking-wider">
+                    <span className="block text-xs font-bold uppercase tracking-wider text-brand-bright">
                       {isAr ? "شاحنة توزيع نشطة" : "Active Trucks"}
                     </span>
                   </div>
@@ -698,36 +529,37 @@ function Fleet({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Branches + Modal ───────────────────────── */
 function Branches({ locale }: { locale: Locale }) {
   const copy = content[locale].branches;
-  const [selectedBranch, setSelectedBranch] = useState<typeof branches[0] | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<(typeof branches)[0] | null>(null);
 
   return (
-    <section id="branches" className="bg-white py-22">
+    <section id="branches" className="bg-sand-50 py-20 sm:py-28">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-        <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4 md:gap-5">
+        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-2 xl:grid-cols-3">
           {branches.map((branch, index) => (
             <Reveal key={branch.city.en} delay={index * 0.04}>
               <button
                 onClick={() => setSelectedBranch(branch)}
-                className="group relative flex items-center justify-between rounded-xl border border-black/8 bg-[#F7F7F4]/50 p-3 sm:p-4 md:p-6 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/40 hover:bg-white hover:shadow-md text-start w-full cursor-pointer"
+                className="card-rise focus-ring group flex w-full items-center justify-between rounded-2xl border border-steel-200 bg-paper p-4 text-start shadow-[var(--shadow-elev-1)] hover:border-brand/40 md:p-6"
               >
-                <div className="flex items-center gap-2 sm:gap-3 md:gap-4 overflow-hidden">
-                  <span className="flex h-9 w-9 sm:h-10 sm:w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#252529] text-[#FFC247] shadow-md group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white transition-all duration-300">
-                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 md:h-5.5 md:w-5.5" aria-hidden="true" />
+                <div className="flex items-center gap-3 overflow-hidden md:gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[image:var(--grad-dark)] text-brand-bright shadow-[var(--shadow-elev-1)] transition-all duration-300 group-hover:bg-[image:var(--grad-brand)] group-hover:text-ink-950 md:h-12 md:w-12">
+                    <MapPin className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <div className="overflow-hidden">
-                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-[#1B1B1D] transition-colors group-hover:text-[#E87500] truncate">
+                    <h3 className="truncate text-base font-bold text-ink-900 transition-colors group-hover:text-brand-deep md:text-lg">
                       {branch.city[locale]}
                     </h3>
-                    <span className="text-[9px] sm:text-xs text-[#343438]/50 mt-0.5 block truncate">
+                    <span className="mt-0.5 block truncate text-[11px] text-graphite-500">
                       {locale === "ar" ? "اضغط للتواصل" : "Click to connect"}
                     </span>
                   </div>
                 </div>
-                <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-black/5 text-[#E87500] group-hover:bg-[#FF8A00] group-hover:text-white transition-all duration-300">
-                  <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-steel-100 text-brand-deep transition-all duration-300 group-hover:bg-brand group-hover:text-ink-950">
+                  <Phone className="h-4 w-4" />
                 </span>
               </button>
             </Reveal>
@@ -735,74 +567,62 @@ function Branches({ locale }: { locale: Locale }) {
         </div>
       </Container>
 
-      {/* Modern Dialog Modal */}
       <AnimatePresence>
         {selectedBranch && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedBranch(null)}
-              className="absolute inset-0 bg-[#141416]/75 backdrop-blur-md"
+              className="absolute inset-0 bg-ink-950/70 backdrop-blur-md"
             />
-
-            {/* Modal Content */}
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              initial={{ scale: 0.96, opacity: 0, y: 14 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              exit={{ scale: 0.96, opacity: 0, y: 14 }}
               transition={{ type: "spring", duration: 0.4 }}
-              className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#1B1B1D] p-6 shadow-2xl text-white"
+              className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-ink-900 p-6 text-white shadow-[var(--shadow-elev-3)]"
             >
-              {/* Top Accent line */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#FF8A00] to-[#FFC247]" />
-
-              {/* Close Button */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-[image:var(--grad-brand)]" />
               <button
                 onClick={() => setSelectedBranch(null)}
-                className="absolute top-4 end-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white cursor-pointer"
-                aria-label="Close"
+                className="focus-ring absolute top-4 end-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-steel-300 transition-all hover:bg-white/10 hover:text-white"
+                aria-label={locale === "ar" ? "إغلاق" : "Close"}
               >
                 <X size={18} />
               </button>
 
-              {/* Header */}
-              <div className="flex items-center gap-3.5 mb-6 text-start">
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00] to-[#E87500] text-[#1B1B1D] shadow-lg">
+              <div className="mb-6 flex items-center gap-3.5 text-start">
+                <span className="chrome flex h-12 w-12 items-center justify-center rounded-xl text-ink-950">
                   <MapPin size={22} />
                 </span>
                 <div>
-                  <h3 className="text-xl font-bold">{selectedBranch.city[locale]}</h3>
-                  <p className="text-xs text-[#FFC247] uppercase tracking-wider font-semibold mt-0.5">
+                  <h3 className="font-display text-xl font-extrabold">{selectedBranch.city[locale]}</h3>
+                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-wider text-brand-bright">
                     {locale === "ar" ? "أرقام التواصل والفرع" : "Branch Contact Numbers"}
                   </p>
                 </div>
               </div>
 
-              {/* Phone List */}
-              <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+              <div className="max-h-[300px] space-y-3 overflow-y-auto pe-1">
                 {selectedBranch.phones.map((phone) => (
                   <a
                     key={phone}
                     href={phoneHref(phone)}
-                    className="flex items-center justify-between gap-4 rounded-xl border border-white/8 bg-white/5 px-4 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_4px_15px_rgba(255,138,0,0.15)] group"
+                    className="group flex items-center justify-between gap-4 rounded-xl border border-white/8 bg-white/5 px-4 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-brand/50 hover:bg-brand/10 hover:text-brand-bright"
                   >
                     <span dir="ltr">{phone}</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70 group-hover:bg-[#FF8A00] group-hover:text-white transition-colors duration-300">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-steel-300 transition-colors duration-300 group-hover:bg-brand group-hover:text-ink-950">
                       <Phone size={14} />
                     </span>
                   </a>
                 ))}
               </div>
 
-              {/* Footer info */}
               <div className="mt-6 border-t border-white/8 pt-4 text-center">
-                <p className="text-xs text-white/50">
-                  {locale === "ar"
-                    ? "جميع الأرقام قابلة للضغط للاتصال المباشر"
-                    : "All numbers are clickable for direct calls"}
+                <p className="text-xs text-steel-400">
+                  {locale === "ar" ? "جميع الأرقام قابلة للضغط للاتصال المباشر" : "All numbers are clickable for direct calls"}
                 </p>
               </div>
             </motion.div>
@@ -813,32 +633,26 @@ function Branches({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Values ───────────────────────── */
 function Values({ locale }: { locale: Locale }) {
   const copy = content[locale].values;
 
   return (
-    <section className="bg-[#F7F7F4] py-22">
+    <section className="bg-paper py-20 sm:py-28">
       <Container>
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} align="center" />
-        <div className="mt-12 grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3">
+        <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
           {copy.items.map(([title, description], index) => {
             const Icon = valueIcons[index];
             return (
-              <Reveal key={title} delay={index * 0.06} className={cn(index === 2 && "col-span-2 sm:col-span-1")}>
-                <article className="card-hover-glow group relative h-full overflow-hidden rounded-xl border border-black/6 bg-white p-5 sm:p-7 text-center shadow-sm">
-                  {/* Gradient overlay on hover */}
-                  <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-[#FF8A00]/0 to-[#FFC247]/0 opacity-0 transition-opacity duration-400 group-hover:from-[#FF8A00]/4 group-hover:to-[#FFC247]/2 group-hover:opacity-100" />
-                  <div className="relative">
-                    <div className="mx-auto mb-5 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8A00]/12 to-[#FFC247]/8 text-[#FF8A00] transition-all duration-400 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-white group-hover:shadow-[0_8px_24px_rgba(255,138,0,0.3)]">
-                      <Icon aria-hidden="true" size={24} className="sm:h-7 sm:w-7" />
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-[#1B1B1D]">{title}</h3>
-                    <div
-                      className="mx-auto my-3.5 h-[2px] w-10 rounded-full transition-all duration-400 group-hover:w-16"
-                      style={{ background: "linear-gradient(90deg, #ff8a00, #ffc247)" }}
-                    />
-                    <p className="text-xs sm:text-sm leading-6 sm:leading-7 text-[#343438]/68">{description}</p>
+              <Reveal key={title} delay={index * 0.06} className={cn(index === 2 && "col-span-2 md:col-span-1")}>
+                <article className="accent-top card-rise group h-full rounded-2xl border border-steel-200 bg-sand-50 p-6 text-center shadow-[var(--shadow-elev-1)] hover:border-steel-300 sm:p-8">
+                  <div className="mx-auto mb-5 flex h-15 w-15 items-center justify-center rounded-xl bg-[image:var(--grad-dark)] text-brand-bright transition-all duration-300 group-hover:bg-[image:var(--grad-brand)] group-hover:text-ink-950 sm:h-16 sm:w-16">
+                    <Icon aria-hidden="true" size={26} />
                   </div>
+                  <h3 className="font-display text-lg font-bold text-ink-900 sm:text-xl">{title}</h3>
+                  <div className="mx-auto my-4 h-[2px] w-10 rounded-full bg-[image:var(--grad-brand)] transition-all duration-300 group-hover:w-16" />
+                  <p className="text-sm leading-7 text-graphite-600">{description}</p>
                 </article>
               </Reveal>
             );
@@ -849,6 +663,7 @@ function Values({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Team ───────────────────────── */
 function Team({ locale }: { locale: Locale }) {
   const copy = content[locale].team;
   const isAr = locale === "ar";
@@ -878,29 +693,20 @@ function Team({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-24">
-      <Container className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        {/* Left: Image Card */}
+    <section className="bg-sand-50 py-20 sm:py-28">
+      <Container className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <Reveal direction="right">
-          <div className="relative">
-            {/* Ambient blur */}
-            <div
-              className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl pointer-events-none"
-              style={{ background: "radial-gradient(circle, rgba(255, 138, 0, 0.15) 0%, transparent 70%)" }}
-            />
-
-            <div className="relative overflow-hidden rounded-2xl border border-black/8 bg-neutral-900 p-2 shadow-2xl">
+          <div className="steel-frame">
+            <div className="relative overflow-hidden rounded-[17px] bg-ink-900">
               <ParallaxImage
                 src="/images/operations/team.webp"
-                alt={isAr ? "صورة تعبيرية لفريق عمليات وتوزيع" : "Illustrative image of operations and distribution team"}
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                alt={isAr ? "فريق عمليات وتوزيع الوصابي" : "Al-Wosabe operations and distribution team"}
+                sizes="(max-width: 1024px) 100vw, 45vw"
                 aspectRatio="aspect-[16/10]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-
-              {/* Floating label */}
-              <div className="absolute bottom-4 start-4 rounded-lg border border-white/10 bg-black/60 px-3 py-1.5 backdrop-blur-md z-10">
-                <span className="text-xs font-bold text-[#FFC247] uppercase tracking-wider">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 start-4 rounded-lg border border-white/10 bg-ink-950/65 px-3 py-1.5 backdrop-blur-md">
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-bright">
                   {isAr ? "فريق عمل متخصص" : "Professional Team"}
                 </span>
               </div>
@@ -908,31 +714,25 @@ function Team({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
-        {/* Right: Content & Strengths */}
         <Reveal>
-          <div className="text-start">
-            <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
-
-            <div className="mt-8 space-y-5">
-              {teamItems.map(({ title, description, Icon }, index) => (
-                <div
-                  key={index}
-                  className="group flex gap-4 rounded-xl border border-black/5 bg-[#F7F7F4] p-5 transition-all duration-300 hover:border-[#FF8A00]/20 hover:bg-gradient-to-r hover:from-[#FF8A00]/5 hover:to-transparent"
-                >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1B1B1D] to-[#2a2a2e] text-[#FFC247] shadow-lg transition-all duration-300 group-hover:from-[#FF8A00] group-hover:to-[#E87500] group-hover:text-[#1B1B1D]">
-                    <Icon aria-hidden="true" size={22} />
-                  </span>
-                  <div>
-                    <h4 className="text-base font-bold text-[#1B1B1D] transition-colors duration-300 group-hover:text-[#E87500]">
-                      {title}
-                    </h4>
-                    <p className="mt-1 text-sm leading-6 text-[#343438]/70">
-                      {description}
-                    </p>
-                  </div>
+          <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
+          <div className="mt-9 space-y-4">
+            {teamItems.map(({ title, description, Icon }) => (
+              <div
+                key={title}
+                className="group flex gap-4 rounded-2xl border border-steel-200 bg-paper p-5 transition-all duration-300 hover:border-brand/25 hover:shadow-[var(--shadow-elev-2)]"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[image:var(--grad-dark)] text-brand-bright shadow-[var(--shadow-elev-1)] transition-all duration-300 group-hover:bg-[image:var(--grad-brand)] group-hover:text-ink-950">
+                  <Icon aria-hidden="true" size={22} />
+                </span>
+                <div>
+                  <h4 className="text-base font-bold text-ink-900 transition-colors duration-300 group-hover:text-brand-deep">
+                    {title}
+                  </h4>
+                  <p className="mt-1.5 text-sm leading-7 text-graphite-600">{description}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </Reveal>
       </Container>
@@ -940,33 +740,23 @@ function Team({ locale }: { locale: Locale }) {
   );
 }
 
+/* ───────────────────────── Quote ───────────────────────── */
 function Quote({ locale }: { locale: Locale }) {
   const copy = content[locale].quote;
-  const directMessage = locale === "ar" ? "مرحباً، أريد طلب عرض سعر من الوصابي للتجارة." : "Hello, I would like to request a quote from Al-Wosabe for Trading.";
+  const directMessage =
+    locale === "ar"
+      ? "مرحباً، أريد طلب عرض سعر من الوصابي للتجارة."
+      : "Hello, I would like to request a quote from Al-Wosabe for Trading.";
 
   return (
-    <section id="quote" className="relative overflow-hidden bg-[#1B1B1D] py-22 text-white">
-      {/* Background SVG graphics */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-        {/* Tire track */}
-        <div
-          className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/tire-track.svg')", backgroundSize: '400px' }}
-        />
-        {/* Route lines */}
-        <div
-          className="absolute inset-0 opacity-[0.08] pointer-events-none"
-          style={{ backgroundImage: "url('/images/graphics/route-lines.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
-      </div>
-      {/* Background glows */}
-      <div className="pointer-events-none absolute -start-40 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#FF8A00]/5 blur-3xl" />
-      <div className="pointer-events-none absolute -end-40 top-1/4 h-60 w-60 rounded-full bg-[#FFC247]/5 blur-3xl" />
+    <section id="quote" className="relative overflow-hidden bg-ink-950 py-20 text-on-dark sm:py-28">
+      <div className="ambient-dark pointer-events-none absolute inset-0" />
+      <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-50" />
 
-      <Container className="relative grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <Container className="relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <Reveal direction="right">
           <SectionHeading eyebrow={copy.eyebrow} title={copy.title} description={copy.description} dark />
-          <Button href={whatsappHref(company.whatsappNumber, directMessage)} className="mt-8 select-none">
+          <Button href={whatsappHref(company.whatsappNumber, directMessage)} className="mt-9">
             {copy.submit}
           </Button>
         </Reveal>

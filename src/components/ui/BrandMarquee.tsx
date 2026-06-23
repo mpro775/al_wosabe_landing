@@ -41,8 +41,8 @@ export function BrandMarquee({
       {/* Desktop: Slow Marquee */}
       <div className="relative w-full overflow-hidden hidden md:block">
         {/* Soft fading overlays on edges */}
-        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-28 bg-gradient-to-r from-white via-white/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-28 bg-gradient-to-l from-white via-white/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-28 bg-gradient-to-r from-sand-50 via-sand-50/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-28 bg-gradient-to-l from-sand-50 via-sand-50/80 to-transparent" />
 
         <div className="flex w-full overflow-hidden">
           <div
@@ -59,7 +59,7 @@ export function BrandMarquee({
             {duplicatedBrands.map((brand, idx) => (
               <div
                 key={`${brand.name}-${idx}`}
-                className="flex h-24 w-44 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-[#F7F7F4]/50 p-5 shadow-sm transition-all duration-300 hover:border-[#FF8A00]/25 hover:bg-white hover:shadow-[0_12px_30px_rgba(255,138,0,0.08)] group"
+                className="group flex h-24 w-44 shrink-0 items-center justify-center rounded-xl border border-steel-200 bg-paper p-5 shadow-[var(--shadow-elev-1)] transition-all duration-300 hover:border-steel-300 hover:shadow-[var(--shadow-elev-2)]"
               >
                 <div className="relative h-12 w-full transition-all duration-300">
                   <Image
@@ -79,14 +79,14 @@ export function BrandMarquee({
       {/* Mobile: Horizontal scroll-snap */}
       <div className="md:hidden overflow-x-auto scroll-smooth" style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
         {/* Soft fading overlays on edges */}
-        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-12 bg-gradient-to-r from-white via-white/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-12 bg-gradient-to-l from-white via-white/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 start-0 z-10 w-12 bg-gradient-to-r from-sand-50 via-sand-50/80 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 end-0 z-10 w-12 bg-gradient-to-l from-sand-50 via-sand-50/80 to-transparent" />
 
         <div className="flex gap-3 px-4" style={{ width: "max-content" }}>
           {brands.map((brand) => (
             <div
               key={brand.name}
-              className="flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-[#F7F7F4]/50 p-4 shadow-sm group"
+              className="group flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-steel-200 bg-paper p-4 shadow-[var(--shadow-elev-1)]"
               style={{ scrollSnapAlign: "start" }}
             >
               <div className="relative h-10 w-full">

@@ -35,10 +35,7 @@ export function FloatingWhatsAppButton({ locale }: { locale: "ar" | "en" }) {
           href={whatsappHref(company.whatsappNumber, message)}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-6 end-6 z-[90] flex items-center gap-2 rounded-full bg-emerald-600 p-3.5 text-sm font-bold text-white shadow-2xl hover:bg-emerald-500 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] md:px-5 md:py-3 transition-all select-none"
-          style={{
-            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(16, 185, 129, 0.2)",
-          }}
+          className="focus-ring fixed bottom-6 end-6 z-[90] flex select-none items-center gap-2 rounded-full bg-emerald-600 p-3.5 text-sm font-bold text-white shadow-[var(--shadow-elev-3)] transition-all hover:bg-emerald-500 md:px-5 md:py-3"
         >
           <MessageSquare size={18} />
           <span className="hidden md:inline">{label}</span>

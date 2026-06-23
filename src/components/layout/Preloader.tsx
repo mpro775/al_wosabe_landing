@@ -39,7 +39,7 @@ export function Preloader({ locale }: { locale: "ar" | "en" }) {
             opacity: 0,
             transition: { duration: 0.4, ease: "easeInOut" }
           }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#111113]"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-ink-950"
         >
           {/* Main Logo Wrapper with Mask Reveal */}
           <div className="relative mb-6 flex flex-col items-center">
@@ -65,10 +65,10 @@ export function Preloader({ locale }: { locale: "ar" | "en" }) {
               transition={{ duration: 0.4, delay: 0.6 }}
               className="mt-4 flex flex-col items-center text-center"
             >
-              <h1 className="text-sm font-bold uppercase tracking-[0.2em] text-[#FF8A00]">
+              <h1 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-brand-bright">
                 {locale === "ar" ? "الوصابي للتجارة" : "Al-Wosabe for Trading"}
               </h1>
-              <span className="mt-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold text-white/55">
+              <span className="mt-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold text-steel-400">
                 Since 1986
               </span>
             </motion.div>
@@ -85,7 +85,7 @@ export function Preloader({ locale }: { locale: "ar" | "en" }) {
                 ease: "easeInOut",
                 delay: 0.2
               }}
-              className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-[#FF8A00] to-transparent shadow-[0_0_8px_#FF8A00]"
+              className="absolute bottom-0 top-0 w-1/2 bg-gradient-to-r from-transparent via-brand to-transparent"
             />
           </div>
         </motion.div>

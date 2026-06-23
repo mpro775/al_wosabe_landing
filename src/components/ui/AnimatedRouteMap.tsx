@@ -39,18 +39,12 @@ export function AnimatedRouteMap({
   const activeBranch = branches.find((b) => b.city.en === hoveredCity);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141416]/95 p-4 shadow-2xl backdrop-blur-md">
-      {/* Top golden gradient indicator */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, #ff8a00, #ffc247, #ff8a00, transparent)",
-        }}
-      />
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-ink-900/90 p-4 shadow-[var(--shadow-elev-3)] backdrop-blur-md">
+      {/* Top accent indicator */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent" />
 
       {/* Map Content & SVG Grid */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#111113]/50">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-ink-950/60">
         {/* Base Map Graphic */}
         <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
           <Image
@@ -61,16 +55,6 @@ export function AnimatedRouteMap({
           />
         </div>
 
-        {/* Route Lines overlay */}
-        <div
-          className="absolute inset-0 z-1 opacity-[0.08] pointer-events-none mix-blend-screen"
-          style={{
-            backgroundImage: "url('/images/graphics/route-lines.svg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
         {/* Interactive Overlay Layer */}
         <svg
           viewBox="0 0 100 100"
@@ -79,8 +63,8 @@ export function AnimatedRouteMap({
         >
           <defs>
             <linearGradient id="route-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FF8A00" />
-              <stop offset="100%" stopColor="#FFC247" />
+              <stop offset="0%" stopColor="#ED8B00" />
+              <stop offset="100%" stopColor="#F8A21E" />
             </linearGradient>
             <filter id="glow-map-effect">
               <feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -152,7 +136,7 @@ export function AnimatedRouteMap({
           {!shouldReduceMotion && (
             <>
               {/* Signal 1: Western Coastal Route */}
-              <circle r="1" fill="#FFC247" filter="url(#glow-map-effect)">
+              <circle r="1" fill="#F8A21E" filter="url(#glow-map-effect)">
                 <animateMotion
                   path="M48 33 C44 34, 41 36, 38 39 C36 41, 35 42, 34 44 C33 47, 34 51, 37 54 C39 58, 40 62, 42 66 C46 70, 50 74, 54 78"
                   dur="12s"
@@ -160,7 +144,7 @@ export function AnimatedRouteMap({
                 />
               </circle>
               {/* Signal 2: Direct Inland Route */}
-              <circle r="1" fill="#FF8A00" filter="url(#glow-map-effect)">
+              <circle r="1" fill="#ED8B00" filter="url(#glow-map-effect)">
                 <animateMotion
                   path="M48 33 C46 44, 44 55, 42 66 C45 70, 50 74, 54 78"
                   dur="8s"
@@ -168,7 +152,7 @@ export function AnimatedRouteMap({
                 />
               </circle>
               {/* Signal 3: Eastern Route */}
-              <circle r="1" fill="#FFC247" filter="url(#glow-map-effect)">
+              <circle r="1" fill="#F8A21E" filter="url(#glow-map-effect)">
                 <animateMotion
                   path="M48 33 C58 38, 68 48, 78 62"
                   dur="10s"
@@ -176,7 +160,7 @@ export function AnimatedRouteMap({
                 />
               </circle>
               {/* Signal 4: Southern Coastal Route */}
-              <circle r="1" fill="#FF8A00" filter="url(#glow-map-effect)">
+              <circle r="1" fill="#ED8B00" filter="url(#glow-map-effect)">
                 <animateMotion
                   path="M54 78 C62 76, 70 72, 78 62"
                   dur="10s"
@@ -203,8 +187,8 @@ export function AnimatedRouteMap({
                   cy={branch.y}
                   r={isHovered ? 7 : 4}
                   fill="none"
-                  stroke={isHovered ? "#FFC247" : "#FF8A00"}
-                  strokeOpacity={isHovered ? 0.8 : 0.3}
+                  stroke={isHovered ? "#F8A21E" : "#ED8B00"}
+                  strokeOpacity={isHovered ? 0.85 : 0.35}
                   className="transition-all duration-300"
                   style={{
                     transformOrigin: `${branch.x}% ${branch.y}%`,
@@ -225,7 +209,7 @@ export function AnimatedRouteMap({
                   cx={branch.x}
                   cy={branch.y}
                   r={isHovered ? 3.2 : 2}
-                  fill={isHovered ? "#FFC247" : "#FF8A00"}
+                  fill={isHovered ? "#F8A21E" : "#ED8B00"}
                   filter={isHovered ? "url(#glow-map-effect)" : ""}
                   className="transition-all duration-300"
                 />
@@ -246,8 +230,8 @@ export function AnimatedRouteMap({
                         width={isAr ? 35 : 42}
                         height="12"
                         rx="2"
-                        fill="rgba(17, 17, 19, 0.95)"
-                        stroke="rgba(255, 138, 0, 0.4)"
+                        fill="rgba(23, 24, 27, 0.96)"
+                        stroke="rgba(237, 139, 0, 0.45)"
                         strokeWidth="0.5"
                       />
                       <text
@@ -294,24 +278,24 @@ export function AnimatedRouteMap({
       {/* Mobile Drawer (Visible below the map when a city is selected/tapped) */}
       <div className="mt-4 md:hidden">
         {activeBranch ? (
-          <div className="rounded-xl border border-[#FF8A00]/20 bg-black/45 p-4 backdrop-blur-md relative">
+          <div className="relative rounded-xl border border-white/10 bg-ink-950/55 p-4 backdrop-blur-md">
             <button
               type="button"
               onClick={() => setHoveredCity(null)}
-              className="absolute top-3 end-3 text-white/50 hover:text-white"
+              className="absolute top-3 end-3 text-steel-400 hover:text-white"
               aria-label={labels.close}
             >
               <X size={16} />
             </button>
             <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FF8A00]/10 text-[#FFC247]">
+              <span className="chrome flex h-8 w-8 items-center justify-center rounded-lg text-ink-950">
                 <MapPin size={16} />
               </span>
               <div>
-                <h4 className="text-sm font-bold text-white">
+                <h4 className="font-display text-sm font-bold text-white">
                   {activeBranch.city[locale]}
                 </h4>
-                <p className="text-xs text-white/50">
+                <p className="text-xs text-steel-400">
                   {activeBranch.phones.length} {activeBranch.phones.length > 1 ? labels.phoneCountPlural : labels.phoneCountSingular}
                 </p>
               </div>
@@ -322,10 +306,10 @@ export function AnimatedRouteMap({
                 <a
                   key={phone}
                   href={phoneHref(phone)}
-                  className="flex items-center justify-between rounded-lg border border-white/5 bg-white/5 px-3 py-2 text-xs font-bold text-white/90 hover:bg-white/10"
+                  className="flex items-center justify-between rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-xs font-bold text-steel-100 hover:border-brand/40 hover:bg-brand/10"
                 >
                   <span dir="ltr">{phone}</span>
-                  <span className="flex items-center gap-1 text-[#FF8A00] text-[10px]">
+                  <span className="flex items-center gap-1 text-[10px] text-brand-bright">
                     {labels.callNow}
                     <Phone size={12} />
                   </span>
@@ -334,7 +318,7 @@ export function AnimatedRouteMap({
             </div>
           </div>
         ) : (
-          <p className="text-center text-xs text-white/40 italic py-2">
+          <p className="py-2 text-center text-xs italic text-steel-400">
             {labels.tapToSelect}
           </p>
         )}

@@ -68,21 +68,10 @@ export function Header({ locale }: { locale: Locale }) {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-white/8 bg-[#141416]/92 shadow-[0_4px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
-          : "border-b border-white/10 bg-[#1B1B1D]/72 backdrop-blur-xl",
+          ? "border-b border-white/[0.07] bg-ink-950/95 shadow-[0_4px_30px_rgba(0,0,0,0.35)] backdrop-blur-2xl"
+          : "border-b border-white/[0.06] bg-ink-950/55 backdrop-blur-xl",
       )}
     >
-      {/* Glowing bottom accent line */}
-      <div
-        className={cn(
-          "absolute inset-x-0 bottom-0 h-[1px] transition-opacity duration-500",
-          scrolled ? "opacity-100" : "opacity-0",
-        )}
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(255,138,0,0.4), rgba(255,194,71,0.3), rgba(255,138,0,0.4), transparent)",
-        }}
-      />
-
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 sm:px-6 lg:px-8">
         <Link
           href={`/${locale}#home`}
@@ -90,12 +79,12 @@ export function Header({ locale }: { locale: Locale }) {
           aria-label={locale === "ar" ? "الوصابي للتجارة" : "Al-Wosabe for Trading"}
         >
           <Image
-            src={company.logo}
+            src="/logo/logo-white.png"
             alt=""
             width={220}
             height={55}
             priority
-            className="h-10 xl:h-11 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_12px_rgba(255,138,0,0.3)]"
+            className="h-10 w-auto object-contain transition-opacity duration-300 group-hover:opacity-90 xl:h-11"
           />
         </Link>
 
@@ -107,10 +96,9 @@ export function Header({ locale }: { locale: Locale }) {
                 key={id}
                 href={`#${id}`}
                 className={cn(
-                  "animated-underline focus-ring relative rounded-md px-3.5 py-2 text-sm font-bold transition-all duration-300",
-                  isActive ? "text-[#f59930] active" : "text-white hover:!text-[#FFC247]"
+                  "animated-underline focus-ring relative rounded-md px-3.5 py-2 text-sm font-bold transition-colors duration-300",
+                  isActive ? "active text-brand-bright" : "text-steel-200 hover:text-white",
                 )}
-                style={isActive ? { color: "#f59930" } : { color: "#ffffff" }}
               >
                 {label}
               </a>
@@ -121,10 +109,10 @@ export function Header({ locale }: { locale: Locale }) {
         <div className="hidden items-center gap-2.5 xl:flex">
           <Link
             href={`/${otherLocale}`}
-            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.15)]"
+            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-300 hover:border-brand/50 hover:bg-brand/10"
             aria-label={locale === "ar" ? "تغيير اللغة إلى الإنجليزية" : "Switch language to English"}
           >
-            <Globe className="h-5 w-5 text-white/70 transition-transform duration-500 group-hover:rotate-12 group-hover:text-[#FFC247]" />
+            <Globe className="h-5 w-5 text-steel-300 transition-transform duration-500 group-hover:rotate-12 group-hover:text-brand-bright" />
           </Link>
           <Button href="#quote" className="min-h-11 px-4 py-2">
             {labels.cta}
@@ -134,15 +122,15 @@ export function Header({ locale }: { locale: Locale }) {
         <div className="flex items-center gap-3 xl:hidden">
           <Link
             href={`/${otherLocale}`}
-            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/5 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247] hover:shadow-[0_0_15px_rgba(255,138,0,0.15)]"
+            className="focus-ring group flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-300 hover:border-brand/50 hover:bg-brand/10"
             aria-label={locale === "ar" ? "تغيير اللغة إلى الإنجليزية" : "Switch language to English"}
           >
-            <Globe className="h-5 w-5 text-white/70 transition-transform duration-500 group-hover:rotate-12 group-hover:text-[#FFC247]" />
+            <Globe className="h-5 w-5 text-steel-300 transition-transform duration-500 group-hover:rotate-12 group-hover:text-brand-bright" />
           </Link>
 
           <button
             type="button"
-            className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 text-white transition-all duration-300 hover:border-[#FF8A00]/50 hover:bg-[#FF8A00]/10 hover:text-[#FFC247]"
+            className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/10 text-white transition-all duration-300 hover:border-brand/50 hover:bg-brand/10 hover:text-brand-bright"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
@@ -154,7 +142,7 @@ export function Header({ locale }: { locale: Locale }) {
 
       <div
         className={cn(
-          "grid border-t border-white/8 bg-[#141416]/95 backdrop-blur-2xl transition-[grid-template-rows] duration-300 xl:hidden",
+          "grid border-t border-white/[0.07] bg-ink-950/97 backdrop-blur-2xl transition-[grid-template-rows] duration-300 xl:hidden",
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
       >
@@ -168,10 +156,9 @@ export function Header({ locale }: { locale: Locale }) {
                   href={`#${id}`}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "focus-ring rounded-md px-3 py-3 text-base font-bold transition-all duration-300 hover:bg-[#FF8A00]/8",
-                    isActive ? "text-[#f59930]" : "text-white hover:!text-[#FFC247]"
+                    "focus-ring rounded-md px-3 py-3 text-base font-bold transition-colors duration-300 hover:bg-brand/10",
+                    isActive ? "text-brand-bright" : "text-steel-200 hover:text-white",
                   )}
-                  style={isActive ? { color: "#f59930" } : { color: "#ffffff" }}
                 >
                   {label}
                 </a>
@@ -181,7 +168,7 @@ export function Header({ locale }: { locale: Locale }) {
               <a
                 href="#quote"
                 onClick={() => setOpen(false)}
-                className="focus-ring flex min-h-12 items-center justify-center rounded-md bg-gradient-to-r from-[#FF8A00] to-[#E87500] text-sm font-bold text-[#1B1B1D] shadow-[0_8px_24px_rgba(255,138,0,0.3)] transition-all duration-300 hover:from-[#FFC247] hover:to-[#FF8A00]"
+                className="focus-ring flex min-h-12 items-center justify-center rounded-lg bg-[image:var(--grad-brand)] text-sm font-bold text-ink-950 shadow-[var(--shadow-elev-2)] transition-all duration-300 hover:brightness-[1.04]"
               >
                 {labels.cta}
               </a>
