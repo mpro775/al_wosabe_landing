@@ -178,7 +178,13 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
         </Reveal>
       </Container>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24 bg-gradient-to-t from-sand-50 to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-28 w-full bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/graphics/industrial_divider.png')",
+          backgroundSize: "100% 100%",
+        }}
+      />
     </section>
   );
 }
