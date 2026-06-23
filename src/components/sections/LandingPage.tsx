@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { ArrowUpRight, Building2, CheckCircle2, MapPin, Phone, Truck, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
@@ -18,6 +17,7 @@ import { SplitTextReveal } from "@/components/ui/SplitTextReveal";
 import { ParallaxImage } from "@/components/ui/ParallaxImage";
 import { BrandMarquee } from "@/components/ui/BrandMarquee";
 import { AnimatedRouteMap } from "@/components/ui/AnimatedRouteMap";
+import { ProductShowcase, useShowcaseCycle } from "@/components/ui/ProductShowcase";
 import {
   branches,
   brands,
@@ -64,6 +64,9 @@ export function LandingPage({ locale }: { locale: Locale }) {
 function Hero({ locale, years }: { locale: Locale; years: number }) {
   const hero = content[locale].hero;
   const isAr = locale === "ar";
+  const showcaseProducts = products[locale];
+  const { active, setActive, setPaused, reduce } = useShowcaseCycle(showcaseProducts.length);
+  const activeTitle = showcaseProducts[active].title;
 
   const credentials: [string, string][] = isAr
     ? [
@@ -79,15 +82,6 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
         ["50K+", "Clients"],
       ];
 
-  const renderTitle = () => (
-    <h1 className="font-display w-full text-center text-[2.6rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-start lg:text-[4.25rem] xl:text-[4.75rem]">
-      <SplitTextReveal text={isAr ? "الوصابي" : "Al-Wosabe"} />{" "}
-      <span className="text-gradient">
-        <SplitTextReveal text={isAr ? "للتجارة" : "for Trading"} />
-      </span>
-    </h1>
-  );
-
   return (
     <section
       id="home"
@@ -97,14 +91,9 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
       <div className="ambient-dark pointer-events-none absolute inset-0 z-0" />
       <div className="blueprint-grid pointer-events-none absolute inset-0 z-0 opacity-70" />
 
-      {/* Ambient warehouse texture — very faint */}
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.05] grayscale">
-        <Image src="/images/hero/hero-warehouse.webp" alt="" fill priority className="object-cover" />
-      </div>
-
-      <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr]">
+      <Container className="relative z-10 grid min-h-[calc(100vh-7rem)] items-center gap-12 py-16 lg:grid-cols-[1.02fr_0.98fr] lg:gap-10">
         {/* Copy column */}
-        <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-start">
+        <div className="flex w-full min-w-0 flex-col items-center text-center lg:items-start lg:text-start">
           <Reveal delay={0.05}>
             <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] py-1.5 ps-2.5 pe-4 text-xs font-bold uppercase tracking-[0.18em] text-steel-300 backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" />
@@ -112,11 +101,32 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
             </span>
           </Reveal>
 
-          {renderTitle()}
+          <h1 className="font-display w-full text-center text-[2.6rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-start lg:text-[4.25rem] xl:text-[4.75rem]">
+            <SplitTextReveal text={isAr ? "الوصابي" : "Al-Wosabe"} />{" "}
+            <span className="text-gradient">
+              <SplitTextReveal text={isAr ? "للتجارة" : "for Trading"} />
+            </span>
+          </h1>
 
+          {/* Kinetic line synced to the product showcase */}
           <Reveal delay={0.25} className="w-full">
-            <p className="mt-7 w-full text-lg font-bold leading-snug text-steel-200 sm:text-xl">
-              {hero.subtitle}
+            <p className="mt-6 flex w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-lg font-bold text-steel-300 sm:text-xl lg:justify-start">
+              <span>{isAr ? "نوفّر لكل مركبة" : "Everything your vehicle needs"}</span>
+              <span aria-hidden="true" className="text-steel-500">—</span>
+              <span className="relative inline-flex min-h-[1.5em] max-w-full items-center">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={active}
+                    className="text-gradient font-extrabold"
+                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={reduce ? { opacity: 0 } : { opacity: 0, y: -14 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {activeTitle}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
             </p>
           </Reveal>
 
@@ -136,7 +146,7 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
             </div>
           </Reveal>
 
-          {/* Credential strip — replaces floating glassy badges */}
+          {/* Credential strip */}
           <Reveal delay={0.55} className="w-full">
             <div className="mt-12 flex w-full items-stretch justify-center gap-0 lg:justify-start">
               {credentials.map(([value, label], i) => (
@@ -156,64 +166,16 @@ function Hero({ locale, years }: { locale: Locale; years: number }) {
           </Reveal>
         </div>
 
-        {/* Visual column */}
-        <div className="relative w-full max-lg:order-2">
-          <motion.div
-            className="relative z-10"
-            initial={{ scale: 1.03, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          >
-            <div className="steel-frame">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[17px] bg-ink-900">
-                <ParallaxImage
-                  src="/images/hero/hero-trucks.webp"
-                  alt={isAr ? "أسطول توزيع الوصابي للتجارة" : "Al-Wosabe distribution fleet"}
-                  aspectRatio="aspect-auto h-full"
-                  containerClassName="h-full"
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  priority
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/75 via-transparent to-transparent" />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Offset secondary card */}
-          <div className="absolute -bottom-10 -start-8 z-20 hidden w-[52%] md:block">
-            <div className="steel-frame">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[17px] bg-ink-900">
-                <Image
-                  src="/images/hero/hero-warehouse.webp"
-                  alt={isAr ? "مستودعات الوصابي" : "Al-Wosabe warehouses"}
-                  fill
-                  sizes="22vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 to-transparent" />
-                <span className="absolute bottom-3 start-3 rounded-md bg-ink-950/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-steel-200 backdrop-blur">
-                  {isAr ? "المستودعات والمخازن" : "Logistics & Storage"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Single metallic floating badge */}
-          <Reveal delay={0.4} className="absolute -top-5 -end-3 z-30">
-            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-ink-900/90 p-3 shadow-[var(--shadow-elev-3)] backdrop-blur-md">
-              <div className="chrome flex h-10 w-10 items-center justify-center rounded-lg text-ink-950">
-                <Truck size={20} />
-              </div>
-              <div className="text-start">
-                <span className="block text-xs font-bold text-white">{isAr ? "أسطول نشط" : "Active Fleet"}</span>
-                <span className="block text-[10px] font-bold text-steel-400">
-                  {isAr ? "توزيع للجمهورية" : "Nationwide Delivery"}
-                </span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
+        {/* Kinetic product showcase */}
+        <Reveal delay={0.2} direction="left" className="w-full min-w-0 max-lg:order-2">
+          <ProductShowcase
+            products={showcaseProducts}
+            locale={locale}
+            active={active}
+            onSelect={setActive}
+            onPauseChange={setPaused}
+          />
+        </Reveal>
       </Container>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24 bg-gradient-to-t from-sand-50 to-transparent" />

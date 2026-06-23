@@ -334,6 +334,37 @@ h3,
   animation: dot-pulse 2.6s ease-in-out infinite;
 }
 
+/* ─── Hero product stage: rotating brushed-chrome ring + radial ticks ─── */
+.product-ring {
+  border-radius: 50%;
+  background: var(--grad-chrome);
+  opacity: 0.55;
+  -webkit-mask: radial-gradient(circle, transparent calc(50% - 4px), #000 calc(50% - 3px));
+  mask: radial-gradient(circle, transparent calc(50% - 4px), #000 calc(50% - 3px));
+}
+
+.product-ticks {
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    rgba(194, 197, 201, 0.32) 0deg 0.5deg,
+    transparent 0.5deg 12deg
+  );
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent calc(50% - 11px),
+    #000 calc(50% - 10px),
+    #000 calc(50% - 4px),
+    transparent calc(50% - 3px)
+  );
+  mask: radial-gradient(
+    circle,
+    transparent calc(50% - 11px),
+    #000 calc(50% - 10px),
+    #000 calc(50% - 4px),
+    transparent calc(50% - 3px)
+  );
+}
+
 /* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
   *,
