@@ -6,6 +6,25 @@ import { Phone, MapPin, X } from "lucide-react";
 import { branches } from "@/data/site";
 import { phoneHref } from "@/lib/utils";
 
+/**
+ * Distribution routes connecting the branch cities. Coordinates are in the
+ * overlay's 0-100 space and pass through the branch x/y defined in site.ts, so
+ * the lines stay locked to the city dots and the underlying map geography.
+ * `drawDur` controls the draw-in reveal; `signalDur` the travelling delivery dot.
+ */
+const ROUTES = [
+  // Sana'a → Bajel → Hodeidah (capital to the main Red Sea port)
+  { d: "M 17 49 C 15.67 49.67, 11 51.83, 9 53 C 7 54.17, 5.67 55.5, 5 56", drawDur: 3, signalDur: 9, delay: 0 },
+  // Hodeidah → Zabid → Taiz (Tihama coastal plain down to the southern highlands)
+  { d: "M 5 56 C 5.67 57.33, 7.17 61.33, 9 64 C 10.83 66.67, 14.83 70.67, 16 72", drawDur: 2.8, signalDur: 8, delay: 0.25 },
+  // Sana'a → Taiz → Aden (central spine to the southern port)
+  { d: "M 17 49 C 16.83 52.83, 14.67 66.33, 16 72 C 17.33 77.67, 23.5 81.17, 25 83", drawDur: 3.2, signalDur: 11, delay: 0.5 },
+  // Sana'a → Mukalla (eastern long-haul to Hadhramaut)
+  { d: "M 17 49 C 24.83 51.33, 56.17 60.67, 64 63", drawDur: 3.6, signalDur: 13, delay: 0.75 },
+  // Aden → Mukalla (southern coastal link)
+  { d: "M 25 83 C 31.5 79.67, 57.5 66.33, 64 63", drawDur: 3.4, signalDur: 12, delay: 1 },
+];
+
 export function AnimatedRouteMap({
   locale,
   hoveredCity,
@@ -48,7 +67,7 @@ export function AnimatedRouteMap({
         {/* Base Map Graphic */}
         <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
           <Image
-            src="/images/graphics/yemen-map.svg"
+            src="/images/graphics/yemen-map-clean.svg"
             alt="Yemen Map Grid"
             fill
             className="object-fill"
@@ -75,104 +94,42 @@ export function AnimatedRouteMap({
             </filter>
           </defs>
 
-          {/* SVG Paths for Routes */}
-          {/* Route 1: Western Coastal Route (Sana'a to Aden via Bajel, Hodeidah, Zabid, Taiz) */}
-          <motion.path
-            d="M48 33 C44 34, 41 36, 38 39 C36 41, 35 42, 34 44 C33 47, 34 51, 37 54 C39 58, 40 62, 42 66 C46 70, 50 74, 54 78"
-            fill="none"
-            stroke="url(#route-gradient)"
-            strokeWidth="0.8"
-            strokeDasharray="4 3"
-            initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 3.5, ease: "easeOut" }}
-            className="opacity-60"
-          />
+          {/* Distribution route lines — locked to the branch dots (see ROUTES) */}
+          {ROUTES.map((route, i) => (
+            <motion.path
+              key={`route-${i}`}
+              d={route.d}
+              fill="none"
+              stroke="url(#route-gradient)"
+              strokeWidth="0.8"
+              strokeDasharray="4 3"
+              strokeLinecap="round"
+              initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: route.drawDur, ease: "easeOut", delay: route.delay }}
+              className="opacity-60"
+            />
+          ))}
 
-          {/* Route 2: Direct Inland Route (Sana'a to Aden via Taiz) */}
-          <motion.path
-            d="M48 33 C46 44, 44 55, 42 66 C45 70, 50 74, 54 78"
-            fill="none"
-            stroke="url(#route-gradient)"
-            strokeWidth="0.8"
-            strokeDasharray="4 3"
-            initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 2.5, ease: "easeOut", delay: 0.3 }}
-            className="opacity-60"
-          />
-
-          {/* Route 3: Eastern Route (Sana'a to Mukalla) */}
-          <motion.path
-            d="M48 33 C58 38, 68 48, 78 62"
-            fill="none"
-            stroke="url(#route-gradient)"
-            strokeWidth="0.8"
-            strokeDasharray="4 3"
-            initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 3, ease: "easeOut", delay: 0.6 }}
-            className="opacity-60"
-          />
-
-          {/* Route 4: Southern Coastal Route (Aden to Mukalla) */}
-          <motion.path
-            d="M54 78 C62 76, 70 72, 78 62"
-            fill="none"
-            stroke="url(#route-gradient)"
-            strokeWidth="0.8"
-            strokeDasharray="4 3"
-            initial={shouldReduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 3, ease: "easeOut", delay: 0.9 }}
-            className="opacity-60"
-          />
-
-          {/* Animated Delivery Signals (Active Fleet Representation) */}
-          {!shouldReduceMotion && (
-            <>
-              {/* Signal 1: Western Coastal Route */}
-              <circle r="1" fill="#F8A21E" filter="url(#glow-map-effect)">
-                <animateMotion
-                  path="M48 33 C44 34, 41 36, 38 39 C36 41, 35 42, 34 44 C33 47, 34 51, 37 54 C39 58, 40 62, 42 66 C46 70, 50 74, 54 78"
-                  dur="12s"
-                  repeatCount="indefinite"
-                />
+          {/* Animated delivery signals travelling each route (active fleet) */}
+          {!shouldReduceMotion &&
+            ROUTES.map((route, i) => (
+              <circle key={`signal-${i}`} r="1" fill={i % 2 ? "#ED8B00" : "#F8A21E"} filter="url(#glow-map-effect)">
+                <animateMotion path={route.d} dur={`${route.signalDur}s`} repeatCount="indefinite" />
               </circle>
-              {/* Signal 2: Direct Inland Route */}
-              <circle r="1" fill="#ED8B00" filter="url(#glow-map-effect)">
-                <animateMotion
-                  path="M48 33 C46 44, 44 55, 42 66 C45 70, 50 74, 54 78"
-                  dur="8s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-              {/* Signal 3: Eastern Route */}
-              <circle r="1" fill="#F8A21E" filter="url(#glow-map-effect)">
-                <animateMotion
-                  path="M48 33 C58 38, 68 48, 78 62"
-                  dur="10s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-              {/* Signal 4: Southern Coastal Route */}
-              <circle r="1" fill="#ED8B00" filter="url(#glow-map-effect)">
-                <animateMotion
-                  path="M54 78 C62 76, 70 72, 78 62"
-                  dur="10s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </>
-          )}
+            ))}
 
           {/* City Dots */}
           {branches.map((branch) => {
             const isHovered = hoveredCity === branch.city.en;
+            // Right-edge cities flip their label/tooltip to the left to stay on-canvas.
+            const tipW = isAr ? 35 : 42;
+            const flip = branch.x > 60;
+            const tipX = flip ? branch.x - 3.5 - tipW : branch.x + 3.5;
+            const txtX = flip ? branch.x - 5.5 : branch.x + 5.5;
+            const labelX = flip ? branch.x - 3.5 : branch.x + 3.5;
+            const anchor = flip ? "end" : "start";
             return (
               <g
                 key={branch.city.en}
@@ -225,9 +182,9 @@ export function AnimatedRouteMap({
                       transition={{ duration: 0.25, ease: "easeOut" }}
                     >
                       <rect
-                        x={branch.x + 3.5}
+                        x={tipX}
                         y={branch.y - 10}
-                        width={isAr ? 35 : 42}
+                        width={tipW}
                         height="12"
                         rx="2"
                         fill="rgba(23, 24, 27, 0.96)"
@@ -235,8 +192,9 @@ export function AnimatedRouteMap({
                         strokeWidth="0.5"
                       />
                       <text
-                        x={branch.x + 5.5}
+                        x={txtX}
                         y={branch.y - 5}
+                        textAnchor={anchor}
                         fill="#FFFFFF"
                         fontSize="3.8"
                         fontWeight="900"
@@ -244,8 +202,9 @@ export function AnimatedRouteMap({
                         {branch.city[locale]}
                       </text>
                       <text
-                        x={branch.x + 5.5}
+                        x={txtX}
                         y={branch.y - 1}
+                        textAnchor={anchor}
                         fill="rgba(255, 255, 255, 0.5)"
                         fontSize="3.0"
                         fontWeight="700"
@@ -259,8 +218,9 @@ export function AnimatedRouteMap({
                 {/* Static Text labels for visible cities when NOT hovered */}
                 {!isHovered && (
                   <text
-                    x={branch.x + 3.5}
+                    x={labelX}
                     y={branch.y - 1.5}
+                    textAnchor={anchor}
                     fill="rgba(255, 255, 255, 0.6)"
                     fontSize="3"
                     fontWeight="700"
