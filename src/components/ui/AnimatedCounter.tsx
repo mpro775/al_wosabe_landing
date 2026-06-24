@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
+import "slot-text/style.css";
+import { SlotText } from "slot-text/react";
 
 export function AnimatedCounter({
   value,
@@ -38,9 +40,24 @@ export function AnimatedCounter({
   }, [inView, reducedMotion, value]);
 
   return (
-    <motion.span ref={ref} className={className}>
-      {display}
+    <span
+      ref={ref}
+      className={className}
+      dir="ltr"
+      style={{ display: "inline-flex", direction: "ltr", unicodeBidi: "isolate" }}
+    >
+      <SlotText
+        text={String(display)}
+        options={{
+          direction: "up",
+          stagger: 30,
+          duration: 280,
+          bounce: 0.4,
+          skipUnchanged: true,
+        }}
+        style={{ fontVariantNumeric: "tabular-nums" }}
+      />
       {suffix}
-    </motion.span>
+    </span>
   );
 }
